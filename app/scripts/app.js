@@ -21,19 +21,23 @@ angular
         $routeProvider
             .when('/', {
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'MainCtrl',
+                index: 1
             })
             .when('/about', {
                 templateUrl: 'views/about.html',
-                controller: 'AboutCtrl'
+                controller: 'AboutCtrl',
+                index: 2
             })
             .when('/graph', {
                 templateUrl: 'views/graph.html',
-                controller: 'GraphCtrl'
+                controller: 'GraphCtrl',
+                index: 3
             })
             .when('/contact', {
                 templateUrl: 'views/contact.html',
-                controller: 'ContactCtrl'
+                controller: 'ContactCtrl',
+                index: 4
             })
 
             .otherwise({
