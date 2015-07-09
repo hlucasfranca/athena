@@ -10,7 +10,7 @@
 angular.module('grapheApp')
     .controller('MenuCtrl', ['$scope','$rootScope', function ($scope, $rootScope) {
 
-        $scope.opcao = 1;
+        this.option = 1;
 
         var self = this;
 
