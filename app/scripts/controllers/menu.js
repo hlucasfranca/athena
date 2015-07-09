@@ -10,7 +10,20 @@
 angular.module('grapheApp')
     .controller('MenuCtrl', ['$scope','$rootScope', function ($scope, $rootScope) {
 
-        this.option = 1;
+        $scope.opcao = 1;
+
+        var self = this;
+
+        $rootScope.$on("$routeChangeSuccess", function (e, next, previous) {
+
+            if (next) {
+                self.selectOption(next.$$route.index);
+                console.log(next.$$route);
+            } else{
+                self.selectOption(previous.$$route.index);
+                console.log(previous.$$route);
+            }
+        });
 
         this.selectOption = function(setOption){
             this.option = setOption;
