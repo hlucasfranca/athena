@@ -36,4 +36,16 @@ angular.module('grapheApp')
             ]
         };
 
+        // on window resize, resizes the graph
+        angular.element($window).on('resize', function(){
+            $scope.$apply(function(){
+                rescale_panels();
+            });
+        });
+
+        function rescale_panels(){
+            // get the width of graph-stage element and set to the graph element itself
+            var width = angular.element('.graph-stage').width();
+            $scope.width = width;
+        }
     });
