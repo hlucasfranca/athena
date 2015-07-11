@@ -15,8 +15,10 @@ angular.module('grapheApp')
             'Karma'
         ];
 
-        $scope.width = 600;
+        $scope.width = 0;
         $scope.height = 600;
+
+        $scope.showInfo = false;
 
         $scope.removeNode = function(){
             $rootScope.graph.nodes.shift();
@@ -48,4 +50,11 @@ angular.module('grapheApp')
             var width = angular.element('.graph-stage').width();
             $scope.width = width;
         }
+
+        rescale_panels();
+
+        $scope.toogleInfo = function(){
+            $scope.showInfo = !$scope.showInfo;
+        };
+
     });

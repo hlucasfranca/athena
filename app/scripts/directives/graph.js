@@ -33,14 +33,13 @@ angular.module('grapheApp')
 
                 scope.start = function () {
 
-
-
                     scope.width = scope.width || 100;
                     scope.height = scope.height || 100;
                     scope.graphData = angular.fromJson(scope.graphData);
                     scope.color = d3.scale.category20();
 
                     // clean element content
+
                     $(element[0]).empty();
 
                     // sets the element width and height
@@ -50,7 +49,19 @@ angular.module('grapheApp')
                     scope.svg = d3.select(element[0])
                         .append("svg")
                             .attr("width", scope.width)
-                            .attr("height", scope.height);
+                            .attr("height", scope.height)
+                        .append('g')
+                        .call(d3.behavior.zoom().scaleExtent([1, 8]).on("zoom", zoom))
+                        .append('g');
+
+                    scope.svg.append("rect")
+                        .attr("class", "overlay")
+                        .attr("width", scope.width)
+                        .attr("height", scope.height);
+
+                    function zoom() {
+                        scope.svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                    }
 
                     scope.force = d3.layout.force()
                         .charge(-120)

@@ -1,41 +1,51 @@
 <div class="graph-stage">
 
-    <h4>Graph</h4>
+    <h4>New Graph</h4>
 
-    <graph width='{{width}}' height='{{height}}' graph-data='{{graph}}'></graph>
+    <div class="graphe-stage">
+        <graph width='{{width}}' height='{{height}}' graph-data='{{graph}}'>
+        </graph>
+
+        <div ng-animate="'animate'" ng-show="showInfo" class="graphe-info-panel">
+            <form>
+                <h4>Graph dimensions</h4>
+
+                <div class="form-group">
+                    <label>width</label>
+                    <input type="number" ng-model="width" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label>heigth</label>
+                    <input type="number" ng-model="height" class="form-control"/>
+                </div>
+
+                <div>
+
+                    <div class="form-group">
+                        <label>Number of nodes: </label> {{graph.nodes.length}}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Number of links: </label> {{graph.links.length}}
+                    </div>
+
+                </div>
+
+
+            </form>
+            <button class="btn btn-success" ng-click="addNode()"><i class="glyphicon glyphicon-plus"></i>Add node
+            </button>
+            <button class="btn btn-danger" ng-click="removeNode()"><i class="glyphicon glyphicon-remove"></i>Remove node
+            </button>
+        </div>
+        <div class="gaphe-panel-button">
+            <i class="graphe-info glyphicon glyphicon-info-sign" ng-click="toogleInfo()" ng-hide="showInfo"></i>
+            <i class="graphe-info glyphicon glyphicon-remove-sign" style='color:white' ng-show="showInfo" ng-click="toogleInfo()"></i>
+        </div>
+    </div>
+
+
 
 </div>
 
-<div class="graph-panel">
-
-    <form>
-        <h4>Graph dimensions</h4>
-
-        <div class="form-group">
-            <label>width</label>
-            <input type="number" ng-model="width" class="form-control"/>
-        </div>
-
-        <div class="form-group">
-            <label>heigth</label>
-            <input type="number" ng-model="height" class="form-control"/>
-        </div>
-
-        <div>
-
-            <div class="form-group">
-                <label>Number of nodes: </label> {{graph.nodes.length}}
-            </div>
-
-            <div class="form-group">
-                <label>Number of links: </label> {{graph.links.length}}
-            </div>
-
-        </div>
-
-
-    </form>
-    <button class="btn btn-success" ng-click="addNode()"><i class="glyphicon glyphicon-plus"></i>Add node</button>
-    <button class="btn btn-danger" ng-click="removeNode()"><i class="glyphicon glyphicon-remove"></i>Remove node </button>
-
-</div>

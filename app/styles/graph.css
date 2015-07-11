@@ -7,3 +7,65 @@
     stroke: #999;
     stroke-opacity: .6;
 }
+
+.graph-panel{
+    margin-bottom: 30px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+svg{
+    border: solid 1px #b3b3b3;
+}
+
+.graphe-stage{
+    position: relative;
+}
+
+
+
+div.graphe-info-panel{
+    float:right;
+    right: 0;
+    display:block;
+    width: 50%;
+    background-color: rgba(0,0,0,0.75);
+    position: absolute;
+    top: 0;
+    padding: 10px;
+    color: white;
+    height: 100%;
+}
+
+.graphe-info-panel.ng-enter {
+    transition:10s linear all;
+    opacity:0;
+}
+
+.graphe-info-panel.ng-leave {
+    transition:10s linear all;
+    opacity:1;
+}
+
+circle{
+    cursor: pointer;
+}
+
+.gaphe-panel-button{
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    float: right;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    opacity: 0.4;
+}
+
+.gaphe-panel-button:hover{
+    opacity: 1;
+}
