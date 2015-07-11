@@ -1,2 +1,41 @@
-<h4>Graph</h4>
-<graph></graph>
+<div class="graph-stage">
+
+    <h4>Graph</h4>
+
+    <graph width='{{width}}' height='{{height}}' graph-data='{{graph}}'></graph>
+
+</div>
+
+<div class="graph-panel">
+
+    <form>
+        <h4>Graph dimensions</h4>
+
+        <div class="form-group">
+            <label>width</label>
+            <input type="number" ng-model="width" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label>heigth</label>
+            <input type="number" ng-model="height" class="form-control"/>
+        </div>
+
+        <div>
+
+            <div class="form-group">
+                <label>Number of nodes: </label> {{graph.nodes.length}}
+            </div>
+
+            <div class="form-group">
+                <label>Number of links: </label> {{graph.links.length}}
+            </div>
+
+        </div>
+
+
+    </form>
+    <button class="btn btn-success" ng-click="addNode()"><i class="glyphicon glyphicon-plus"></i>Add node</button>
+    <button class="btn btn-danger" ng-click="removeNode()"><i class="glyphicon glyphicon-remove"></i>Remove node </button>
+
+</div>
