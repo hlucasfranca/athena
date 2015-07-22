@@ -39,7 +39,8 @@ angular.module('grapheApp')
                     .append("svg:svg")
                     .attr("width", scope.width)
                     .attr("height", scope.height)
-                    .attr("pointer-events", "all");
+                    .attr("pointer-events", "all")
+                    .call(d3.behavior.zoom().on("zoom", rescale));
 
                 /**
                  * Draw a grid
@@ -68,7 +69,7 @@ angular.module('grapheApp')
 
                 var vis = outer
                     .append('svg:g')
-                    .call(d3.behavior.zoom().on("zoom", rescale))
+
                     .on("dblclick.zoom", null)
                     .append('svg:g')
                     .on("mousemove", mousemove)
@@ -197,8 +198,9 @@ angular.module('grapheApp')
 
                 // redraw force layout
                 function redraw() {
-
-
+                    outer
+                        .attr("width", scope.width)
+                        .attr("height", scope.height);
 
                     link = link.data(links);
 
