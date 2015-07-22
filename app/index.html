@@ -4,61 +4,88 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+
+
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbower -->
+
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/bower_components/material-design-icons/" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/graph.css">
 
+
+
     <!-- endbuild -->
+
+
+    <style type="text/css">
+        .axis line {
+            fill: none;
+            stroke: #ddd;
+            shape-rendering: crispEdges;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .dragging{
+            fill: red !important;
+        }
+    </style>
 </head>
-<body ng-app="grapheApp">
+<body ng-app="grapheApp" ng-controller="MainCtrl" class="md-body-1" layout-row>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
+
+
+
+
 <!-- Add your site or application content here -->
-<div class="header">
-    <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <a class="navbar-brand" href="#/"> Graphe</a>
-
-            </div>
-
-            <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="MenuCtrl as menu">
-
-                <ul class="nav navbar-nav">
-                    <li ng-class="{active : menu.isSelected(1)}"><a ng-href="#/">Home</a></li>
-                    <li ng-class="{active : menu.isSelected(2)}"><a ng-href="#/graph">Graph playground</a></li>
-                    <li ng-class="{active : menu.isSelected(3)}"><a ng-href="#/about">About</a></li>
-                    <li ng-class="{active : menu.isSelected(4)}"><a ng-href="#/contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+<md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+            <md-icon>menu</md-icon>
+        </md-button>
+        <h1>Graphe</h1>
     </div>
-</div>
+</md-toolbar>
 
-<div class="container-fluid">
-    <div ng-view="" class="view"></div>
-</div>
+<div layout="row" flex>
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 
-<div class="footer">
-    <div class="container">
-        <p>Made with <span class="glyphicon glyphicon-heart"></span>&nbsp;from Brazil!</p>
+        <header class="header">Teste</header>
+
+        <md-content layout-padding >
+            <md-list>
+                <md-list-item ng-repeat="option in menuOptions">
+                    <a ng-href='{{option.link}}' ng-click="toggleSidenav('left')" >
+                    {{option.label}}
+                    </a>
+                </md-list-item>
+            </md-list>
+            </md-content>
+
+    </md-sidenav>
+    <div layout="column" flex id="content">
+        <md-content layout="column" flex class="md-padding" id="main-content">
+
+            <div class="container-fluid">
+                <div ng-view="" class="view"></div>
+            </div>
+
+        </md-content>
     </div>
 </div>
 
@@ -74,6 +101,8 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -86,5 +115,6 @@
 <script src="scripts/controllers/contact.js"></script>
 <script src="scripts/controllers/menu.js"></script>
 <!-- endbuild -->
+
 </body>
 </html>

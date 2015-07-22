@@ -9,15 +9,19 @@
  */
 angular.module('grapheApp')
     .controller('GraphCtrl', function ($scope, $rootScope, $window) {
+
+
+        $scope.showSimpleToast();
+
+
         $scope.awesomeThings = [
             'HTML5 Boilerplate',
             'AngularJS',
             'Karma'
         ];
 
-        $scope.width = 0;
+        $scope.width = 100;
         $scope.height = 600;
-
         $scope.showInfo = false;
 
         $scope.removeNode = function(){
@@ -28,10 +32,10 @@ angular.module('grapheApp')
             $rootScope.graph.nodes.push({name:'foo',group:1});
         }
 
-        $rootScope.graph = $rootScope.graph || {
+        $scope.graph = {
             nodes: [
                 {name: "foo"},
-                {name: "bar"}
+                {name: "bar" }
             ],
             links: [
                 {source: 1, target: 0}
@@ -47,8 +51,11 @@ angular.module('grapheApp')
 
         function rescale_panels(){
             // get the width of graph-stage element and set to the graph element itself
-            var width = angular.element('.graph-stage').width();
+            //var width = angular.element('.graph-stage').width();
+            var width = angular.element('#main-content').width();
+
             $scope.width = width;
+
         }
 
         rescale_panels();
@@ -56,5 +63,7 @@ angular.module('grapheApp')
         $scope.toogleInfo = function(){
             $scope.showInfo = !$scope.showInfo;
         };
+
+       
 
     });
