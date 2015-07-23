@@ -69,7 +69,6 @@ angular.module('grapheApp')
 
                 var vis = outer
                     .append('svg:g')
-
                     .on("dblclick.zoom", null)
                     .append('svg:g')
                     .on("mousemove", mousemove)
@@ -90,7 +89,8 @@ angular.module('grapheApp')
                     .nodes(scope.graphData.nodes) // initialize with a single node
                     .links(scope.graphData.links)
                     .linkDistance(50)
-                    .charge(-200)
+                    .gravity(0)
+                    //.charge(-200)
                     .on("tick", tick);
 
                 // line displayed when dragging new nodes
@@ -112,10 +112,14 @@ angular.module('grapheApp')
 
                 redraw();
 
-                function dragstarted(d) {
-                    d3.event.sourceEvent.stopPropagation();
-                    d3.select(this).classed("dragging", true);
-                }
+                /**
+                 * TODO: replace mousedown by drag.
+                 */
+
+                //function dragstarted(d) {
+                //    d3.event.sourceEvent.stopPropagation();
+                //    d3.select(this).classed("dragging", true);
+                //}
 
                 function mousedown() {
                     if (!mousedown_node && !mousedown_link) {
@@ -183,8 +187,12 @@ angular.module('grapheApp')
                         .attr("x2", function(d) { return d.target.x; })
                         .attr("y2", function(d) { return d.target.y; });
 
-                    node.attr("cx", function(d) { return d.x; })
-                        .attr("cy", function(d) { return d.y; });
+                    node.attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    });
+
+
+
                 }
 
                 /**
@@ -199,14 +207,17 @@ angular.module('grapheApp')
                 // redraw force layout
                 function redraw() {
                     outer
-                        .attr("width", scope.width)
+                        .attr("width" , scope.width)
                         .attr("height", scope.height);
 
                     link = link.data(links);
 
                     link.enter().insert("line", ".node")
                         .attr("class", "link")
-                        .on("mousedown", function(d) {
+                        .on("mousedown",mousedownlink);
+
+                    function mousedownlink(d){
+
                             mousedown_link = d;
                             if (mousedown_link === selected_link){
                                 selected_link = null;
@@ -216,7 +227,8 @@ angular.module('grapheApp')
                             }
                             selected_node = null;
                             redraw();
-                        });
+
+                    }
 
                     link.exit().remove();
 
@@ -224,65 +236,88 @@ angular.module('grapheApp')
 
                     node = node.data(nodes);
 
-                    node.enter().insert("circle")
+                    node.enter()
+                        .append('g')
                         .attr("class", "node")
+                        .append('circle')
                         .attr("r", 5)
-                        .on("mousedown", function(d) {
+                        .on("mousedown", mousedownnode)
+                        .on("mousedrag", mousedragnode)
+                        .on("mouseup",mouseupnode)
+                        .transition()
+                        .duration(100)
+                        .ease("elastic")
+                        .attr("r", 6);
 
-                            // prevent drag
-                            d3.event.stopPropagation();
+                    /**
+                     * TODO: correct multiple labels per node.
+                     */
+                    node
+                        .append("text")
+                        .attr("dx", 12 )
+                        .attr("dy", ".35em")
+                        .text(function(d){return "node";});
 
-                            // disable zoom
-                          //  console.log(vis);
+
+
+                    function mousedragnode(){
+                            console.log('drag');
+                            // redraw();
+
+                    }
+
+                    function mousedownnode(d) {
+
+                        // prevent drag
+                        d3.event.stopPropagation();
+
+                        // disable zoom
+                        //  console.log(vis);
+                        vis.call(d3.behavior.zoom());
+                        vis.on(".zoom", null);
+
+                        mousedown_node = d;
+                        if (mousedown_node === selected_node) {
+                            selected_node = null;
+                        }
+                        else {
+                            selected_node = mousedown_node;
+                        }
+                        selected_link = null;
+
+                        // reposition drag line
+                        drag_line
+                            .attr("class", "link")
+                            .attr("x1", mousedown_node.x)
+                            .attr("y1", mousedown_node.y)
+                            .attr("x2", mousedown_node.x)
+                            .attr("y2", mousedown_node.y);
+
+                        redraw();
+                    }
+
+                    function mouseupnode(d) {
+                        if (mousedown_node) {
+                            mouseup_node = d;
+                            if (mouseup_node === mousedown_node) { resetMouseVars(); return; }
+
+                            // add link
+                            var link = {source: mousedown_node, target: mouseup_node};
+                            links.push(link);
+
+                            // select new link
+                            selected_link = link;
+                            selected_node = null;
+
+                            // enable zoom
                             vis.call(d3.behavior.zoom());
-                            vis.on(".zoom", null);
-
-                            mousedown_node = d;
-                            if (mousedown_node === selected_node) {
-                                selected_node = null;
-                            }
-                            else {
-                                selected_node = mousedown_node;
-                            }
-                            selected_link = null;
-
-                            // reposition drag line
-                            drag_line
-                                .attr("class", "link")
-                                .attr("x1", mousedown_node.x)
-                                .attr("y1", mousedown_node.y)
-                                .attr("x2", mousedown_node.x)
-                                .attr("y2", mousedown_node.y);
+                            vis.on(".zoom", rescale);
 
                             redraw();
-                        })
-                        .on("mousedrag", function (d) {
-                            // redraw();
-                        })
-                        .on("mouseup", function(d) {
-                            if (mousedown_node) {
-                                mouseup_node = d;
-                                if (mouseup_node === mousedown_node) { resetMouseVars(); return; }
+                        }
+                    }
 
-                                // add link
-                                var link = {source: mousedown_node, target: mouseup_node};
-                                links.push(link);
 
-                                // select new link
-                                selected_link = link;
-                                selected_node = null;
-
-                                // enable zoom
-                                vis.call(d3.behavior.zoom());
-                                vis.on(".zoom", rescale);
-
-                                redraw();
-                            }
-                        })
-                        .transition()
-                        .duration(750)
-                        .ease("elastic")
-                        .attr("r", 6.5);
 
                     node.exit().transition()
                         .attr("r", 0)
