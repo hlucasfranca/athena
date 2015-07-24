@@ -3,11 +3,20 @@
     cursor: crosshair;
 }
 
-.node_selected {
+.node_selected circle{
     fill: #4494ff;
     stroke: #254180;
     stroke-width: 4;
     stroke-opacity: 50%;
+}
+
+.node_selected text {
+    fill: #4494ff;
+
+}
+
+.edittext{
+    fill: red;
 }
 
 .drag_line {
@@ -29,7 +38,7 @@
 }
 
 .link_selected {
-    stroke: #ff7f0e;
+    stroke: #4494ff;
 
 }
 

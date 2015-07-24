@@ -236,9 +236,12 @@ angular.module('grapheApp')
 
                     node = node.data(nodes);
 
+                    var g = 
                     node.enter()
-                        .append('g')
-                        .attr("class", "node")
+                        .append('g');
+
+
+                        g.attr("class", "node")
                         .append('circle')
                         .attr("r", 5)
                         .on("mousedown", mousedownnode)
@@ -249,14 +252,17 @@ angular.module('grapheApp')
                         .ease("elastic")
                         .attr("r", 6);
 
-                    /**
-                     * TODO: correct multiple labels per node.
-                     */
-                    node
+                    var nodeLabel = g
                         .append("text")
                         .attr("dx", 12 )
                         .attr("dy", ".35em")
-                        .text(function(d){return "node";});
+                        .text(function(d){return "node";})
+                        .on("click", function(d){
+                            var element = d3.select(this);
+                            element.text(Math.random());
+                            element.classed('edittext', true);
+                            console.log(d);
+                        });
 
 
 
