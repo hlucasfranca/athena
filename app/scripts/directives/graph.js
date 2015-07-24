@@ -153,19 +153,29 @@ angular.module('grapheApp')
 
                             // add node
                             var point = d3.mouse(this),
-                                node = {x: point[0], y: point[1]},
+                                newNode = {
+                                    x: point[0],
+                                    y: point[1]
+                                },
                                 n;
 
                             // select new node
-                            selected_node = node;
+                            selected_node = newNode;
                             selected_link = null;
 
                             // instantaneous apply
                             scope.$apply(function(){
-                                n = nodes.push(node);
+
+                                var newLink = {
+                                    source: mousedown_node,
+                                    target: newNode
+                                };
+
+
+                                n = nodes.push(newNode);
 
                                 // add link to mousedown node
-                                links.push({source: mousedown_node, target: node});
+                                links.push(newLink);
                             });
                         }
 
@@ -236,33 +246,33 @@ angular.module('grapheApp')
 
                     node = node.data(nodes);
 
-                    var g = 
-                    node.enter()
-                        .append('g');
+                    var nodeGroup =
+                        node.enter()
+                            .append('g');
 
+                        nodeGroup
+                            .attr("class", "node")
+                            .append('circle')
+                                .attr("r", 5)
+                                .on("mousedown", mousedownnode)
+                                .on("mousedrag", mousedragnode)
+                                .on("mouseup",mouseupnode)
+                                    .transition()
+                                    .duration(100)
+                                    .ease("elastic")
+                                    .attr("r", 6);
 
-                        g.attr("class", "node")
-                        .append('circle')
-                        .attr("r", 5)
-                        .on("mousedown", mousedownnode)
-                        .on("mousedrag", mousedragnode)
-                        .on("mouseup",mouseupnode)
-                        .transition()
-                        .duration(100)
-                        .ease("elastic")
-                        .attr("r", 6);
-
-                    var nodeLabel = g
+                    var nodeLabel = nodeGroup
                         .append("text")
-                        .attr("dx", 12 )
-                        .attr("dy", ".35em")
-                        .text(function(d){return "node";})
-                        .on("click", function(d){
-                            var element = d3.select(this);
-                            element.text(Math.random());
-                            element.classed('edittext', true);
-                            console.log(d);
-                        });
+                            .attr("dx", 12 )
+                            .attr("dy", ".35em")
+                            .text(function(d){return "node";})
+                            .on("click", function(d){
+                                var element = d3.select(this);
+                                element.text(Math.random());
+                                element.classed('edittext', true);
+                                console.log(d);
+                            });
 
 
 
@@ -278,7 +288,6 @@ angular.module('grapheApp')
                         d3.event.stopPropagation();
 
                         // disable zoom
-                        //  console.log(vis);
                         vis.call(d3.behavior.zoom());
                         vis.on(".zoom", null);
 
