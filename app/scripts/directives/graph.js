@@ -268,12 +268,11 @@ angular.module('grapheApp')
                             .attr("dy", ".35em")
                             .text(function(d){return "node";})
                             .on("click", function(d){
-                                var element = d3.select(this);
-                                element.text(Math.random());
-                                element.classed('edittext', true);
+                                var textElement = d3.select(this);
+                                textElement.text(Math.random());
+                                textElement.classed('edittext', true);
                                 console.log(d);
                             });
-
 
 
                     function mousedragnode(){
