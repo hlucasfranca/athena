@@ -1,5 +1,52 @@
-graph{
-     display: block;
-     width: 100%;
-     height: 100px;
- }
+.node {
+    fill: #666666;
+    cursor: crosshair;
+}
+
+.node_selected circle{
+    fill: #4494ff;
+    stroke: #254180;
+    stroke-width: 4;
+    stroke-opacity: 50%;
+}
+
+.node_selected text {
+    fill: #4494ff;
+
+}
+
+.edittext{
+    fill: red;
+}
+
+.drag_line {
+    stroke: #999;
+    stroke-width: 5;
+    pointer-events: none;
+}
+
+.drag_line_hidden {
+    stroke: #999;
+    stroke-width: 0;
+    pointer-events: none;
+}
+
+.link {
+    stroke: #434343;
+    stroke-width: 2;
+    cursor: crosshair;
+}
+
+.link_selected {
+    stroke: #4494ff;
+
+}
+
+.axis line {
+    stroke-width: 1px;
+    stroke: black;
+}
+
+md-content {
+    overflow: hidden;
+}

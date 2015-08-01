@@ -4,75 +4,114 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
+
+
     <!-- bower:css -->
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbower -->
+
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/graph.css">
 
+
+
     <!-- endbuild -->
+
+
+    <style type="text/css">
+        .axis line {
+            fill: none;
+            stroke: #ddd;
+            shape-rendering: crispEdges;
+            /* vector-effect: non-scaling-stroke;*/
+        }
+
+        .dragging{
+            fill: red !important;
+        }
+    </style>
 </head>
-<body ng-app="grapheApp">
+<body ng-app="grapheApp" ng-controller="MainCtrl" layout="row" class="md-body-1">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
+
+
+
+
 <!-- Add your site or application content here -->
-<div class="header">
-    <div class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
 
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
 
-                <a class="navbar-brand" href="#/"> Graphe</a>
 
+    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="{{false}}"
+            >
+
+
+
+
+        <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
+            Graphe
+        </md-toolbar>
+
+        <md-list>
+            <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+
+                    {{option.label}}
+
+            </md-list-item>
+        </md-list>
+
+    </md-sidenav>
+
+
+    <div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" >
+
+        <md-toolbar id="toolbar">
+            <div class="md-toolbar-tools">
+                <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
+                    <md-icon>menu</md-icon>
+                </md-button>
+                <h1>Graphe</h1>
             </div>
+        </md-toolbar>
 
-            <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="MenuCtrl as menu">
+        <md-content  ng-view id="content">
 
-                <ul class="nav navbar-nav">
-                    <li ng-class="{active : menu.isSelected(1)}"><a href="#/" ng-click="menu.selectOption(1)">Home</a></li>
-                    <li ng-class="{active : menu.isSelected(2)}"><a ng-href="#/graph" ng-click="menu.selectOption(2)">Graph playground</a></li>
-                    <li ng-class="{active : menu.isSelected(3)}"><a ng-href="#/about" ng-click="menu.selectOption(3)">About</a></li>
-                    <li ng-class="{active : menu.isSelected(4)}"><a ng-href="#/contact" ng-click="menu.selectOption(4)">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+        </md-content>
+
     </div>
-</div>
 
-<div class="container">
-    <div ng-view=""></div>
-</div>
 
-<div class="footer">
-    <div class="container">
-        <p>Made with <span class="glyphicon glyphicon-heart"></span>&nbsp;from Brazil!</p>
-    </div>
-</div>
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
-<script src="../bower_components/jquery/dist/jquery.js"></script>
-<script src="../bower_components/angular/angular.js"></script>
-<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="../bower_components/angular-animate/angular-animate.js"></script>
-<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
-<script src="../bower_components/angular-resource/angular-resource.js"></script>
-<script src="../bower_components/angular-route/angular-route.js"></script>
-<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="../bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -84,6 +123,8 @@
 <script src="scripts/directives/graph.js"></script>
 <script src="scripts/controllers/contact.js"></script>
 <script src="scripts/controllers/menu.js"></script>
+<script src="scripts/services/graphservice.js"></script>
 <!-- endbuild -->
+
 </body>
 </html>

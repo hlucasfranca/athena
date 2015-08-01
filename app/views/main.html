@@ -1,11 +1,14 @@
-<div class="jumbotron">
-    <h1>Hello!</h1>
+<md-card>
+    <md-card-content>
+        <h2 class="md-title">Hello!</h2>
+        <p>
+            Making graph theory's learning more enjoyable.
+        </p>
 
-    <p class="lead">
-        <img src="images/graphe.png" alt="Graphe"><br><br>
-        Making graph theory's learning more enjoyable.
-    </p>
+        <div class="md-actions" layout="row" layout-align="end center">
+            <md-button ng-click="go('/graph')">Let's begin!</md-button>
 
-    <p><a class="btn btn-lg btn-success" ng-href="#/graph">Lets begin! <span class="glyphicon glyphicon-ok"></span></a>
-    </p>
-</div>
+        </div>
+    </md-card-content>
+
+</md-card>

@@ -11,6 +11,7 @@
 angular
     .module('grapheApp', [
         'ngAnimate',
+        'ngMaterial',
         'ngCookies',
         'ngResource',
         'ngRoute',
@@ -24,14 +25,15 @@ angular
                 controller: 'MainCtrl',
                 index: 1
             })
-            .when('/about', {
-                templateUrl: 'views/about.html',
-                controller: 'AboutCtrl',
-                index: 2
-            })
             .when('/graph', {
                 templateUrl: 'views/graph.html',
                 controller: 'GraphCtrl',
+                index: 2
+            })
+
+            .when('/about', {
+                templateUrl: 'views/about.html',
+                controller: 'AboutCtrl',
                 index: 3
             })
             .when('/contact', {
@@ -44,3 +46,4 @@ angular
                 redirectTo: '/'
             });
     });
+
