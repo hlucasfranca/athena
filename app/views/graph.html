@@ -1,7 +1,6 @@
 <div layout="column" style="position: relative">
     <div layout="row">
-        <graph width='{{width}}' height='{{height}}' graph-data=graph>
-        </graph>
+        <graph></graph>
     </div>
     <div style="position: absolute; bottom: 30px; right: 30px;">
 
@@ -10,7 +9,7 @@
 
            <md-fab-trigger>
                <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
-                   <md-icon>{{selected.icon}}</md-icon>
+                   <md-icon>{{currentOption.icon}}</md-icon>
                </md-button>
            </md-fab-trigger>
 

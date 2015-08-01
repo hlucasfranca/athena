@@ -39,11 +39,11 @@ angular.module('grapheApp')
         console.log('showing graph');
         $scope.g.showGraph();
 
-        $scope.selected = $scope.fabOptions.add;
+        $scope.currentOption = $scope.fabOptions.add;
         $scope.isOpen = false;
 
         $scope.setSelected = function (currentAction) {
-            $scope.selected = currentAction;
+            $scope.currentOption = currentAction;
             $scope.showSimpleToast(currentAction.message);
             $scope.toggleFab();
         };

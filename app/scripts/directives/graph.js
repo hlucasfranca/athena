@@ -9,11 +9,12 @@ angular.module('grapheApp')
         'use strict';
         return {
             template: '<div></div>',
-            scope: {
+            /*scope: {
                 width: '@',
                 height: '@',
-                graphData: '='
-            },
+                graphData: '=',
+                currentOption: '&'
+            },*/
             restrict: 'E',
 
             link: function postLink(scope, element, attrs) {
@@ -21,10 +22,13 @@ angular.module('grapheApp')
                 // clean element content
                 angular.element(element[0]).empty();
 
-                scope.width = scope.width || 100;
-                scope.height = scope.height || 100;
-                scope.graphData = angular.fromJson(scope.graphData);
-                scope.graphData = scope.graphData || {links:[{}], nodes:[{}]};
+                //scope.width = scope.width || 100;
+                //scope.height = scope.height || 100;
+                //scope.graphData = scope.graph;
+                //scope.graphData = angular.fromJson(scope.graphData);
+
+                //scope.graph = scope.graph || {links:[{}], nodes:[{}]};
+                scope.currentOption = scope.currentOption || {};
 
 
 
@@ -39,6 +43,8 @@ angular.module('grapheApp')
                     mousedown_link = null,
                     mousedown_node = null,
                     mouseup_node = null;
+
+                var nodeGroup;
 
                 // init svg
                 var outer = d3.select(element[0])
@@ -87,6 +93,9 @@ angular.module('grapheApp')
                 var vis = outer
                     .append('svg:g')
                     .on("dblclick.zoom", null)
+                    .on('click', function(){
+                        console.log(scope.currentOption);
+                    })
                     //.on("mousemove", mousemove)
                     //.on("mousedown", mousedown)
                     //.on("mouseup", mouseup)
@@ -106,8 +115,8 @@ angular.module('grapheApp')
                 // init force layout
                 var force = d3.layout.force()
                     .size([scope.width, scope.height])
-                    .nodes(scope.graphData.nodes) // initialize with a single node
-                    .links(scope.graphData.links)
+                    .nodes(scope.graph.nodes) // initialize with a single node
+                    .links(scope.graph.links)
                     .linkDistance(50)
                     .gravity(0)
                     //.charge(-200)
@@ -254,8 +263,6 @@ angular.module('grapheApp')
                 // redraw force layout
                 function redraw() {
 
-
-
                     outer
                         .attr("width" , scope.width)
                         .attr("height", scope.height);
@@ -288,7 +295,7 @@ angular.module('grapheApp')
 
                     node = node.data(nodes);
 
-                    var nodeGroup =
+                    nodeGroup =
                         node.enter()
                             .append('g');
 
@@ -425,7 +432,45 @@ angular.module('grapheApp')
 
                 scope.$watch('width', redraw);
                 scope.$watch('height', redraw);
-                scope.$watch('graphData', redraw, true);
+                scope.$watch('graph', redraw, true);
+
+                scope.$watch('currentOption', function () {
+
+
+                    /*.node {
+                        fill: #666666;
+                        cursor: crosshair;
+                    }*/
+
+                    if(scope.currentOption === scope.fabOptions.select) {
+
+                        nodeGroup.select('.node').style({
+                            'cursor': 'hand'
+                        });
+                    }
+
+                    if(scope.currentOption === scope.fabOptions.add) {
+
+                        nodeGroup.select('.node').style({
+                            'cursor': 'hand'
+                        });
+                    }
+
+                    if(scope.currentOption === scope.fabOptions.remove) {
+
+                        nodeGroup.style({
+                            'cursor': 'pointer'
+                        });
+
+                        nodeGroup.call(function(){
+                            console.log(this);
+                        })
+                    }
+
+
+                    console.log(
+                        scope.currentOption);
+                });
 
             }
         };
