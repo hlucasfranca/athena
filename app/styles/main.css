@@ -8,7 +8,7 @@
 
 body {
     padding: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .header {
@@ -20,4 +20,13 @@ body {
 .view {
     width: 100%;
     height: 100%;
+}
+
+body {
+    overflow: hidden;
+    font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.active{
+    background-color: #b3b3b3;
 }

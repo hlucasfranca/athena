@@ -25,6 +25,12 @@ angular.module('grapheApp')
                 scope.height = scope.height || 100;
                 scope.graphData = angular.fromJson(scope.graphData);
                 scope.graphData = scope.graphData || {links:[{}], nodes:[{}]};
+
+
+
+
+
+
                 scope.color = d3.scale.category20();
 
                 // mouse event vars
@@ -42,11 +48,22 @@ angular.module('grapheApp')
                     .attr("pointer-events", "all")
                     .call(d3.behavior.zoom().on("zoom", rescale));
 
+
+                var xLines, yLines;
+
                 /**
                  * Draw a grid
                  */
                 function drawGrid(){
-                    vis.append("g")
+
+                    if (xLines !== undefined) {
+                        xLines.remove();
+                    }
+                    if (yLines !== undefined) {
+                        yLines.remove();
+                    }
+
+                    xLines = vis.append("g")
                         .attr("class", "x axis")
                         .selectAll("line")
                         .data(d3.range(0, scope.width, 10))
@@ -56,7 +73,7 @@ angular.module('grapheApp')
                         .attr("x2", function(d) { return d; })
                         .attr("y2", scope.height);
 
-                    vis.append("g")
+                    yLines = vis.append("g")
                         .attr("class", "y axis")
                         .selectAll("line")
                         .data(d3.range(0, scope.height, 10))
@@ -70,10 +87,13 @@ angular.module('grapheApp')
                 var vis = outer
                     .append('svg:g')
                     .on("dblclick.zoom", null)
-                    .append('svg:g')
-                    .on("mousemove", mousemove)
-                    .on("mousedown", mousedown)
-                    .on("mouseup", mouseup);
+                    //.on("mousemove", mousemove)
+                    //.on("mousedown", mousedown)
+                    //.on("mouseup", mouseup)
+                 /*   .on("drag", function(){
+                      console.log('drag');
+                    })*/
+                    .append('svg:g');
 
                 // TODO: infinite grid
                 drawGrid();
@@ -107,19 +127,28 @@ angular.module('grapheApp')
                     node = vis.selectAll(".node"),
                     link = vis.selectAll(".link");
 
+
+                var drag = d3.behavior.drag()
+                    .origin(function(d) { return d; })
+                    .on("drag", function(){
+                        console.log('drag');
+                    })
+                    .on("dragstart", function(){
+                        console.log('dragstart');
+                        d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                    });
+
+                
+              //  node.call(drag);
+
                 // add keyboard callback
-                d3.select(window).on("keydown", keydown);
+                //d3.select(window).on("keydown", keydown);
 
                 redraw();
 
                 /**
                  * TODO: replace mousedown by drag.
                  */
-
-                //function dragstarted(d) {
-                //    d3.event.sourceEvent.stopPropagation();
-                //    d3.select(this).classed("dragging", true);
-                //}
 
                 function mousedown() {
                     if (!mousedown_node && !mousedown_link) {
@@ -132,6 +161,9 @@ angular.module('grapheApp')
                 }
 
                 function mousemove() {
+
+
+
                     if (!mousedown_node) {
                         return;
                     }
@@ -147,7 +179,7 @@ angular.module('grapheApp')
                 function mouseup() {
                     if (mousedown_node) {
                         // hide drag line
-                        drag_line.attr("class", "drag_line_hidden")
+                        drag_line.attr("class", "drag_line_hidden");
 
                         if (!mouseup_node) {
 
@@ -212,15 +244,25 @@ angular.module('grapheApp')
                     var trans=d3.event.translate;
                     var scale=d3.event.scale;
                     vis.attr("transform", "translate(" + trans + ")" + " scale(" + scale + ")");
+
+
+
+                    //drawGrid();
+
                 }
 
                 // redraw force layout
                 function redraw() {
+
+
+
                     outer
                         .attr("width" , scope.width)
                         .attr("height", scope.height);
 
                     link = link.data(links);
+
+                    //drawGrid();
 
                     link.enter().insert("line", ".node")
                         .attr("class", "link")
@@ -254,13 +296,12 @@ angular.module('grapheApp')
                             .attr("class", "node")
                             .append('circle')
                                 .attr("r", 5)
-                                .on("mousedown", mousedownnode)
-                                .on("mousedrag", mousedragnode)
-                                .on("mouseup",mouseupnode)
+
                                     .transition()
                                     .duration(100)
                                     .ease("elastic")
-                                    .attr("r", 6);
+                                    .attr("r", 6)
+                            ;
 
                     var nodeLabel = nodeGroup
                         .append("text")
@@ -274,12 +315,10 @@ angular.module('grapheApp')
                                 console.log(d);
                             });
 
+                nodeGroup.call(drag);
 
-                    function mousedragnode(){
-                            console.log('drag');
-                            // redraw();
 
-                    }
+
 
                     function mousedownnode(d) {
 
@@ -359,6 +398,9 @@ angular.module('grapheApp')
                 }
 
                 function keydown() {
+
+                    console.log('keydown');
+
                     if (!selected_node && !selected_link){
                         return;
                     }

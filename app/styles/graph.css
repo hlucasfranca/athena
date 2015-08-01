@@ -46,3 +46,7 @@
     stroke-width: 1px;
     stroke: black;
 }
+
+md-content {
+    overflow: hidden;
+}

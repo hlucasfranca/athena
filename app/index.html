@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbower -->
 
-    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/bower_components/material-design-icons/" />
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
 
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -35,7 +35,7 @@
             fill: none;
             stroke: #ddd;
             shape-rendering: crispEdges;
-            vector-effect: non-scaling-stroke;
+            /* vector-effect: non-scaling-stroke;*/
         }
 
         .dragging{
@@ -43,7 +43,7 @@
         }
     </style>
 </head>
-<body ng-app="grapheApp" ng-controller="MainCtrl" class="md-body-1" layout-row>
+<body ng-app="grapheApp" ng-controller="MainCtrl" layout="row" class="md-body-1">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -53,41 +53,50 @@
 
 
 <!-- Add your site or application content here -->
-<md-toolbar layout="row">
-    <div class="md-toolbar-tools">
-        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-            <md-icon>menu</md-icon>
-        </md-button>
-        <h1>Graphe</h1>
-    </div>
-</md-toolbar>
 
-<div layout="row" flex>
-    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 
-        <header class="header">Teste</header>
 
-        <md-content layout-padding >
-            <md-list>
-                <md-list-item ng-repeat="option in menuOptions">
-                    <a ng-href='{{option.link}}' ng-click="toggleSidenav('left')" >
+    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+                md-component-id="left"
+                md-is-locked-open="{{false}}"
+            >
+
+
+
+
+        <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
+            Graphe
+        </md-toolbar>
+
+        <md-list>
+            <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+
                     {{option.label}}
-                    </a>
-                </md-list-item>
-            </md-list>
-            </md-content>
+
+            </md-list-item>
+        </md-list>
 
     </md-sidenav>
-    <div layout="column" flex id="content">
-        <md-content layout="column" flex class="md-padding" id="main-content">
 
-            <div class="container-fluid">
-                <div ng-view="" class="view"></div>
+
+    <div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" >
+
+        <md-toolbar id="toolbar">
+            <div class="md-toolbar-tools">
+                <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
+                    <md-icon>menu</md-icon>
+                </md-button>
+                <h1>Graphe</h1>
             </div>
+        </md-toolbar>
+
+        <md-content  ng-view id="content">
 
         </md-content>
+
     </div>
-</div>
+
+
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
@@ -114,6 +123,7 @@
 <script src="scripts/directives/graph.js"></script>
 <script src="scripts/controllers/contact.js"></script>
 <script src="scripts/controllers/menu.js"></script>
+<script src="scripts/services/graphservice.js"></script>
 <!-- endbuild -->
 
 </body>
