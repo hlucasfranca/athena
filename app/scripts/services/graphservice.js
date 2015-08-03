@@ -10,10 +10,38 @@
 angular.module('grapheApp')
     .service('GraphService', function () {
         'use strict';
+
         // AngularJS will instantiate a singleton by calling "new" on this function
 
-        function Graph(v) {
+        var materialColors = ["#F44336", "#E91E63", "#9C27B0", "#673AB7", "#3F51B5", "#2196F", "#03A9F4",
+            "#00BCD4", "#009688", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722",
+            "#795548", "#9E9E9E", "#607D8B"];
 
+        var materialColor = d3.scale.ordinal().range(materialColors);
+
+        function getColor(){
+            var index = Math.floor(Math.random() * materialColors.length);
+            var color = materialColor(index);
+            console.log(color);
+            return color;
+        }
+
+        var letter = 'A';
+
+        var nodeCounter = 1;
+
+        function nextChar(c) {
+            return String.fromCharCode(c.charCodeAt(0) + 1);
+        }
+
+        function getLetter(){
+            var temp = nextChar(letter);
+            letter = nextChar(letter);
+
+            return temp;
+        }
+
+        function Graph(v) {
 
             /**
              * Initialize the number of vertices
@@ -29,9 +57,27 @@ angular.module('grapheApp')
 
             this.adjascentList = [];
 
+            this.nodeList = [];
+
+            this.linkList = [];
+
             for (var i = 0; i < this.nodes; ++i) {
                 this.adjascentList[i] = [];
                 this.adjascentList[i].push("");
+
+                // TODO: use addNode here too.
+                this.nodeList.push(
+                    {
+                        name: 'dummy node',
+                        x: Math.random() * 200,
+                        y: Math.random() * 200,
+                        fixed: true,
+                        color: getColor(),
+                        label: getLetter(),
+                        counter: nodeCounter++
+                        
+                    }
+                );
             }
 
             this.marked = [];
@@ -47,13 +93,63 @@ angular.module('grapheApp')
             this.showGraph = showGraph;
             this.depthFirstSearch = depthFirstSearch;
             this.addNode = addNode;
+            this.getNodes = getNodes;
+            this.getLinks = getLinks;
+            this.removeNode = removeNode;
+            this.removeLinksForNode = removeLinksForNode;
+
+            function removeLinksForNode(node){
+
+                    var toSplice = this.linkList.filter(function(l) {
+                        return (l.source.index === node || l.target.index === node);
+                    });
+                    toSplice.map(function(l) {
+                        this.linkList.splice(this.linkList.indexOf(l), 1);
+                    });
+
+                console.log(this.linkList);
+
+            }
+
+            function removeNode(d){
+                console.log(d);
+                this.adjascentList.splice(d.index,1);
+                this.marked.splice(d.index,1);
+
+                console.log('removing node');
+                console.log(this.nodeList);
+                console.log(this.nodeList.splice(d.index,1));
+                console.log(this.nodeList);
+
+                // TODO: fix delete of linked nodes
+                // removeLinksForNode.call(this, d);
+                this.nodes--;
+            }
+
+            function getLinks(){
+                return this.linkList;
+            }
 
 
-            function addNode() {
+            function addNode(xPosition, yPosition) {
                 // as index is zero-based, use the nodes number before increment
                 this.adjascentList[this.nodes] = [];
                 this.adjascentList[this.nodes].push("");
                 this.marked[this.nodes] = false;
+
+                console.log(xPosition + ' ' + yPosition);
+
+                this.nodeList.push(
+                    {
+                        name: 'dummy node',
+                        x: xPosition !== undefined ? xPosition : Math.random() * 200,
+                        y: yPosition !== undefined ? yPosition : Math.random() * 200,
+                        fixed: true,
+                        color: getColor(),
+                        label: getLetter(),
+                        counter: nodeCounter++
+                    }
+                );
 
                 this.nodes++;
             }
@@ -61,7 +157,17 @@ angular.module('grapheApp')
             function addEdge(v, w) {
                 this.adjascentList[v].push(w);
                 this.adjascentList[w].push(v);
+
+                this.linkList.push({
+                    source: v,
+                    target: w
+                });
+
                 this.edges++;
+            }
+
+            function getNodes(){
+                return this.nodeList;
             }
 
             function showGraph() {

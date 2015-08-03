@@ -9,46 +9,40 @@ angular.module('grapheApp')
     .controller('GraphCtrl', function ($scope, $window, GraphService) {
         'use strict';
 
-
-
-        $scope.graph = {
-            nodes: [
-                {name: "foo"},
-                {name: "bar" }
-            ],
-            links: [
-                {source: 1, target: 0}
-            ]
-        };
-
-        $scope.g = GraphService.getGraph(10);
         $scope.h = GraphService.getGraph(5);
 
-        $scope.g.addEdge(0, 1);
+        $scope.h.addEdge(0,1);
+        $scope.h.addEdge(1,2);
+        $scope.h.addEdge(2,3);
+        $scope.h.addEdge(3,4);
+        $scope.h.addEdge(4,0);
+        $scope.h.addEdge(0,3);
+        $scope.h.addEdge(4,2);
 
-        console.log('graph object');
-        console.log($scope.g);
-        console.log($scope.h);
+        function updateNode(){
+            console.log('updating node count');
+            $scope.graph.nodes = $scope.h.getNodes();
+            $scope.graph.links = $scope.h.getLinks();
+        }
 
-        console.log('adding node');
-        $scope.h.addNode();
+        $scope.graph = {
+            nodes:  $scope.h.getNodes(),
+            links: $scope.h.getLinks()
+        };
 
-        console.log('after add');
-        console.log($scope.h);
-
-        console.log('showing graph');
-        $scope.g.showGraph();
+        $scope.$watch('h', function ($scope) {
+                updateNode();
+            }, true
+        );
 
         $scope.currentOption = $scope.fabOptions.add;
         $scope.isOpen = false;
 
-        $scope.setSelected = function (currentAction) {
+        $scope.setSelectedOption = function (currentAction) {
             $scope.currentOption = currentAction;
             $scope.showSimpleToast(currentAction.message);
             $scope.toggleFab();
         };
-
-
 
         $scope.toggleFab = function () {
             $scope.isOpen = !$scope.isOpen;
@@ -56,14 +50,6 @@ angular.module('grapheApp')
 
         $scope.width = 100;
         $scope.height = 600;
-
-        $scope.removeNode = function (index) {
-            $scope.g.removeNode(index);
-        };
-
-        $scope.addNode = function () {
-            $scope.g.addNode();
-        };
 
         function rescale_panels() {
             // get the width of graph-stage element and set to the graph element itself

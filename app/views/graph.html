@@ -1,11 +1,12 @@
 <div layout="column" style="position: relative">
+
     <div layout="row">
         <graph></graph>
     </div>
     <div style="position: absolute; bottom: 30px; right: 30px;">
 
 
-        <md-fab-speed-dial md-open='fab.isOpen' md-direction="up" ng-class="'md-scale'">
+        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'">
 
            <md-fab-trigger>
                <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
@@ -16,28 +17,28 @@
 
            <md-fab-actions>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.add)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.add)">
                    <md-tooltip>
                        {{fabOptions.add.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.add.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.remove)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.remove)">
                    <md-tooltip>
                        {{fabOptions.remove.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.remove.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.select)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.select)">
                    <md-tooltip>
                        {{fabOptions.select.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.select.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.info)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.info)">
                    <md-tooltip>
                        {{fabOptions.info.name}}
                    </md-tooltip>

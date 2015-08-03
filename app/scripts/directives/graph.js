@@ -35,7 +35,6 @@ angular.module('grapheApp')
 
 
 
-                scope.color = d3.scale.category20();
 
                 // mouse event vars
                 var selected_node = null,
@@ -90,13 +89,23 @@ angular.module('grapheApp')
                         .attr("y2", function(d) { return d; });
                 }
 
+                function clickedOnStage(){
+                    if(scope.currentOption === scope.fabOptions.add) {
+                        var coordinates = d3.mouse(d3.event.target);
+                        // used to force immediate update of angular digest
+                        scope.$apply(function () {
+                            scope.h.addNode(coordinates[0], coordinates[1]);
+                        });
+                        scope.showSimpleToast('node added!');
+                    }
+                }
+
                 var vis = outer
                     .append('svg:g')
                     .on("dblclick.zoom", null)
-                    .on('click', function(){
-                        console.log(scope.currentOption);
-                    })
-                    //.on("mousemove", mousemove)
+                    .on('click', clickedOnStage)
+                    // relative to the 'outer' container
+                    .on("mousemove", mousemove)
                     //.on("mousedown", mousedown)
                     //.on("mouseup", mouseup)
                  /*   .on("drag", function(){
@@ -117,8 +126,8 @@ angular.module('grapheApp')
                     .size([scope.width, scope.height])
                     .nodes(scope.graph.nodes) // initialize with a single node
                     .links(scope.graph.links)
-                    .linkDistance(50)
-                    .gravity(0)
+                    //.linkDistance(50)
+                    //.gravity(0)
                     //.charge(-200)
                     .on("tick", tick);
 
@@ -135,20 +144,6 @@ angular.module('grapheApp')
                     links = force.links(),
                     node = vis.selectAll(".node"),
                     link = vis.selectAll(".link");
-
-
-                var drag = d3.behavior.drag()
-                    .origin(function(d) { return d; })
-                    .on("drag", function(){
-                        console.log('drag');
-                    })
-                    .on("dragstart", function(){
-                        console.log('dragstart');
-                        d3.event.sourceEvent.stopPropagation(); // silence other listeners
-                    });
-
-                
-              //  node.call(drag);
 
                 // add keyboard callback
                 //d3.select(window).on("keydown", keydown);
@@ -171,7 +166,7 @@ angular.module('grapheApp')
 
                 function mousemove() {
 
-
+                    //console.log(d3.mouse(this));
 
                     if (!mousedown_node) {
                         return;
@@ -302,56 +297,94 @@ angular.module('grapheApp')
                         nodeGroup
                             .attr("class", "node")
                             .append('circle')
-                                .attr("r", 5)
+                            .attr('fill', function(d){
+                                console.log(d.color);
+                                return d.color;
+                                //return materialColors[Math.random() * materialColors.length];
+                                }
+                            )
+                            .attr("r", 1)
+                                .transition()
+                                .duration(750)
+                                .ease("elastic")
+                                    .attr("r", 15)
 
-                                    .transition()
-                                    .duration(100)
-                                    .ease("elastic")
-                                    .attr("r", 6)
                             ;
+
+                    node.exit().select('text').remove();
+
+                    node.exit()
+                        .select('circle')
+                        .attr('r', 15)
+                        .transition()
+                        .duration(100)
+                        .ease('linear')
+                        .attr('r',1)
+                        .remove();
+
+                    nodeGroup.on("mousedown",mousedownnode);
 
                     var nodeLabel = nodeGroup
                         .append("text")
-                            .attr("dx", 12 )
+                            .attr("dx", 0 )
+                        .attr('fill', 'white')
+                        .attr('text-anchor', 'middle')
                             .attr("dy", ".35em")
-                            .text(function(d){return "node";})
+                            .text(function(d){
+                                return d.label;
+                        })
                             .on("click", function(d){
-                                var textElement = d3.select(this);
+
+                            //TODO: add edit node label behavior
+                            /*    var textElement = d3.select(this);
                                 textElement.text(Math.random());
                                 textElement.classed('edittext', true);
-                                console.log(d);
+                                console.log(d);*/
                             });
 
-                nodeGroup.call(drag);
+
 
 
 
 
                     function mousedownnode(d) {
+                        d3.event.stopPropagation(); // silence other listeners
+                        
 
-                        // prevent drag
-                        d3.event.stopPropagation();
 
-                        // disable zoom
-                        vis.call(d3.behavior.zoom());
-                        vis.on(".zoom", null);
 
-                        mousedown_node = d;
-                        if (mousedown_node === selected_node) {
-                            selected_node = null;
+
+
+                        if(scope.currentOption === scope.fabOptions.remove){
+
+
+                            scope.$apply(function () {
+                                console.log(d);
+                                scope.h.removeNode(d);
+                            });
+
+
+
+                            console.log('removed');
+
                         }
-                        else {
-                            selected_node = mousedown_node;
-                        }
-                        selected_link = null;
 
-                        // reposition drag line
-                        drag_line
-                            .attr("class", "link")
-                            .attr("x1", mousedown_node.x)
-                            .attr("y1", mousedown_node.y)
-                            .attr("x2", mousedown_node.x)
-                            .attr("y2", mousedown_node.y);
+                        //mousedown_node = d;
+                        //if (mousedown_node === selected_node) {
+                        //    selected_node = null;
+                        //}
+                        //else {
+                        //    selected_node = mousedown_node;
+                        //}
+                        //selected_link = null;
+                        //
+                        //// reposition drag line
+                        //drag_line
+                        //    .attr("class", "link")
+                        //    .attr("x1", mousedown_node.x)
+                        //    .attr("y1", mousedown_node.y)
+                        //    .attr("x2", mousedown_node.x)
+                        //    .attr("y2", mousedown_node.y);
 
                         redraw();
                     }
@@ -434,13 +467,8 @@ angular.module('grapheApp')
                 scope.$watch('height', redraw);
                 scope.$watch('graph', redraw, true);
 
+
                 scope.$watch('currentOption', function () {
-
-
-                    /*.node {
-                        fill: #666666;
-                        cursor: crosshair;
-                    }*/
 
                     if(scope.currentOption === scope.fabOptions.select) {
 
@@ -464,7 +492,7 @@ angular.module('grapheApp')
 
                         nodeGroup.call(function(){
                             console.log(this);
-                        })
+                        });
                     }
 
 
