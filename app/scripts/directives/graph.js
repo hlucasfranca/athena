@@ -61,12 +61,12 @@ angular.module('grapheApp')
                  */
                 function drawGrid(){
 
-                    if (xLines !== undefined) {
+                  /*  if (xLines !== undefined) {
                         xLines.remove();
                     }
                     if (yLines !== undefined) {
                         yLines.remove();
-                    }
+                    }*/
 
                     xLines = vis.append("g")
                         .attr("class", "x axis")
@@ -257,7 +257,6 @@ angular.module('grapheApp')
 
                 // redraw force layout
                 function redraw() {
-
                     outer
                         .attr("width" , scope.width)
                         .attr("height", scope.height);
@@ -266,157 +265,112 @@ angular.module('grapheApp')
 
                     //drawGrid();
 
-                    link.enter().insert("line", ".node")
+                    link.enter().append("line")
                         .attr("class", "link")
-                        .on("mousedown",mousedownlink);
+                    //    .on("mousedown",mousedownlink)
+                    ;
 
-                    function mousedownlink(d){
+                    //function mousedownlink(d){
+                    //
+                    //        mousedown_link = d;
+                    //        if (mousedown_link === selected_link){
+                    //            selected_link = null;
+                    //        }
+                    //        else {
+                    //            selected_link = mousedown_link;
+                    //        }
+                    //        selected_node = null;
+                    //        redraw();
+                    //
+                    //}
 
-                            mousedown_link = d;
-                            if (mousedown_link === selected_link){
-                                selected_link = null;
-                            }
-                            else {
-                                selected_link = mousedown_link;
-                            }
-                            selected_node = null;
-                            redraw();
 
-                    }
+
+
 
                     link.exit().remove();
-
                     link.classed("link_selected", function(d) { return d === selected_link; });
-
                     node = node.data(nodes);
 
-                    nodeGroup =
-                        node.enter()
-                            .append('g');
+                    /*
+                    *  UPDATE
+                    */
+                    node.select('.node circle').attr('fill', function (d) { return d.color; } );
+                    node.select('.node text').text(function(d){ return d.label; });
 
-                        nodeGroup
-                            .attr("class", "node")
-                            .append('circle')
-                            .attr('fill', function(d){
-                                console.log(d.color);
-                                return d.color;
-                                //return materialColors[Math.random() * materialColors.length];
-                                }
-                            )
-                            .attr("r", 1)
-                                .transition()
-                                .duration(750)
-                                .ease("elastic")
-                                    .attr("r", 15)
+                    /*
+                    * END UPDATE
+                    */
 
-                            ;
+                    nodeGroup = node.enter().append('g');
 
-                    node.exit().select('text').remove();
+                    nodeGroup
+                        .attr("class", "node")
+                        .append('circle')
+                        .attr('fill', function(d){ return d.color; })
+                        .attr("r", 1)
+                        .transition()
+                        .duration(750)
+                        .ease("elastic")
+                        .attr("r", 15);
 
                     node.exit()
                         .select('circle')
                         .attr('r', 15)
-                        .transition()
-                        .duration(100)
-                        .ease('linear')
-                        .attr('r',1)
-                        .remove();
+                            .transition()
+                            .duration(500)
+                            .ease('linear')
+                                .attr('r',1)
+                                .remove();
+
+                    node.exit().select('text').remove();
 
                     nodeGroup.on("mousedown",mousedownnode);
 
                     var nodeLabel = nodeGroup
                         .append("text")
-                            .attr("dx", 0 )
+                        .attr("dx", 0 )
                         .attr('fill', 'white')
                         .attr('text-anchor', 'middle')
-                            .attr("dy", ".35em")
-                            .text(function(d){
-                                return d.label;
+                        .attr("dy", ".35em")
+                        .text(function(d){
+                            return d.label;
                         })
-                            .on("click", function(d){
+                        .on("click", function(d){
 
                             //TODO: add edit node label behavior
                             /*    var textElement = d3.select(this);
-                                textElement.text(Math.random());
-                                textElement.classed('edittext', true);
-                                console.log(d);*/
-                            });
-
-
-
-
-
+                             textElement.text(Math.random());
+                             textElement.classed('edittext', true);
+                             console.log(d);*/
+                        });
 
                     function mousedownnode(d) {
                         d3.event.stopPropagation(); // silence other listeners
-                        
-
-
-
-
 
                         if(scope.currentOption === scope.fabOptions.remove){
-
-
                             scope.$apply(function () {
                                 console.log(d);
                                 scope.h.removeNode(d);
                             });
-
-
-
-                            console.log('removed');
-
+                            scope.showSimpleToast('node removed!');
                         }
 
-                        //mousedown_node = d;
-                        //if (mousedown_node === selected_node) {
-                        //    selected_node = null;
-                        //}
-                        //else {
-                        //    selected_node = mousedown_node;
-                        //}
-                        //selected_link = null;
-                        //
-                        //// reposition drag line
-                        //drag_line
-                        //    .attr("class", "link")
-                        //    .attr("x1", mousedown_node.x)
-                        //    .attr("y1", mousedown_node.y)
-                        //    .attr("x2", mousedown_node.x)
-                        //    .attr("y2", mousedown_node.y);
+                        else if(scope.currentOption === scope.fabOptions.info){
+                            //TODO: add info screen
+                            console.log(d);
+                        }
 
                         redraw();
                     }
-
-                    function mouseupnode(d) {
-                        if (mousedown_node) {
-                            mouseup_node = d;
-                            if (mouseup_node === mousedown_node) { resetMouseVars(); return; }
-
-                            // add link
-                            var link = {source: mousedown_node, target: mouseup_node};
-                            links.push(link);
-
-                            // select new link
-                            selected_link = link;
-                            selected_node = null;
-
-                            // enable zoom
-                            vis.call(d3.behavior.zoom());
-                            vis.on(".zoom", rescale);
-
-                            redraw();
-                        }
-                    }
-
-
 
                     node.exit().transition()
                         .attr("r", 0)
                         .remove();
 
-                    node.classed("node_selected", function(d) { return d === selected_node; });
+                    node.classed("node_selected", function (d) {
+                        return d === selected_node;
+                    });
 
                     if (d3.event) {
                         // prevent browser's default behavior
@@ -424,7 +378,6 @@ angular.module('grapheApp')
                     }
 
                     force.start();
-
                 }
 
                 function spliceLinksForNode(node) {

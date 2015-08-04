@@ -99,30 +99,27 @@ angular.module('grapheApp')
             this.removeLinksForNode = removeLinksForNode;
 
             function removeLinksForNode(node){
+                // Without 'self', the inner functions don't work.
+                var self = this;
 
-                    var toSplice = this.linkList.filter(function(l) {
-                        return (l.source.index === node || l.target.index === node);
-                    });
-                    toSplice.map(function(l) {
-                        this.linkList.splice(this.linkList.indexOf(l), 1);
-                    });
+                var toSplice = self.linkList.filter(function(l) {
+                    return (l.source.index === node.index || l.target.index === node.index);
+                });
 
-                console.log(this.linkList);
-
+                toSplice.map(function(l) {
+                    var indexToRemove = self.linkList.indexOf(l);
+                    self.linkList.splice(indexToRemove, 1);
+                });
             }
 
             function removeNode(d){
                 console.log(d);
                 this.adjascentList.splice(d.index,1);
                 this.marked.splice(d.index,1);
+                this.nodeList.splice(d.index,1);
 
-                console.log('removing node');
-                console.log(this.nodeList);
-                console.log(this.nodeList.splice(d.index,1));
-                console.log(this.nodeList);
 
-                // TODO: fix delete of linked nodes
-                // removeLinksForNode.call(this, d);
+                removeLinksForNode.call(this, d);
                 this.nodes--;
             }
 
