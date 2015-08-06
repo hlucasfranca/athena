@@ -6,39 +6,41 @@
     <div style="position: absolute; bottom: 30px; right: 30px;">
 
 
-        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'">
+        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'" ng-hide="hideFab">
 
            <md-fab-trigger>
                <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
-                   <md-icon>{{currentOption.icon}}</md-icon>
+                   <md-icon md-font-set="fa" md-font-icon="fa-battery-quarter"></md-icon>
                </md-button>
            </md-fab-trigger>
 
 
            <md-fab-actions>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.add)">
+                <!-- ng-repeat not supported yet :( -->
+
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.add)" style="background-color: {{fabOptions.add.color}}">
                    <md-tooltip>
                        {{fabOptions.add.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.add.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.remove)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.remove)" style="background-color: {{fabOptions.remove.color}}">
                    <md-tooltip>
                        {{fabOptions.remove.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.remove.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.select)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.select)" style="background-color: {{fabOptions.select.color}}">
                    <md-tooltip>
                        {{fabOptions.select.name}}
                    </md-tooltip>
                    <md-icon>{{fabOptions.select.icon}}</md-icon>
                </md-button>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.info)">
+               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.info); " style="background-color: {{fabOptions.info.color}}">
                    <md-tooltip>
                        {{fabOptions.info.name}}
                    </md-tooltip>

@@ -38,10 +38,14 @@ angular.module('grapheApp')
         $scope.currentOption = $scope.fabOptions.add;
         $scope.isOpen = false;
 
+        $scope.hideFab = false;
+
         $scope.setSelectedOption = function (currentAction) {
             $scope.currentOption = currentAction;
-            $scope.showSimpleToast(currentAction.message);
+            $scope.setCurrentOption(currentAction);
             $scope.toggleFab();
+            $scope.showContextToolbar();
+            $scope.hideFab = true;
         };
 
         $scope.toggleFab = function () {

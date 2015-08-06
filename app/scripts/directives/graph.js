@@ -68,24 +68,32 @@ angular.module('grapheApp')
                         yLines.remove();
                     }*/
 
+                    //scope.width = 2000;
+                    //scope.height = 2000;
+                    var gridSize = 20;
+
+                    var gridWidth = 2000;
+                    var gridHeight = 2000;
+
                     xLines = vis.append("g")
                         .attr("class", "x axis")
                         .selectAll("line")
-                        .data(d3.range(0, scope.width, 10))
+                        .data(d3.range(-gridWidth, gridWidth, gridSize))
+                        //.data(d3.range(0, scope.width, 10))
                         .enter().append("line")
                         .attr("x1", function(d) { return d; })
-                        .attr("y1", 0)
+                        .attr("y1", -gridHeight)
                         .attr("x2", function(d) { return d; })
-                        .attr("y2", scope.height);
+                        .attr("y2", gridHeight);
 
                     yLines = vis.append("g")
                         .attr("class", "y axis")
                         .selectAll("line")
-                        .data(d3.range(0, scope.height, 10))
+                        .data(d3.range(-gridHeight, gridHeight, gridSize))
                         .enter().append("line")
-                        .attr("x1", 0)
+                        .attr("x1", -gridWidth)
                         .attr("y1", function(d) { return d; })
-                        .attr("x2", scope.width)
+                        .attr("x2", gridWidth)
                         .attr("y2", function(d) { return d; });
                 }
 

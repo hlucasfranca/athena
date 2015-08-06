@@ -69,8 +69,8 @@ angular.module('grapheApp')
                 this.nodeList.push(
                     {
                         name: 'dummy node',
-                        x: Math.random() * 200,
-                        y: Math.random() * 200,
+                        x: Math.random() * 400,
+                        y: Math.random() * 400,
                         fixed: true,
                         color: getColor(),
                         label: getLetter(),

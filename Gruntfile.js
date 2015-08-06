@@ -31,26 +31,22 @@ module.exports = function (grunt) {
         watch: {
             bower: {
                 files: ['bower.json'],
-                // prevenir que o grunt altere o index.html
-                // tasks: ['wiredep']
+                tasks: ['wiredep']
             },
             js: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-                //  tasks: ['newer:jshint:all'],
+                tasks: ['newer:jshint:all'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             jsTest: {
-                files: ['test/spec/{,*/}*.js']
-                //disable tests
-                ,tasks: ['newer:jshint:test', 'karma']
+                files: ['test/spec/{,*/}*.js'],
+                tasks: ['newer:jshint:test', 'karma']
             },
             styles: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-                tasks: ['newer:copy:styles'
-                    , 'autoprefixer'
-                ]
+                tasks: ['newer:copy:styles', 'autoprefixer']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -354,11 +350,18 @@ module.exports = function (grunt) {
                     cwd: '.tmp/images',
                     dest: '<%= yeoman.dist %>/images',
                     src: ['generated/*']
-                }, {
+                },{
+                    // material design icons
                     expand: true,
-                    cwd: 'bower_components/bootstrap/dist',
-                    src: 'fonts/*',
-                    dest: '<%= yeoman.dist %>'
+                    cwd: 'bower_components/material-design-icons/iconfont',
+                    src: ['*.eot', '*.ttf','*.woff','*.woff2'],
+                    dest: '<%= yeoman.dist %>/styles/fonts'
+                },{
+                    // font-awesome
+                    expand: true,
+                    cwd: 'bower_components/fontawesome/fonts',
+                    src: ['*.*'],
+                    dest: '<%= yeoman.dist %>/styles/fonts'
                 }]
             },
             styles: {
@@ -378,9 +381,9 @@ module.exports = function (grunt) {
                 'copy:styles'
             ],
             dist: [
-                'copy:styles'
-                //,'imagemin',
-                //'svgmin'
+                'copy:styles',
+                'imagemin',
+                'svgmin'
             ]
         },
 
@@ -404,9 +407,9 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-          //  'wiredep',
+            'wiredep',
             'concurrent:server',
-         /*   'autoprefixer:server',*/
+            'autoprefixer:server',
             'connect:livereload',
             'watch'
         ]);
@@ -428,19 +431,19 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        //'wiredep',
-        //'useminPrepare',
+        'wiredep',
+        'useminPrepare',
         'concurrent:dist',
-        //'autoprefixer',
-        //'concat',
-        //'ngAnnotate',
+        'autoprefixer',
+        'concat',
+        'ngAnnotate',
         'copy:dist',
         //'cdnify',
-        //'cssmin',
-        //'uglify',
+        'cssmin',
+        'uglify',
         'filerev',
-        //'usemin',
-        //'htmlmin'
+        'usemin',
+        'htmlmin'
     ]);
 
     grunt.registerTask('default', [

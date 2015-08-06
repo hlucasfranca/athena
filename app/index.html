@@ -18,7 +18,7 @@
 
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-
+    <link rel="stylesheet" href="styles/material_icons.css" />
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/graph.css">
 
@@ -37,6 +37,12 @@
         .dragging{
             fill: red !important;
         }
+
+        .md-toolbar-tools .ng-hide{
+            transition:1s linear all;
+            opacity:0;
+        }
+
     </style>
 </head>
 <body ng-app="grapheApp" ng-controller="MainCtrl" layout="row" class="md-body-1">
@@ -77,12 +83,34 @@
 
     <div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" >
 
-        <md-toolbar id="toolbar">
+        <md-toolbar id="toolbar" ng-hide="isShowContextToolbar">
             <div class="md-toolbar-tools">
                 <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
                     <md-icon>menu</md-icon>
                 </md-button>
                 <h1>Graphe</h1>
+            </div>
+        </md-toolbar>
+
+        <md-toolbar id="contexttoolbar" ng-show="isShowContextToolbar" >
+            <div class="md-toolbar-tools" style="background-color:{{currentOption.color}};">
+
+                <md-button class="md-icon-button">
+                    <md-icon ng-click="hideContextToolbar()">replay</md-icon>
+                </md-button>
+
+                <md-button ng-repeat="option in currentOption.contextOptions" class="md-icon-button">
+                    <md-icon ng-click="">{{option.icon}}</md-icon>
+                </md-button>
+
+                <span flex></span>
+
+                {{currentOption.name}}
+
+                <md-button class="md-icon-button">
+                    <md-icon ng-click="showHelp()">help</md-icon>
+                </md-button>
+
             </div>
         </md-toolbar>
 

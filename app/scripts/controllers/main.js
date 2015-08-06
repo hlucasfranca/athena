@@ -12,6 +12,26 @@ angular.module('grapheApp')
     .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$location',
         function ($scope, $mdSidenav, $mdToast, $location) {
 
+            $scope.showHelp = function(){
+                $scope.showSimpleToast($scope.currentOption.message);
+            }
+
+            $scope.isShowContextToolbar = false;
+
+            $scope.showContextToolbar = function(){
+              $scope.isShowContextToolbar = true;
+            };
+
+            $scope.hideContextToolbar = function(){
+                $scope.isShowContextToolbar = false;
+                $scope.hideFab = false;
+            };
+
+            $scope.setCurrentOption = function(option) {
+                $scope.currentOption = option;
+            }
+
+
             $scope.toastPosition = {
                 bottom: true,
                 top: false,
@@ -24,25 +44,51 @@ angular.module('grapheApp')
                     name: "Add",
                     icon: 'add',
                     message: 'Click anywhere on the stage to add a node.',
-                    enabled: true
+                    enabled: true,
+                    color: '#4CAF50',
+                    contextOptions:[
+                        {
+                            name: "Add Node",
+                            icon: 'add_circle',
+                            message: 'Click anywhere to add a node.'
+                        },
+                        {
+                            name: "Add Link",
+                            icon: 'settings_ethernet',
+                            message: 'Select a node to connect to another.'
+                        }
+                    ]
+
+
                 },
                 remove : {
                     name: "Remove",
                     icon: 'clear',
                     message:'Click on a node or link to remove.',
-                    enabled: true
+                    enabled: true,
+                    color: '#F44336'
                 },
                 select: {
                     name: "Select",
                     icon: 'check',
                     message: 'Click on a node or link to select.',
-                    enabled: true
+                    enabled: true,
+                    color: '#FF9800',
+                    contextOptions:[
+                        {
+                            name: "Select",
+                            icon: 'select_all',
+                            message: 'Select all.'
+                        }
+                    ]
+
                 },
                 info: {
                     name: 'Information',
                     icon: 'info',
                     message: 'Click on a node or link for information, click on stage to global information.',
-                    enabled: true
+                    enabled: true,
+                    color: '#2196F3'
                 }
             };
 
