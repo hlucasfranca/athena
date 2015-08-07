@@ -28,13 +28,7 @@ angular.module('grapheApp')
                 //scope.graphData = angular.fromJson(scope.graphData);
 
                 //scope.graph = scope.graph || {links:[{}], nodes:[{}]};
-                scope.currentOption = scope.currentOption || {};
-
-
-
-
-
-
+                //scope.currentOption = scope.currentOption || {};
 
                 // mouse event vars
                 var selected_node = null,
@@ -53,52 +47,43 @@ angular.module('grapheApp')
                     .attr("pointer-events", "all")
                     .call(d3.behavior.zoom().on("zoom", rescale));
 
-
                 var xLines, yLines;
+                var gridSize = 20;
+                var gridWidth = 2000;
+                var gridHeight = 2000;
 
                 /**
                  * Draw a grid
                  */
                 function drawGrid(){
 
-                  /*  if (xLines !== undefined) {
-                        xLines.remove();
-                    }
-                    if (yLines !== undefined) {
-                        yLines.remove();
-                    }*/
-
-                    //scope.width = 2000;
-                    //scope.height = 2000;
-                    var gridSize = 20;
-
-                    var gridWidth = 2000;
-                    var gridHeight = 2000;
-
                     xLines = vis.append("g")
                         .attr("class", "x axis")
                         .selectAll("line")
-                        .data(d3.range(-gridWidth, gridWidth, gridSize))
+                        .data(d3.range(0, gridWidth, gridSize))
                         //.data(d3.range(0, scope.width, 10))
                         .enter().append("line")
                         .attr("x1", function(d) { return d; })
-                        .attr("y1", -gridHeight)
+                        .attr("y1", 0)
                         .attr("x2", function(d) { return d; })
                         .attr("y2", gridHeight);
 
                     yLines = vis.append("g")
                         .attr("class", "y axis")
                         .selectAll("line")
-                        .data(d3.range(-gridHeight, gridHeight, gridSize))
+                        .data(d3.range(0, gridHeight, gridSize))
                         .enter().append("line")
-                        .attr("x1", -gridWidth)
+                        .attr("x1", 0)
                         .attr("y1", function(d) { return d; })
                         .attr("x2", gridWidth)
                         .attr("y2", function(d) { return d; });
                 }
 
                 function clickedOnStage(){
-                    if(scope.currentOption === scope.fabOptions.add) {
+
+                    //console.log(scope.getcurrentOption());
+
+                    if(scope.getCurrentOption() === scope.fabOptions.add) {
                         var coordinates = d3.mouse(d3.event.target);
                         // used to force immediate update of angular digest
                         scope.$apply(function () {
@@ -110,6 +95,8 @@ angular.module('grapheApp')
 
                 var vis = outer
                     .append('svg:g')
+                    .attr('width', gridWidth)
+                    .attr('height', gridHeight)
                     .on("dblclick.zoom", null)
                     .on('click', clickedOnStage)
                     // relative to the 'outer' container
@@ -125,8 +112,8 @@ angular.module('grapheApp')
                 drawGrid();
 
                 vis.append('svg:rect')
-                    .attr('width', scope.width)
-                    .attr('height', scope.height)
+                    .attr('width', gridWidth)
+                    .attr('height', gridHeight)
                     .attr('fill', 'none');
 
                 // init force layout
@@ -173,9 +160,7 @@ angular.module('grapheApp')
                 }
 
                 function mousemove() {
-
                     //console.log(d3.mouse(this));
-
                     if (!mousedown_node) {
                         return;
                     }
@@ -214,10 +199,7 @@ angular.module('grapheApp')
                                     source: mousedown_node,
                                     target: newNode
                                 };
-
-
                                 n = nodes.push(newNode);
-
                                 // add link to mousedown node
                                 links.push(newLink);
                             });
@@ -245,8 +227,6 @@ angular.module('grapheApp')
                         return "translate(" + d.x + "," + d.y + ")";
                     });
 
-
-
                 }
 
                 /**
@@ -256,11 +236,7 @@ angular.module('grapheApp')
                     var trans=d3.event.translate;
                     var scale=d3.event.scale;
                     vis.attr("transform", "translate(" + trans + ")" + " scale(" + scale + ")");
-
-
-
-                    //drawGrid();
-
+                    //TODO: update grid size
                 }
 
                 // redraw force layout
@@ -270,7 +246,6 @@ angular.module('grapheApp')
                         .attr("height", scope.height);
 
                     link = link.data(links);
-
                     //drawGrid();
 
                     link.enter().append("line")
@@ -291,10 +266,6 @@ angular.module('grapheApp')
                     //        redraw();
                     //
                     //}
-
-
-
-
 
                     link.exit().remove();
                     link.classed("link_selected", function(d) { return d === selected_link; });
@@ -353,10 +324,12 @@ angular.module('grapheApp')
                              console.log(d);*/
                         });
 
+
+
                     function mousedownnode(d) {
                         d3.event.stopPropagation(); // silence other listeners
 
-                        if(scope.currentOption === scope.fabOptions.remove){
+                        if(scope.getCurrentOption() === scope.fabOptions.remove){
                             scope.$apply(function () {
                                 console.log(d);
                                 scope.h.removeNode(d);
@@ -364,9 +337,27 @@ angular.module('grapheApp')
                             scope.showSimpleToast('node removed!');
                         }
 
-                        else if(scope.currentOption === scope.fabOptions.info){
+                        else if(scope.getCurrentOption() === scope.fabOptions.info){
                             //TODO: add info screen
                             console.log(d);
+                        }
+                        else if(scope.getCurrentOption() === scope.fabOptions.add.contextOptions[1]){
+
+                            console.log('add link');
+
+                            if(!scope.firstNode) {
+                                scope.$apply(function(){
+                                    scope.firstNode = d;
+                                    scope.setMessage("Select next node.");
+                                });
+                            }
+                            else if(scope.firstNode !== d){
+                                scope.$apply(function () {
+                                    scope.h.addEdge(scope.firstNode.index, d.index);
+                                    delete scope.firstNode;
+                                    scope.setMessage(null);
+                                });
+                            }
                         }
 
                         redraw();
@@ -422,31 +413,23 @@ angular.module('grapheApp')
                         }
                     }
                 }
-
-
                 scope.$watch('width', redraw);
                 scope.$watch('height', redraw);
                 scope.$watch('graph', redraw, true);
-
-
                 scope.$watch('currentOption', function () {
-
                     if(scope.currentOption === scope.fabOptions.select) {
-
                         nodeGroup.select('.node').style({
                             'cursor': 'hand'
                         });
                     }
 
                     if(scope.currentOption === scope.fabOptions.add) {
-
                         nodeGroup.select('.node').style({
                             'cursor': 'hand'
                         });
                     }
 
                     if(scope.currentOption === scope.fabOptions.remove) {
-
                         nodeGroup.style({
                             'cursor': 'pointer'
                         });

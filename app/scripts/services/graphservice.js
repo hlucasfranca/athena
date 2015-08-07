@@ -97,6 +97,11 @@ angular.module('grapheApp')
             this.getLinks = getLinks;
             this.removeNode = removeNode;
             this.removeLinksForNode = removeLinksForNode;
+            this.getAdjascentList = getAdjascentList;
+
+            function getAdjascentList(){
+                return this.adjascentList;
+            }
 
             function removeLinksForNode(node){
                 // Without 'self', the inner functions don't work.

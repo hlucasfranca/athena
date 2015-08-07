@@ -96,11 +96,11 @@
             <div class="md-toolbar-tools" style="background-color:{{currentOption.color}};">
 
                 <md-button class="md-icon-button">
-                    <md-icon ng-click="hideContextToolbar()">replay</md-icon>
+                    <md-icon ng-click="hideContextToolbar(); setMessage(null); setCurrentOption({})">close</md-icon>
                 </md-button>
 
                 <md-button ng-repeat="option in currentOption.contextOptions" class="md-icon-button">
-                    <md-icon ng-click="">{{option.icon}}</md-icon>
+                    <md-icon ng-click="setCurrentOption(option)">{{option.icon}}</md-icon>
                 </md-button>
 
                 <span flex></span>
@@ -111,6 +111,12 @@
                     <md-icon ng-click="showHelp()">help</md-icon>
                 </md-button>
 
+            </div>
+        </md-toolbar>
+
+        <md-toolbar id="messages" ng-show="hasMessages()">
+            <div class="md-toolbar-tools" style="background-color: #710909">
+                <h1>{{message}}</h1>
             </div>
         </md-toolbar>
 

@@ -16,6 +16,14 @@ angular.module('grapheApp')
                 $scope.showSimpleToast($scope.currentOption.message);
             }
 
+            $scope.setMessage = function(message){
+                $scope.message = message;
+            }
+
+            $scope.hasMessages = function(){
+                return $scope.message !== null && $scope.message !== undefined && $scope.message !== "";
+            }
+
             $scope.isShowContextToolbar = false;
 
             $scope.showContextToolbar = function(){
@@ -28,7 +36,13 @@ angular.module('grapheApp')
             };
 
             $scope.setCurrentOption = function(option) {
+
+                console.log(option);
                 $scope.currentOption = option;
+            }
+
+            $scope.getCurrentOption = function(){
+                return $scope.currentOption;
             }
 
 
@@ -55,11 +69,12 @@ angular.module('grapheApp')
                         {
                             name: "Add Link",
                             icon: 'settings_ethernet',
-                            message: 'Select a node to connect to another.'
+                            message: 'Select a node to connect to another.',
+                            enabled: true,
+                            color: '#4CAF50'
+
                         }
                     ]
-
-
                 },
                 remove : {
                     name: "Remove",
