@@ -9,26 +9,12 @@ angular.module('grapheApp')
         'use strict';
         return {
             template: '<div></div>',
-            /*scope: {
-                width: '@',
-                height: '@',
-                graphData: '=',
-                currentOption: '&'
-            },*/
             restrict: 'E',
 
             link: function postLink(scope, element, attrs) {
 
                 // clean element content
                 angular.element(element[0]).empty();
-
-                //scope.width = scope.width || 100;
-                //scope.height = scope.height || 100;
-                //scope.graphData = scope.graph;
-                //scope.graphData = angular.fromJson(scope.graphData);
-
-                //scope.graph = scope.graph || {links:[{}], nodes:[{}]};
-                //scope.currentOption = scope.currentOption || {};
 
                 // mouse event vars
                 var selected_node = null,
@@ -41,11 +27,11 @@ angular.module('grapheApp')
 
                 // init svg
                 var outer = d3.select(element[0])
-                    .append("svg:svg")
-                    .attr("width", scope.width)
-                    .attr("height", scope.height)
-                    .attr("pointer-events", "all")
-                    .call(d3.behavior.zoom().on("zoom", rescale));
+                    .append('svg:svg')
+                    .attr('width', scope.width)
+                    .attr('height', scope.height)
+                    .attr('pointer-events', 'all')
+                    .call(d3.behavior.zoom().on('zoom', rescale));
 
                 var xLines, yLines;
                 var gridSize = 20;
@@ -57,38 +43,37 @@ angular.module('grapheApp')
                  */
                 function drawGrid(){
 
-                    xLines = vis.append("g")
-                        .attr("class", "x axis")
-                        .selectAll("line")
+                    xLines = vis.append('g')
+                        .attr('class', 'x axis')
+                        .selectAll('line')
                         .data(d3.range(0, gridWidth, gridSize))
                         //.data(d3.range(0, scope.width, 10))
-                        .enter().append("line")
-                        .attr("x1", function(d) { return d; })
-                        .attr("y1", 0)
-                        .attr("x2", function(d) { return d; })
-                        .attr("y2", gridHeight);
+                        .enter().append('line')
+                        .attr('x1', function(d) { return d; })
+                        .attr('y1', 0)
+                        .attr('x2', function(d) { return d; })
+                        .attr('y2', gridHeight);
 
-                    yLines = vis.append("g")
-                        .attr("class", "y axis")
-                        .selectAll("line")
+                    yLines = vis.append('g')
+                        .attr('class', 'y axis')
+                        .selectAll('line')
                         .data(d3.range(0, gridHeight, gridSize))
-                        .enter().append("line")
-                        .attr("x1", 0)
-                        .attr("y1", function(d) { return d; })
-                        .attr("x2", gridWidth)
-                        .attr("y2", function(d) { return d; });
+                        .enter().append('line')
+                        .attr('x1', 0)
+                        .attr('y1', function(d) { return d; })
+                        .attr('x2', gridWidth)
+                        .attr('y2', function(d) { return d; });
                 }
 
                 function clickedOnStage(){
 
-                    //console.log(scope.getcurrentOption());
-
                     if(scope.getCurrentOption() === scope.fabOptions.add) {
                         var coordinates = d3.mouse(d3.event.target);
-                        // used to force immediate update of angular digest
-                        scope.$apply(function () {
-                            scope.h.addNode(coordinates[0], coordinates[1]);
-                        });
+
+                        scope.h.addNode(coordinates[0], coordinates[1]);
+                        scope.updateNodeCount();
+
+                        scope.$apply();
                         scope.showSimpleToast('node added!');
                     }
                 }
@@ -97,15 +82,15 @@ angular.module('grapheApp')
                     .append('svg:g')
                     .attr('width', gridWidth)
                     .attr('height', gridHeight)
-                    .on("dblclick.zoom", null)
+                    .on('dblclick.zoom', null)
                     .on('click', clickedOnStage)
                     // relative to the 'outer' container
-                    .on("mousemove", mousemove)
-                    //.on("mousedown", mousedown)
-                    //.on("mouseup", mouseup)
-                 /*   .on("drag", function(){
-                      console.log('drag');
-                    })*/
+                    .on('mousemove', mousemove)
+                    //.on('mousedown', mousedown)
+                    //.on('mouseup', mouseup)
+                    //.on('drag', function(){
+                    //  console.log('drag');
+                    //})
                     .append('svg:g');
 
                 // TODO: infinite grid
@@ -119,29 +104,31 @@ angular.module('grapheApp')
                 // init force layout
                 var force = d3.layout.force()
                     .size([scope.width, scope.height])
-                    .nodes(scope.graph.nodes) // initialize with a single node
+                    .nodes(scope.graph.nodes)
                     .links(scope.graph.links)
                     //.linkDistance(50)
                     //.gravity(0)
                     //.charge(-200)
-                    .on("tick", tick);
+                    .on('tick', tick);
 
                 // line displayed when dragging new nodes
-                var drag_line = vis.append("line")
-                    .attr("class", "drag_line")
-                    .attr("x1", 0)
-                    .attr("y1", 0)
-                    .attr("x2", 0)
-                    .attr("y2", 0);
+                var drag_line = vis.append('line')
+                    .attr('class', 'drag_line')
+                    .attr('x1', 0)
+                    .attr('y1', 0)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
 
                 // get layout properties
                 var nodes = force.nodes(),
                     links = force.links(),
-                    node = vis.selectAll(".node"),
-                    link = vis.selectAll(".link");
+                    // group all links
+                    link = vis.append('g').selectAll('.link'),
+                    // using svg group, make all nodes to be in front of links
+                    node = vis.append('g').selectAll('.node');
 
                 // add keyboard callback
-                //d3.select(window).on("keydown", keydown);
+                //d3.select(window).on('keydown', keydown);
 
                 redraw();
 
@@ -154,8 +141,7 @@ angular.module('grapheApp')
                         // allow panning if nothing is selected
                         console.log(vis);
                         vis.call(d3.behavior.zoom());
-                            vis.on(".zoom", rescale);
-                        return;
+                        vis.on('.zoom', rescale);
                     }
                 }
 
@@ -167,16 +153,16 @@ angular.module('grapheApp')
 
                     // update drag line
                     drag_line
-                        .attr("x1", mousedown_node.x)
-                        .attr("y1", mousedown_node.y)
-                        .attr("x2", d3.mouse(this)[0])
-                        .attr("y2", d3.mouse(this)[1]);
+                        .attr('x1', mousedown_node.x)
+                        .attr('y1', mousedown_node.y)
+                        .attr('x2', d3.mouse(this)[0])
+                        .attr('y2', d3.mouse(this)[1]);
                 }
 
                 function mouseup() {
                     if (mousedown_node) {
                         // hide drag line
-                        drag_line.attr("class", "drag_line_hidden");
+                        drag_line.attr('class', 'drag_line_hidden');
 
                         if (!mouseup_node) {
 
@@ -192,17 +178,18 @@ angular.module('grapheApp')
                             selected_node = newNode;
                             selected_link = null;
 
-                            // instantaneous apply
-                            scope.$apply(function(){
+                            var newLink = {
+                                source: mousedown_node,
+                                target: newNode
+                            };
+                            n = nodes.push(newNode);
+                            // add link to mousedown node
+                            links.push(newLink);
 
-                                var newLink = {
-                                    source: mousedown_node,
-                                    target: newNode
-                                };
-                                n = nodes.push(newNode);
-                                // add link to mousedown node
-                                links.push(newLink);
-                            });
+                            // instantaneous apply
+                            scope.updateNodeCount();
+                            scope.$apply();
+
                         }
 
                         redraw();
@@ -218,13 +205,13 @@ angular.module('grapheApp')
                 }
 
                 function tick() {
-                    link.attr("x1", function(d) { return d.source.x; })
-                        .attr("y1", function(d) { return d.source.y; })
-                        .attr("x2", function(d) { return d.target.x; })
-                        .attr("y2", function(d) { return d.target.y; });
+                    link.attr('x1', function(d) { return d.source.x; })
+                        .attr('y1', function(d) { return d.source.y; })
+                        .attr('x2', function(d) { return d.target.x; })
+                        .attr('y2', function(d) { return d.target.y; });
 
-                    node.attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
+                    node.attr('transform', function (d) {
+                        return 'translate(' + d.x + ',' + d.y + ')';
                     });
 
                 }
@@ -235,22 +222,22 @@ angular.module('grapheApp')
                 function rescale() {
                     var trans=d3.event.translate;
                     var scale=d3.event.scale;
-                    vis.attr("transform", "translate(" + trans + ")" + " scale(" + scale + ")");
+                    vis.attr('transform', 'translate(' + trans + ')' + ' scale(' + scale + ')');
                     //TODO: update grid size
                 }
 
                 // redraw force layout
                 function redraw() {
                     outer
-                        .attr("width" , scope.width)
-                        .attr("height", scope.height);
+                        .attr('width' , scope.width)
+                        .attr('height', scope.height);
 
                     link = link.data(links);
                     //drawGrid();
 
-                    link.enter().append("line")
-                        .attr("class", "link")
-                    //    .on("mousedown",mousedownlink)
+                    link.enter().append('line')
+                        .attr('class', 'link')
+                    //    .on('mousedown',mousedownlink)
                     ;
 
                     //function mousedownlink(d){
@@ -268,30 +255,39 @@ angular.module('grapheApp')
                     //}
 
                     link.exit().remove();
-                    link.classed("link_selected", function(d) { return d === selected_link; });
+                    link.classed('link_selected', function(d) { return d === selected_link; });
                     node = node.data(nodes);
 
                     /*
                     *  UPDATE
                     */
-                    node.select('.node circle').attr('fill', function (d) { return d.color; } );
-                    node.select('.node text').text(function(d){ return d.label; });
+
+                    nodeGroup = node.select('g')
+                        .attr('id', function(d,i){ return 'node-' + i; });
+
+                    node.select('.node circle')
+                        .attr('fill', function (d) { return d.color; } );
+
+                    node.select('.node text')
+                        .text(function(d){ return d.label; });
 
                     /*
                     * END UPDATE
                     */
 
-                    nodeGroup = node.enter().append('g');
+                    nodeGroup = node.enter()
+                        .append('g')
+                        .attr('id', function(d,i){ return 'node-' + i; });
 
                     nodeGroup
-                        .attr("class", "node")
+                        .attr('class', 'node')
                         .append('circle')
                         .attr('fill', function(d){ return d.color; })
-                        .attr("r", 1)
+                        .attr('r', 1)
                         .transition()
                         .duration(750)
-                        .ease("elastic")
-                        .attr("r", 15);
+                        .ease('elastic')
+                        .attr('r', 15);
 
                     node.exit()
                         .select('circle')
@@ -304,18 +300,22 @@ angular.module('grapheApp')
 
                     node.exit().select('text').remove();
 
-                    nodeGroup.on("mousedown",mousedownnode);
+                    nodeGroup.call(d3.behavior.drag().on('drag', function(){
+                            console.log('drag');
+                        }));
+
+                    nodeGroup.on('click',mousedownnode);
 
                     var nodeLabel = nodeGroup
-                        .append("text")
-                        .attr("dx", 0 )
+                        .append('text')
+                        .attr('dx', 0 )
                         .attr('fill', 'white')
                         .attr('text-anchor', 'middle')
-                        .attr("dy", ".35em")
+                        .attr('dy', '.35em')
                         .text(function(d){
                             return d.label;
                         })
-                        .on("click", function(d){
+                        .on('click', function(d){
 
                             //TODO: add edit node label behavior
                             /*    var textElement = d3.select(this);
@@ -324,9 +324,10 @@ angular.module('grapheApp')
                              console.log(d);*/
                         });
 
-
-
                     function mousedownnode(d) {
+
+                        var self = this;
+
                         d3.event.stopPropagation(); // silence other listeners
 
                         if(scope.getCurrentOption() === scope.fabOptions.remove){
@@ -335,6 +336,7 @@ angular.module('grapheApp')
                                 scope.h.removeNode(d);
                             });
                             scope.showSimpleToast('node removed!');
+                            scope.updateNodeCount();
                         }
 
                         else if(scope.getCurrentOption() === scope.fabOptions.info){
@@ -348,7 +350,25 @@ angular.module('grapheApp')
                             if(!scope.firstNode) {
                                 scope.$apply(function(){
                                     scope.firstNode = d;
-                                    scope.setMessage("Select next node.");
+
+                                    d3.select(self)
+                                        .selectAll('circle')
+                                        .style({
+                                            'stroke': 'black',
+                                            'stroke-width': 0
+
+                                        })
+                                        .transition()
+                                        .duration(100)
+                                        .ease('linear')
+                                        .style({
+                                            'stroke': 'black',
+                                            'stroke-width': 2
+
+                                        });
+
+                                    console.log(d);
+                                    scope.setMessage('Select next node.');
                                 });
                             }
                             else if(scope.firstNode !== d){
@@ -359,15 +379,13 @@ angular.module('grapheApp')
                                 });
                             }
                         }
-
                         redraw();
                     }
-
                     node.exit().transition()
-                        .attr("r", 0)
+                        .attr('r', 0)
                         .remove();
 
-                    node.classed("node_selected", function (d) {
+                    node.classed('node_selected', function (d) {
                         return d === selected_node;
                     });
 
@@ -413,6 +431,7 @@ angular.module('grapheApp')
                         }
                     }
                 }
+
                 scope.$watch('width', redraw);
                 scope.$watch('height', redraw);
                 scope.$watch('graph', redraw, true);
@@ -439,11 +458,8 @@ angular.module('grapheApp')
                         });
                     }
 
-
-                    console.log(
-                        scope.currentOption);
+                    console.log(scope.currentOption);
                 });
-
             }
         };
     });

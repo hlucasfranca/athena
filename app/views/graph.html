@@ -1,57 +1,104 @@
-<div layout="column" style="position: relative">
+<style type="text/css">
+    #graphpage.ng-scope {
+        height: 100%;
+        background-color: green;
+    }
 
-    <div layout="row">
+
+</style>
+<div layout="row" layout-sm="column" layout-fill style="height: 100%">
+    <div flex id="graphStageDiv" style="position: relative">
         <graph></graph>
+
+        <div class="graphe-fab">
+            <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'" ng-hide="hideFab">
+                <md-fab-trigger>
+                    <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
+                        <md-icon>menu</md-icon>
+                    </md-button>
+                </md-fab-trigger>
+
+                <md-fab-actions>
+                    <div ng-repeat="option in fabOptions">
+                        <md-button class="md-fab md-mini " ng-click="setSelectedOption(option)"
+                                   style="background-color: {{option.color}}">
+                            <md-tooltip>
+                                {{option.name}}
+                            </md-tooltip>
+                            <md-icon>{{option.icon}}</md-icon>
+                        </md-button>
+                    </div>
+                </md-fab-actions>
+
+            </md-fab-speed-dial>
+        </div>
+
     </div>
+    <div flex>
 
-    <div style="position: absolute; bottom: 30px; right: 30px;">
+        <md-tabs class="md-primary md-hue-1" md-align-tabs="top">
+            <md-tab id="tab1">
+                <md-tab-label>Graph info</md-tab-label>
+                <md-tab-body>
+
+                    <table>
+                        <tr>
+                            <td class="md-body-2">Graph dimensions</td>
+                            <td>[{{width}}x{{height}}]</td>
+                        </tr>
+
+                        <tr>
+                            <td class="md-body-2">Number of nodes</td>
+                            <td>{{h.getNodes().length}}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="md-body-2">Number of links</td>
+                            <td>{{h.getLinks().length}}</td>
+                        </tr>
+                    </table>
 
 
-        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'" ng-hide="hideFab">
+                </md-tab-body>
+            </md-tab>
+            <md-tab id="tab2">
+                <md-tab-label>Adjacency matrix</md-tab-label>
+                <md-tab-body>
 
-           <md-fab-trigger>
-               <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
-                   <md-icon>menu</md-icon>
-               </md-button>
-           </md-fab-trigger>
+                    <table class="adjacency-matrix" ng-show="h.getAdjacentMatrix().length > 0">
+                        <th>&nbsp;</th>
+                        <th ng-repeat="i in h.getAdjacentMatrix()" ng-mouseenter="selectNode($index)"
+                            ng-mouseleave="deselectNode($index)" class="adjacency-repeat">
+                            {{graph.nodes[$index].label}}
+                        </th>
+                        <tr ng-repeat="i in h.getAdjacentMatrix()" class="adjacency-repeat">
+                            <td ng-mouseenter="selectNode($index)" ng-mouseleave="deselectNode($index)">
+                                {{graph.nodes[$index].label}}
+                            </td>
+                            <td ng-repeat="j in i" ng-class="{'selected-cell': $index == selectedColumn || $parent.$index == selectedRow}"
+                                ng-mouseenter="selectCell($parent.$index, $index)" ng-mouseleave="deselectCell()">
+                                <a>{{j.value}}</a>
+                            </td>
+                        </tr>
+                    </table>
 
 
-           <md-fab-actions>
+                </md-tab-body>
+            </md-tab>
 
-                <!-- ng-repeat not supported yet :( -->
+            <md-tab id="tab3">
+                <md-tab-label>Adjacency list</md-tab-label>
+                <md-tab-body>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.add)" style="background-color: {{fabOptions.add.color}}">
-                   <md-tooltip>
-                       {{fabOptions.add.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.add.icon}}</md-icon>
-               </md-button>
+                    <!-- TODO: add adjacency list-->
+                    Adjacency list
+                </md-tab-body>
+            </md-tab>
+        </md-tabs>
 
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.remove)" style="background-color: {{fabOptions.remove.color}}">
-                   <md-tooltip>
-                       {{fabOptions.remove.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.remove.icon}}</md-icon>
-               </md-button>
-
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.select)" style="background-color: {{fabOptions.select.color}}">
-                   <md-tooltip>
-                       {{fabOptions.select.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.select.icon}}</md-icon>
-               </md-button>
-
-               <md-button class="md-fab md-mini " ng-click="setSelectedOption(fabOptions.info); " style="background-color: {{fabOptions.info.color}}">
-                   <md-tooltip>
-                       {{fabOptions.info.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.info.icon}}</md-icon>
-               </md-button>
-
-           </md-fab-actions>
-
-       </md-fab-speed-dial>
 
     </div>
 </div>
+
+
 

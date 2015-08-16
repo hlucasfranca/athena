@@ -14,15 +14,15 @@ angular.module('grapheApp')
 
             $scope.showHelp = function(){
                 $scope.showSimpleToast($scope.currentOption.message);
-            }
+            };
 
             $scope.setMessage = function(message){
                 $scope.message = message;
-            }
+            };
 
             $scope.hasMessages = function(){
-                return $scope.message !== null && $scope.message !== undefined && $scope.message !== "";
-            }
+                return $scope.message !== null && $scope.message !== undefined && $scope.message !== '';
+            };
 
             $scope.isShowContextToolbar = false;
 
@@ -36,14 +36,12 @@ angular.module('grapheApp')
             };
 
             $scope.setCurrentOption = function(option) {
-
-                console.log(option);
                 $scope.currentOption = option;
-            }
+            };
 
             $scope.getCurrentOption = function(){
                 return $scope.currentOption;
-            }
+            };
 
 
             $scope.toastPosition = {
@@ -53,21 +51,25 @@ angular.module('grapheApp')
                 right: true
             };
 
+
+
+
+
             $scope.fabOptions = {
                 add: {
-                    name: "Add",
+                    name: 'Add',
                     icon: 'add',
                     message: 'Click anywhere on the stage to add a node.',
                     enabled: true,
                     color: '#4CAF50',
                     contextOptions:[
                         {
-                            name: "Add Node",
+                            name: 'Add Node',
                             icon: 'add_circle',
                             message: 'Click anywhere to add a node.'
                         },
                         {
-                            name: "Add Link",
+                            name: 'Add Link',
                             icon: 'settings_ethernet',
                             message: 'Select a node to connect to another.',
                             enabled: true,
@@ -77,21 +79,21 @@ angular.module('grapheApp')
                     ]
                 },
                 remove : {
-                    name: "Remove",
+                    name: 'Remove',
                     icon: 'clear',
                     message:'Click on a node or link to remove.',
                     enabled: true,
                     color: '#F44336'
                 },
                 select: {
-                    name: "Select",
+                    name: 'Select',
                     icon: 'check',
                     message: 'Click on a node or link to select.',
                     enabled: true,
                     color: '#FF9800',
                     contextOptions:[
                         {
-                            name: "Select",
+                            name: 'Select',
                             icon: 'select_all',
                             message: 'Select all.'
                         }
@@ -108,14 +110,19 @@ angular.module('grapheApp')
             };
 
             $scope.showSimpleToast = function (message) {
+
                 if ($mdToast !== undefined) {
                     console.log('toast');
                     $mdToast.show(
                         $mdToast.simple()
                             .content(message)
+                            .action('Got it.')
+                            .highlightAction(false)
                             .position($scope.getToastPosition())
-                            .hideDelay(3000)
-                    );
+                            .hideDelay(3000))
+                                .then(function(){
+                                    console.log('got it.');
+                                });
                 }
             };
 
@@ -152,5 +159,12 @@ angular.module('grapheApp')
                 'AngularJS',
                 'Karma'
             ];
+
+            $scope.cancel = function () {
+                $scope.hideContextToolbar();
+                $scope.setMessage(null);
+                $scope.setCurrentOption({});
+
+            };
 
         }]);

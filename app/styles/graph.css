@@ -42,11 +42,31 @@
 
 }
 
-.axis line {
-    stroke-width: 1px;
-    stroke: black;
+#graphStageDiv{
+    background-color: #e8e8e8;
 }
 
-md-content {
-    overflow: hidden;
+table.adjacency-matrix,
+.adjacency-matrix tr,
+.adjacency-matrix td,
+.adjacency-matrix th
+{
+    text-align: center;
+    border: 1px solid #9E9E9E;
+    border-collapse: collapse;
+    border-spacing: 0;
+
+}
+
+.adjacency-matrix td,
+.adjacency-matrix tr{
+    padding: 0;
+}
+
+.selected-cell{
+    background-color: #8BC34A;
+}
+
+.node text{
+    font-family: "Bookman", Georgia, "Times New Roman", serif;
 }

@@ -11,39 +11,16 @@
 
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/roboto-fontface/css/roboto-fontface.css" />
     <!-- endbower -->
-
-
 
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/material_icons.css" />
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/graph.css">
-
-
     <!-- endbuild -->
 
-
-    <style type="text/css">
-        .axis line {
-            fill: none;
-            stroke: #ddd;
-            shape-rendering: crispEdges;
-            /* vector-effect: non-scaling-stroke;*/
-        }
-
-        .dragging{
-            fill: red !important;
-        }
-
-        .md-toolbar-tools .ng-hide{
-            transition:1s linear all;
-            opacity:0;
-        }
-
-    </style>
 </head>
 <body ng-app="grapheApp" ng-controller="MainCtrl" layout="row" class="md-body-1">
 <!--[if lt IE 7]>
@@ -51,82 +28,69 @@
 <![endif]-->
 
 
+<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
+            md-is-locked-open="{{false}}">
+
+    <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
+        <div style="padding-left: 25px"><h3>Graphe</h3></div>
+    </md-toolbar>
+
+    <md-list>
+        <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+
+            {{option.label}}
+
+        </md-list-item>
+    </md-list>
+
+</md-sidenav>
 
 
+<div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" style="height: 100%;">
 
-<!-- Add your site or application content here -->
+    <md-toolbar id="toolbar" ng-hide="isShowContextToolbar">
+        <div class="md-toolbar-tools">
 
+            <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
+                <md-icon>menu</md-icon>
+            </md-button>
 
+            <h1>Graphe</h1>
 
-    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
-                md-component-id="left"
-                md-is-locked-open="{{false}}"
-            >
+        </div>
+    </md-toolbar>
 
+    <md-toolbar id="contexttoolbar" ng-show="isShowContextToolbar" >
+        <div class="md-toolbar-tools" style="background-color:{{currentOption.color}};">
 
+            <md-button class="md-icon-button">
+                <md-icon ng-click="cancel()">arrow_back</md-icon>
+            </md-button>
 
+            <md-button ng-repeat="option in currentOption.contextOptions" class="md-icon-button">
+                <md-icon ng-click="setCurrentOption(option)">{{option.icon}}</md-icon>
+            </md-button>
 
-        <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
-            Graphe
-        </md-toolbar>
+            <span flex></span>
 
-        <md-list>
-            <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+            {{currentOption.name}}
 
-                    {{option.label}}
+            <md-button class="md-icon-button">
+                <md-icon ng-click="showHelp()">help</md-icon>
+            </md-button>
 
-            </md-list-item>
-        </md-list>
+        </div>
+    </md-toolbar>
 
-    </md-sidenav>
+    <md-toolbar id="messages" ng-show="hasMessages()" style="min-height: 40px; height: 40px;">
+        <div class="md-toolbar-tools" style="background-color: #710909; height: 40px; min-height: 40px;">
+            <h1>{{message}}</h1>
+        </div>
+    </md-toolbar>
 
+    <div  ng-view id="content" style="height: 100%;"></div>
 
-    <div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" >
-
-        <md-toolbar id="toolbar" ng-hide="isShowContextToolbar">
-            <div class="md-toolbar-tools">
-                <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
-                    <md-icon>menu</md-icon>
-                </md-button>
-                <h1>Graphe</h1>
-            </div>
-        </md-toolbar>
-
-        <md-toolbar id="contexttoolbar" ng-show="isShowContextToolbar" >
-            <div class="md-toolbar-tools" style="background-color:{{currentOption.color}};">
-
-                <md-button class="md-icon-button">
-                    <md-icon ng-click="hideContextToolbar(); setMessage(null); setCurrentOption({})">close</md-icon>
-                </md-button>
-
-                <md-button ng-repeat="option in currentOption.contextOptions" class="md-icon-button">
-                    <md-icon ng-click="setCurrentOption(option)">{{option.icon}}</md-icon>
-                </md-button>
-
-                <span flex></span>
-
-                {{currentOption.name}}
-
-                <md-button class="md-icon-button">
-                    <md-icon ng-click="showHelp()">help</md-icon>
-                </md-button>
-
-            </div>
-        </md-toolbar>
-
-        <md-toolbar id="messages" ng-show="hasMessages()">
-            <div class="md-toolbar-tools" style="background-color: #710909">
-                <h1>{{message}}</h1>
-            </div>
-        </md-toolbar>
-
-        <md-content  ng-view id="content">
-
-        </md-content>
-
-    </div>
-
-
+</div>
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
