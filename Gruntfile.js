@@ -29,6 +29,10 @@ module.exports = function (grunt) {
 
         // Watches files for changes and runs tasks based on the changed files
         watch: {
+            options: {
+                spawn: false,
+                reload: true
+            },
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
@@ -438,7 +442,7 @@ module.exports = function (grunt) {
         'concat',
         'ngAnnotate',
         'copy:dist',
-        //'cdnify',
+        'cdnify',
         'cssmin',
         'uglify',
         'filerev',
