@@ -70,3 +70,17 @@ table.adjacency-matrix,
 .node text{
     font-family: "Bookman", Georgia, "Times New Roman", serif;
 }
+
+.hover-node-list{
+    border: 1px solid black;
+    background-color: #b3b3b3;
+}
+
+.node-list{
+    width: 30px;
+    cursor: pointer;
+    border: 1px solid gainsboro;
+    margin: 0 5px 0 5px;
+    padding: 5px;
+    text-align: center;
+}

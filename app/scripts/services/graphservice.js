@@ -42,23 +42,19 @@ angular.module('grapheApp')
 
         function Graph(v) {
 
-            /**
-             * Initialize the number of vertices
-             */
-
-            function getAdjacentMatrix(){
+            this.getAdjacentMatrix = function () {
                 return this.matrix;
-            }
+            };
 
-            function getAdjacentList(){
+            this.getAdjacentList = function () {
                 return this.adjacentList;
-            }
+            };
 
-            function removeLinksForNode(node){
+            this.removeLinksForNode = function (node) {
                 // Without 'self', the inner functions don't work.
                 var self = this;
 
-                var toSplice = self.linkList.filter(function(l) {
+                var toSplice = this.linkList.filter(function(l) {
                     return (l.source.index === node.index || l.target.index === node.index);
                 });
 
@@ -66,61 +62,58 @@ angular.module('grapheApp')
                     var indexToRemove = self.linkList.indexOf(l);
                     self.linkList.splice(indexToRemove, 1);
                 });
-            }
+            };
 
-            function removeNode(d){
-                var self = this;
-                self.adjacentList.splice(d.index,1);
-                self.marked.splice(d.index,1);
-                self.nodeList.splice(d.index,1);
-                removeLinksForNode.call(self, d);
-                self.nodes--;
-                updateAdjacencyMatrix.call(self);
-            }
+            this.removeNode = function (d){
+                this.adjacentList.splice(d.index,1);
+                this.marked.splice(d.index,1);
+                this.nodeList.splice(d.index,1);
+                this.removeLinksForNode(d);
+                this.nodes--;
+                this.updateAdjacencyMatrix();
+            };
 
-            function getLinks(){
+            this.getLinks = function () {
                 return this.linkList;
-            }
+            };
 
-            function addNode(xPosition, yPosition) {
-
-                var self = this;
-
+            this.addNode = function (xPosition, yPosition) {
                 // as index is zero-based, use the nodes number before increment
-                self.adjacentList[self.nodes] = [];
-                self.adjacentList[self.nodes].push("");
-                self.marked[self.nodes] = false;
 
-                var len = self.nodeList.length;
+                var len = this.nodeList.length;
 
-                self.nodeList.push(
-                    {
-                        name: 'dummy node',
-                        x: xPosition !== undefined ? xPosition : Math.random() * 200,
-                        y: yPosition !== undefined ? yPosition : Math.random() * 200,
-                        fixed: true,
-                        color: getColor(),
-                        label: getLetter(),
-                        index: len
-                    }
-                );
-                self.nodes++;
-                updateAdjacencyMatrix.call(this);
-            }
+                var newNode = {
+                    name: 'dummy node',
+                    x: xPosition !== undefined ? xPosition : Math.random() * 200,
+                    y: yPosition !== undefined ? yPosition : Math.random() * 200,
+                    fixed: true,
+                    color: getColor(),
+                    label: getLetter(),
+                    index: len
+                };
 
-            function updateAdjacencyMatrix(){
+                this.nodeList.push(newNode);
+                this.adjacentList[this.nodes] = [];
+                this.adjacentList[this.nodes].push(newNode);
+                this.marked[this.nodes] = false;
+                this.nodes++;
+                this.updateAdjacencyMatrix();
+            };
+
+            this.updateAdjacencyMatrix = function () {
 
                 var self = this;
-                self.matrix = [];
-                var n = self.nodeList.length;
+
+                this.matrix = [];
+                var n = this.nodeList.length;
 
                 if(n > 0){
 
-                    self.nodeList.forEach(function(node, i) {
+                    this.nodeList.forEach(function(node, i) {
                         self.matrix[i] = d3.range(n).map(function() { return {value: 0}; });
                     });
 
-                    self.linkList.forEach(function(link){
+                    this.linkList.forEach(function(link){
                         /*
                             Using id beause of:
 
@@ -137,123 +130,77 @@ angular.module('grapheApp')
                         self.matrix[link.target.index][link.source.index].value = 1;
                     });
                 }
-            }
+            };
 
+            this.addEdge = function (v, w) {
 
-            function addEdge(v, w) {
-                var self = this;
+                this.adjacentList[v].push(this.nodeList[w]);
+                this.adjacentList[w].push(this.nodeList[v]);
 
-                self.adjacentList[v].push(w);
-                self.adjacentList[w].push(v);
-
-                self.linkList.push({
-                    source: self.nodeList[v],
-                    target: self.nodeList[w]
+                this.linkList.push({
+                    source: this.nodeList[v],
+                    target: this.nodeList[w]
                 });
 
-                self.edges++;
-                updateAdjacencyMatrix.call(self);
-            }
+                this.edges++;
+                this.updateAdjacencyMatrix();
+            };
 
-            function getNodes(){
+            this.getNodes = function () {
                 return this.nodeList;
-            }
+            };
 
-            function showGraph() {
-                var self = this;
+            this.showGraph = function () {                
                 var output = "";
 
-                for (var i = 0; i < self.nodes; ++i) {
+                for (var i = 0; i < this.nodes; ++i) {
                     output += i + " -> ";
 
-                    for (var j = 0; j < self.nodes; ++j) {
-                        if (self.adjacentList[i][j] !== undefined) {
-                            output += self.adjacentList[i][j] + ' ';
+                    for (var j = 0; j < this.nodes; ++j) {
+                        if (this.adjacentList[i][j] !== undefined) {
+                            output += this.adjacentList[i][j] + ' ';
                         }
                     }
                    output += '\n';
                 }
                 console.log(output);
-            }
+            };
 
-            function depthFirstSearch(v) {
+            this.depthFirstSearch = function (v) {
+                this.marked[v] = true;
 
-                var self = this;
-
-                self.marked[v] = true;
-
-                if (self.adjacentList[v] !== undefined) {
+                if (this.adjacentList[v] !== undefined) {
                     console.log("Visited vertex: " + v);
                 }
 
-                for (var i = 0; i < self.adjacentList[v].length; i++) {
-                    if (!self.marked[i]) {
-                        self.depthFirstSearch(i);
+                for (var i = 0; i < this.adjacentList[v].length; i++) {
+                    if (!this.marked[i]) {
+                        this.depthFirstSearch(i);
                     }
                 }
-            }
+            };
 
-            /*
-                Object definition
-            */
-            if (v !== undefined) {
-                this.nodes = v;
-            } else {
-                this.nodes = 0;
-            }
-
+            /**
+             * Initialize the number of vertices
+             */
+            this.nodes = 0;
             this.edges = 0;
             this.adjacentList = [];
             this.nodeList = [];
             this.linkList = [];
             this.matrix = [];
-
-            for (var i = 0; i < this.nodes; ++i) {
-                this.adjacentList[i] = [];
-                this.adjacentList[i].push("");
-
-                // TODO: use addNode here too.
-
-                var letter = getLetter();
-                var len = this.nodeList.length;
-
-                this.nodeList.push(
-                    {
-                        name: letter,
-                        x: Math.random() * 400,
-                        y: Math.random() * 400,
-                        fixed: true,
-                        color: getColor(),
-                        label: letter,
-                        index: len
-                    }
-                );
-            }
-
             this.marked = [];
 
-            for (var j = 0; j < this.nodes; ++j) {
-                this.marked[j] = false;
+            for (var i = 0; i < v; i++) {
+                this.adjacentList[i] = [];
+                this.adjacentList[i].push("");
+                this.addNode(Math.random() * 400,Math.random() * 400);
+                this.marked[i] = false;
             }
-
-            /**
-             * Method Definitions
-             */
-            this.addEdge = addEdge;
-            this.showGraph = showGraph;
-            this.depthFirstSearch = depthFirstSearch;
-            this.addNode = addNode;
-            this.getNodes = getNodes;
-            this.getLinks = getLinks;
-            this.removeNode = removeNode;
-            this.removeLinksForNode = removeLinksForNode;
-            this.getAdjacentList = getAdjacentList;
-            this.getAdjacentMatrix = getAdjacentMatrix;
         }
 
         this.getGraph = function (numberOfNodes) {
-            var g = new Graph(numberOfNodes);
-            return g;
+            return new Graph(numberOfNodes);
         };
 
     });

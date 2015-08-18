@@ -90,8 +90,19 @@
                 <md-tab-label>Adjacency list</md-tab-label>
                 <md-tab-body>
 
-                    <!-- TODO: add adjacency list-->
-                    Adjacency list
+                    <p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">
+                        <span ng-repeat="nodeDest in nodeOrigin">
+                            <span ng-if="!$first"><md-icon>arrow_forward</md-icon></span>
+                                <span class="node-list"  ng-class="{'hover-node-list' : hover}"
+                                      ng-mouseenter="hover = true;  selectNode(nodeDest.index)"
+                                      ng-mouseleave="hover = false; deselectNode(nodeDest.index)">
+                                    {{nodeDest.label}}
+                                </span>
+                            </span>
+                    </p>
+
+
+
                 </md-tab-body>
             </md-tab>
         </md-tabs>

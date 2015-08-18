@@ -99,8 +99,9 @@ angular.module('grapheApp')
 
         function rescale_panels() {
             // get the width of graph-stage element and set to the graph element itself
-            $scope.width = $('#graphStageDiv').width();
-            $scope.height = $('#graphStageDiv').height();
+            var graphStageDiv = $('#graphStageDiv');
+            $scope.width = graphStageDiv.width();
+            $scope.height = graphStageDiv.height();
         }
 
         rescale_panels();
