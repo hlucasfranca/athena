@@ -147,8 +147,9 @@ angular.module('grapheApp')
             $scope.go = function (url, hideNavigationBar) {
                 $location.path(url);
 
-                if(hideNavigationBar)
+                if(hideNavigationBar) {
                     $scope.toggleSidenav('left');
+                }
 
 
                 console.log(url);

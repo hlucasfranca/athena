@@ -17,11 +17,8 @@ angular.module('grapheApp')
                 angular.element(element[0]).empty();
 
                 // mouse event vars
-                var selected_node = null,
-                    selected_link = null,
-                    mousedown_link = null,
-                    mousedown_node = null,
-                    mouseup_node = null;
+                var selectedNode = null,
+                    selectedLink = null;
 
                 var nodeGroup;
 
@@ -85,11 +82,6 @@ angular.module('grapheApp')
                     .on('dblclick.zoom', null)
                     .on('click', clickedOnStage)
                     // relative to the 'outer' container
-                    .on('mousemove', mousemove)
-                    //.on('mousedown', mousedown)
-                    //.on('mouseup', mouseup)
-                    //.on('drag', function(){
-                    //  console.log('drag');
                     //})
                     .append('svg:g');
 
@@ -127,82 +119,10 @@ angular.module('grapheApp')
                     // using svg group, make all nodes to be in front of links
                     node = vis.append('g').selectAll('.node');
 
-                // add keyboard callback
+                // TODO: add keyboard callback
                 //d3.select(window).on('keydown', keydown);
 
                 redraw();
-
-                /**
-                 * TODO: replace mousedown by drag.
-                 */
-
-                function mousedown() {
-                    if (!mousedown_node && !mousedown_link) {
-                        // allow panning if nothing is selected
-                        console.log(vis);
-                        vis.call(d3.behavior.zoom());
-                        vis.on('.zoom', rescale);
-                    }
-                }
-
-                function mousemove() {
-                    //console.log(d3.mouse(this));
-                    if (!mousedown_node) {
-                        return;
-                    }
-
-                    // update drag line
-                    drag_line
-                        .attr('x1', mousedown_node.x)
-                        .attr('y1', mousedown_node.y)
-                        .attr('x2', d3.mouse(this)[0])
-                        .attr('y2', d3.mouse(this)[1]);
-                }
-
-                function mouseup() {
-                    if (mousedown_node) {
-                        // hide drag line
-                        drag_line.attr('class', 'drag_line_hidden');
-
-                        if (!mouseup_node) {
-
-                            // add node
-                            var point = d3.mouse(this),
-                                newNode = {
-                                    x: point[0],
-                                    y: point[1]
-                                },
-                                n;
-
-                            // select new node
-                            selected_node = newNode;
-                            selected_link = null;
-
-                            var newLink = {
-                                source: mousedown_node,
-                                target: newNode
-                            };
-                            n = nodes.push(newNode);
-                            // add link to mousedown node
-                            links.push(newLink);
-
-                            // instantaneous apply
-                            scope.updateNodeCount();
-                            scope.$apply();
-
-                        }
-
-                        redraw();
-                    }
-                    // clear mouse event vars
-                    resetMouseVars();
-                }
-
-                function resetMouseVars() {
-                    mousedown_node = null;
-                    mouseup_node = null;
-                    mousedown_link = null;
-                }
 
                 function tick() {
                     link.attr('x1', function(d) { return d.source.x; })
@@ -213,7 +133,6 @@ angular.module('grapheApp')
                     node.attr('transform', function (d) {
                         return 'translate(' + d.x + ',' + d.y + ')';
                     });
-
                 }
 
                 /**
@@ -240,22 +159,8 @@ angular.module('grapheApp')
                     //    .on('mousedown',mousedownlink)
                     ;
 
-                    //function mousedownlink(d){
-                    //
-                    //        mousedown_link = d;
-                    //        if (mousedown_link === selected_link){
-                    //            selected_link = null;
-                    //        }
-                    //        else {
-                    //            selected_link = mousedown_link;
-                    //        }
-                    //        selected_node = null;
-                    //        redraw();
-                    //
-                    //}
-
                     link.exit().remove();
-                    link.classed('link_selected', function(d) { return d === selected_link; });
+                    link.classed('link_selected', function(d) { return d === selectedLink; });
                     node = node.data(nodes);
 
                     /*
@@ -300,9 +205,33 @@ angular.module('grapheApp')
 
                     node.exit().select('text').remove();
 
-                    nodeGroup.call(d3.behavior.drag().on('drag', function(){
-                            console.log('drag');
-                        }));
+                    function dragMove (d, i) {
+
+                        console.log('dragMove');
+                        d.px += d3.event.dx;
+                        d.py += d3.event.dy;
+                        d.x += d3.event.dx;
+                        d.y += d3.event.dy;
+
+                        scope.$apply();
+                    }
+
+                    function dragStart(d,i){
+                        // silence other listeners
+                        d3.event.sourceEvent.stopPropagation();
+                        console.log('dragStart');
+                    }
+
+                    function dragEnd(d,i){
+                        console.log('dragEnd');
+                    }
+
+                    var nodeDrag = d3.behavior.drag()
+                        .on('drag', dragMove)
+                        .on("dragstart", dragStart)
+                        .on("dragend", dragEnd);
+
+                    nodeGroup.call(nodeDrag);
 
                     nodeGroup.on('click',mousedownnode);
 
@@ -325,6 +254,8 @@ angular.module('grapheApp')
                         });
 
                     function mousedownnode(d) {
+
+                        console.log('mouseDownNode');
 
                         var self = this;
 
@@ -356,7 +287,6 @@ angular.module('grapheApp')
                                         .style({
                                             'stroke': 'black',
                                             'stroke-width': 0
-
                                         })
                                         .transition()
                                         .duration(100)
@@ -364,7 +294,6 @@ angular.module('grapheApp')
                                         .style({
                                             'stroke': 'black',
                                             'stroke-width': 2
-
                                         });
 
                                     console.log(d);
@@ -386,13 +315,8 @@ angular.module('grapheApp')
                         .remove();
 
                     node.classed('node_selected', function (d) {
-                        return d === selected_node;
+                        return d === selectedNode;
                     });
-
-                    if (d3.event) {
-                        // prevent browser's default behavior
-                        d3.event.preventDefault();
-                    }
 
                     force.start();
                 }
@@ -407,7 +331,7 @@ angular.module('grapheApp')
                     });
                 }
 
-                function keydown() {
+                /*function keydown() {
 
                     console.log('keydown');
 
@@ -430,7 +354,7 @@ angular.module('grapheApp')
                             break;
                         }
                     }
-                }
+                }*/
 
                 scope.$watch('width', redraw);
                 scope.$watch('height', redraw);
@@ -458,7 +382,7 @@ angular.module('grapheApp')
                         });
                     }
 
-                    console.log(scope.currentOption);
+                    console.log('currentOption: ' + scope.currentOption);
                 });
             }
         };
