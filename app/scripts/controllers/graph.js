@@ -9,15 +9,20 @@ angular.module('grapheApp')
     .controller('GraphCtrl', function ($scope, $window, GraphService) {
         'use strict';
 
-        $scope.h = GraphService.getGraph(5);
+        var numberOfNodes = 4 + Math.floor(Math.random() * 12);
 
-        $scope.h.addEdge(0,1);
-        $scope.h.addEdge(1,2);
-        $scope.h.addEdge(2,3);
-        $scope.h.addEdge(3,4);
-        $scope.h.addEdge(4,0);
-        $scope.h.addEdge(0,3);
-        $scope.h.addEdge(4,2);
+        $scope.h = GraphService.getGraph(numberOfNodes);
+
+        var numberOfLinks = Math.floor( Math.random() * numberOfNodes );
+
+        for(var i = 0; i < numberOfNodes; i++){
+
+            var dest = Math.floor( Math.random() * numberOfNodes );
+            $scope.h.addEdge(i,dest);
+
+        }
+
+
 
         $scope.graph = {
             nodes:  $scope.h.getNodes(),
@@ -70,6 +75,8 @@ angular.module('grapheApp')
         $scope.currentOption = $scope.fabOptions.add;
         $scope.isOpen = false;
         $scope.hideFab = false;
+
+
 
         $scope.setSelectedOption = function (currentAction) {
             $scope.setCurrentOption(currentAction);
