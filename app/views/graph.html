@@ -34,9 +34,10 @@
         </div>
 
     </div>
-    <div flex>
+    <div flex style="height: 100%">
 
-        <md-tabs class="md-primary md-hue-1" md-align-tabs="top">
+
+        <md-tabs class="md-primary md-hue-1" md-align-tabs="top" flex >
             <md-tab id="tab1">
                 <md-tab-label>Graph info</md-tab-label>
                 <md-tab-body>
@@ -65,7 +66,8 @@
                 <md-tab-label>Adjacency matrix</md-tab-label>
                 <md-tab-body>
 
-                    <table class="adjacency-matrix" ng-show="h.getAdjacentMatrix().length > 0">
+                  <!-- FIXME: very slow performance on nested array iteration -->
+                  <!--  <table class="adjacency-matrix" ng-show="h.getAdjacentMatrix().length > 0">
                         <tr>
                             <th>&nbsp;</th>
                             <th ng-repeat="i in h.getAdjacentMatrix()" ng-mouseenter="selectNode($index)"
@@ -77,12 +79,13 @@
                             <td ng-mouseenter="selectNode($index)" ng-mouseleave="deselectNode($index)">
                                 {{graph.nodes[$index].label}}
                             </td>
-                            <td ng-repeat="j in i" ng-class="{'selected-cell': $index == selectedColumn || $parent.$index == selectedRow}"
+                            <td ng-repeat="j in i track by index" ng-class="{'selected-cell': $index == selectedColumn || $parent.$index == selectedRow}"
                                 ng-mouseenter="selectCell($parent.$index, $index)" ng-mouseleave="deselectCell()">
                                 <a>{{j.value}}</a>
                             </td>
                         </tr>
-                    </table>
+                    </table>-->
+
 
 
                 </md-tab-body>
@@ -92,8 +95,9 @@
                 <md-tab-label>Adjacency list</md-tab-label>
                 <md-tab-body>
 
-                    <p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">
-                        <span ng-repeat="nodeDest in nodeOrigin">
+                  <!-- FIXME: very slow performance on nested array iteration -->
+                  <!--  <p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">
+                        <span ng-repeat="nodeDest in nodeOrigin track by index">
                             <span ng-if="!$first"><md-icon>arrow_forward</md-icon></span>
                                 <span class="node-list"  ng-class="{'hover-node-list' : hover}"
                                       ng-mouseenter="hover = true;  selectNode(nodeDest.index)"
@@ -101,7 +105,7 @@
                                     {{nodeDest.label}}
                                 </span>
                             </span>
-                    </p>
+                    </p>-->
 
 
 

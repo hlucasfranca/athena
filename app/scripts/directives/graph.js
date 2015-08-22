@@ -30,6 +30,19 @@ angular.module('grapheApp')
                     .attr('pointer-events', 'all')
                     .call(d3.behavior.zoom().on('zoom', rescale));
 
+                outer.append('defs').append('marker')
+                    .attr('id', 'arrow')
+                    .attr('viewBox', '0 -5 10 10')
+                    .attr('refX', 25)
+                    .attr('refY', 0)
+                    .attr('markerWidth', 6)
+                    .attr('markerHeight', 6)
+                    .attr('orient', 'auto')
+                    .append('path')
+                    .attr('d', 'M0,-5L10,0L0,5 L10,0 L0, -5')
+                    .style('stroke', 'black')
+                    .style('opacity', '1');
+
                 var xLines, yLines;
                 var gridSize = 20;
                 var gridWidth = 2000;
@@ -124,15 +137,18 @@ angular.module('grapheApp')
 
                 redraw();
 
+                // FIXME: tick function running every time is causing performance issues.
                 function tick() {
-                    link.attr('x1', function(d) { return d.source.x; })
-                        .attr('y1', function(d) { return d.source.y; })
-                        .attr('x2', function(d) { return d.target.x; })
-                        .attr('y2', function(d) { return d.target.y; });
+                    node.each(collide(0.5)); //Added
 
                     node.attr('transform', function (d) {
                         return 'translate(' + d.x + ',' + d.y + ')';
                     });
+
+                    link.attr('x1', function(d) { return d.source.x; })
+                        .attr('y1', function(d) { return d.source.y; })
+                        .attr('x2', function(d) { return d.target.x; })
+                        .attr('y2', function(d) { return d.target.y; });
                 }
 
                 /**
@@ -317,6 +333,41 @@ angular.module('grapheApp')
                     });
 
                     force.start();
+
+                }
+
+                var padding = 1, // separation between circles
+                    radius=15;
+                function collide(alpha) {
+
+                    var quadtree = d3.geom.quadtree(scope.h.nodeList);
+
+                    return function(d) {
+                        var rb = 2*radius + padding,
+                            nx1 = d.x - rb,
+                            nx2 = d.x + rb,
+                            ny1 = d.y - rb,
+                            ny2 = d.y + rb;
+
+                        quadtree.visit(function(quad, x1, y1, x2, y2) {
+                            if (quad.point && (quad.point !== d)) {
+                                var x = d.x - quad.point.x,
+                                    y = d.y - quad.point.y,
+                                    l = Math.sqrt(x * x + y * y);
+                                if (l < rb) {
+                                    l = (l - rb) / l * alpha;
+
+                                    x *= l;
+                                    y *= l;
+                                    d.x -= x;
+                                    d.y -= y;
+                                    quad.point.x += x;
+                                    quad.point.y += y;
+                                }
+                            }
+                            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                        });
+                    };
                 }
 
                /* function spliceLinksForNode(node) {

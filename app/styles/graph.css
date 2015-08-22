@@ -94,3 +94,14 @@ table.adjacency-matrix,
 .node text{
     fill: black;
 }
+
+
+md-tabs {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.link{
+    marker-end: url(#arrow);
+}
