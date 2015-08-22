@@ -187,7 +187,7 @@ angular.module('grapheApp')
                     nodeGroup
                         .attr('class', 'node')
                         .append('circle')
-                        .attr('fill', function(d){ return d.color; })
+                       // .attr('fill', function(d){ return d.color; })
                         .attr('r', 1)
                         .transition()
                         .duration(750)
@@ -238,7 +238,7 @@ angular.module('grapheApp')
                     var nodeLabel = nodeGroup
                         .append('text')
                         .attr('dx', 0 )
-                        .attr('fill', 'white')
+                        //.attr('fill', 'white')
                         .attr('text-anchor', 'middle')
                         .attr('dy', '.35em')
                         .text(function(d){
@@ -262,12 +262,10 @@ angular.module('grapheApp')
                         d3.event.stopPropagation(); // silence other listeners
 
                         if(scope.getCurrentOption() === scope.fabOptions.remove){
-                            scope.$apply(function () {
-                                console.log(d);
-                                scope.h.removeNode(d);
-                            });
-                            scope.showSimpleToast('node removed!');
+                            scope.h.removeNode(d);
+                            scope.$apply();
                             scope.updateNodeCount();
+                            scope.showSimpleToast('node removed!');
                         }
 
                         else if(scope.getCurrentOption() === scope.fabOptions.info){
@@ -321,7 +319,7 @@ angular.module('grapheApp')
                     force.start();
                 }
 
-                function spliceLinksForNode(node) {
+               /* function spliceLinksForNode(node) {
                     var toSplice = links.filter(
                         function (l) {
                             return (l.source === node) || (l.target === node);
@@ -329,7 +327,7 @@ angular.module('grapheApp')
                     toSplice.map(function (l) {
                         links.splice(links.indexOf(l), 1);
                     });
-                }
+                }*/
 
                 /*function keydown() {
 

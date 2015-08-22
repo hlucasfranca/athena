@@ -65,12 +65,36 @@ angular.module('grapheApp')
             };
 
             this.removeNode = function (d){
+
+                var self = this;
+
+                // updates the adjacency list
+                this.adjacentList.forEach(function(element, index){
+
+                    // get the node
+                    var toSplice = self.adjacentList[index].filter( function (data) {
+                            return d.index === data.index;
+                        });
+
+                    // remove the node
+                    toSplice.map(function (data) {
+                        self.adjacentList[index].splice(self.adjacentList[index].indexOf(data), 1);
+                    });
+                });
+
                 this.adjacentList.splice(d.index,1);
+
                 this.marked.splice(d.index,1);
                 this.nodeList.splice(d.index,1);
                 this.removeLinksForNode(d);
                 this.nodes--;
-                this.updateAdjacencyMatrix();
+
+                // updates the adjacency matrix
+                this.matrix.forEach(function(element, index){
+                    self.matrix[index].splice(d.index,1);
+                });
+
+                this.matrix.splice(d.index,1);
             };
 
             this.getLinks = function () {
@@ -97,10 +121,10 @@ angular.module('grapheApp')
                 this.adjacentList[this.nodes].push(newNode);
                 this.marked[this.nodes] = false;
                 this.nodes++;
-                this.updateAdjacencyMatrix();
+                this.fillAdjacencyMatrix();
             };
 
-            this.updateAdjacencyMatrix = function () {
+            this.fillAdjacencyMatrix = function () {
 
                 var self = this;
 
@@ -143,7 +167,7 @@ angular.module('grapheApp')
                 });
 
                 this.edges++;
-                this.updateAdjacencyMatrix();
+                this.fillAdjacencyMatrix();
             };
 
             this.getNodes = function () {
@@ -164,6 +188,18 @@ angular.module('grapheApp')
                    output += '\n';
                 }
                 console.log(output);
+            };
+
+
+            this.spliceLinksForNode = function (node) {
+                var toSplice = this.linkList.filter(
+                    function (l) {
+                        return (l.source === node) || (l.target === node);
+                    });
+
+                toSplice.map(function (l) {
+                    this.linkList.splice(this.linkList.indexOf(l), 1);
+                });
             };
 
             this.depthFirstSearch = function (v) {

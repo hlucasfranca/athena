@@ -84,3 +84,13 @@ table.adjacency-matrix,
     padding: 5px;
     text-align: center;
 }
+
+.node circle{
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+.node text{
+    fill: black;
+}
