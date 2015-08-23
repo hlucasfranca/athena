@@ -1,0 +1,20 @@
+'use strict';
+
+describe('Directive: steps', function () {
+
+  // load the directive's module
+  beforeEach(module('grapheApp'));
+
+  var element,
+    scope;
+
+  beforeEach(inject(function ($rootScope) {
+    scope = $rootScope.$new();
+  }));
+
+  it('should make hidden element visible', inject(function ($compile) {
+    element = angular.element('<steps></steps>');
+    element = $compile(element)(scope);
+    expect(element.text()).toBe('this is the steps directive');
+  }));
+});

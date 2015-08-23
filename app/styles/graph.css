@@ -105,3 +105,16 @@ md-tabs {
 .link{
     marker-end: url(#arrow);
 }
+
+md-tab-content,
+md-tab-content > div{
+    height: 100%;
+}
+
+.line-hover{
+    background-color: darkgray;
+    transition:0.5s linear all;
+    cursor: default;
+}
+
+

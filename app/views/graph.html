@@ -7,6 +7,9 @@
 
 </style>
 <div layout="row" layout-sm="column" layout-fill style="height: 100%">
+
+
+
     <div flex id="graphStageDiv" style="position: relative">
         <graph></graph>
 
@@ -33,8 +36,10 @@
             </md-fab-speed-dial>
         </div>
 
+
     </div>
     <div flex style="height: 100%">
+
 
 
         <md-tabs class="md-primary md-hue-1" md-align-tabs="top" flex >
@@ -96,16 +101,37 @@
                 <md-tab-body>
 
                   <!-- FIXME: very slow performance on nested array iteration -->
-                  <!--  <p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">
-                        <span ng-repeat="nodeDest in nodeOrigin track by index">
-                            <span ng-if="!$first"><md-icon>arrow_forward</md-icon></span>
-                                <span class="node-list"  ng-class="{'hover-node-list' : hover}"
-                                      ng-mouseenter="hover = true;  selectNode(nodeDest.index)"
-                                      ng-mouseleave="hover = false; deselectNode(nodeDest.index)">
-                                    {{nodeDest.label}}
-                                </span>
-                            </span>
-                    </p>-->
+                  <!--<p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">-->
+                        <!--<span ng-repeat="nodeDest in nodeOrigin track by index">-->
+                            <!--<span ng-if="!$first"><md-icon>arrow_forward</md-icon></span>-->
+                                <!--<span class="node-list"  ng-class="{'hover-node-list' : hover}"-->
+                                      <!--ng-mouseenter="hover = true;  selectNode(nodeDest.index)"-->
+                                      <!--ng-mouseleave="hover = false; deselectNode(nodeDest.index)">-->
+                                    <!--{{nodeDest.label}}-->
+                                <!--</span>-->
+                            <!--</span>-->
+                    <!--</p>-->
+
+
+                    <p ng-repeat="adjacent in h.getAdjacentList()" ng-class="{'line-hover': hover}"
+                       ng-mouseenter="selectNode(adjacent[0].index); hover = true;"
+                       ng-mouseleave="deselectNode(adjacent[0].index); hover = false">
+                        {{adjacent[0].label}}
+
+
+
+                    </p>
+
+
+
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab id="tab4" ng-style="'height:100%;bottom:48px;'">
+                <md-tab-label>Algorithm steps</md-tab-label>
+                <md-tab-body>
+
+                    <steps></steps>
 
 
 
@@ -115,6 +141,7 @@
 
 
     </div>
+
 </div>
 
 

@@ -57,7 +57,6 @@ angular.module('grapheApp')
                         .attr('class', 'x axis')
                         .selectAll('line')
                         .data(d3.range(0, gridWidth, gridSize))
-                        //.data(d3.range(0, scope.width, 10))
                         .enter().append('line')
                         .attr('x1', function(d) { return d; })
                         .attr('y1', 0)
@@ -94,8 +93,6 @@ angular.module('grapheApp')
                     .attr('height', gridHeight)
                     .on('dblclick.zoom', null)
                     .on('click', clickedOnStage)
-                    // relative to the 'outer' container
-                    //})
                     .append('svg:g');
 
                 // TODO: infinite grid
@@ -336,23 +333,26 @@ angular.module('grapheApp')
 
                 }
 
-                var padding = 1, // separation between circles
-                    radius=15;
+                    // separation between circles
+                var padding = 2,
+                    // TODO: replace by node radius
+                    radius = 15;
+
                 function collide(alpha) {
 
                     var quadtree = d3.geom.quadtree(scope.h.nodeList);
 
                     return function(d) {
-                        var rb = 2*radius + padding,
+                        var rb = 2 * radius + padding,
                             nx1 = d.x - rb,
                             nx2 = d.x + rb,
                             ny1 = d.y - rb,
                             ny2 = d.y + rb;
 
-                        quadtree.visit(function(quad, x1, y1, x2, y2) {
-                            if (quad.point && (quad.point !== d)) {
-                                var x = d.x - quad.point.x,
-                                    y = d.y - quad.point.y,
+                        quadtree.visit(function(node, x1, y1, x2, y2) {
+                            if (node.point && (node.point !== d)) {
+                                var x = d.x - node.point.x,
+                                    y = d.y - node.point.y,
                                     l = Math.sqrt(x * x + y * y);
                                 if (l < rb) {
                                     l = (l - rb) / l * alpha;
@@ -361,49 +361,14 @@ angular.module('grapheApp')
                                     y *= l;
                                     d.x -= x;
                                     d.y -= y;
-                                    quad.point.x += x;
-                                    quad.point.y += y;
+                                    node.point.x += x;
+                                    node.point.y += y;
                                 }
                             }
                             return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
                         });
                     };
                 }
-
-               /* function spliceLinksForNode(node) {
-                    var toSplice = links.filter(
-                        function (l) {
-                            return (l.source === node) || (l.target === node);
-                        });
-                    toSplice.map(function (l) {
-                        links.splice(links.indexOf(l), 1);
-                    });
-                }*/
-
-                /*function keydown() {
-
-                    console.log('keydown');
-
-                    if (!selected_node && !selected_link){
-                        return;
-                    }
-                    switch (d3.event.keyCode) {
-                        case 8: // backspace
-                        case 46: { // delete
-                            if (selected_node) {
-                                nodes.splice(nodes.indexOf(selected_node), 1);
-                                spliceLinksForNode(selected_node);
-                            }
-                            else if (selected_link) {
-                                links.splice(links.indexOf(selected_link), 1);
-                            }
-                            selected_link = null;
-                            selected_node = null;
-                            redraw();
-                            break;
-                        }
-                    }
-                }*/
 
                 scope.$watch('width', redraw);
                 scope.$watch('height', redraw);

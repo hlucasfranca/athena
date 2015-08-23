@@ -9,20 +9,22 @@ angular.module('grapheApp')
     .controller('GraphCtrl', function ($scope, $window, GraphService) {
         'use strict';
 
-        var numberOfNodes = 4 + Math.floor(Math.random() * 12);
+        var numberOfNodes = 5;
 
         $scope.h = GraphService.getGraph(numberOfNodes);
 
-        var numberOfLinks = Math.floor( Math.random() * numberOfNodes );
+        //var numberOfLinks = Math.floor( Math.random() * numberOfNodes );
 
         for(var i = 0; i < numberOfNodes; i++){
 
-            var dest = Math.floor( Math.random() * numberOfNodes );
-            $scope.h.addEdge(i,dest);
+            for( var j = 0; j < numberOfNodes; j++){
+                if(i !== j) {
+                    $scope.h.addEdge(i,j);
+                }
+            }
+
 
         }
-
-
 
         $scope.graph = {
             nodes:  $scope.h.getNodes(),
@@ -45,9 +47,16 @@ angular.module('grapheApp')
         $scope.selectNode = function (id){
             d3.select('#node-' + id + ' circle')
                 .transition()
-                .duration(750)
-                .ease('elastic')
-                .attr('r', 50);
+                .duration(250)
+                .ease('linear')
+                .style('fill', '#000000')
+                .attr('r', 20);
+
+            d3.select('#node-' + id + ' text')
+                .transition()
+                .duration(250)
+                .ease('linear')
+                .style('fill', '#ffffff');
 
             console.log(id);
         };
@@ -55,9 +64,16 @@ angular.module('grapheApp')
         $scope.deselectNode = function (id){
             d3.select('#node-' + id + ' circle')
                 .transition()
-                .duration(100)
+                .duration(250)
                 .ease('linear')
+                .style('fill', '#ffffff')
                 .attr('r', 15);
+
+            d3.select('#node-' + id + ' text')
+                .transition()
+                .duration(250)
+                .ease('linear')
+                .style('fill', '#000000');
 
             console.log('deselected:' + id);
         };
@@ -125,4 +141,66 @@ angular.module('grapheApp')
             'AngularJS',
             'Karma'
         ];
+
+        // TODO: replace by node itself, remove the 'marked' array
+
+        $scope.depthInstructions = [
+            'procedure DFS(G,v):',
+            'label v as discovered',
+            'for all edges from v to w in G.adjacentEdges(v) do',
+            'if vertex w is not labeled as discovered then',
+            'recursively call DFS(G,w)',
+            'end of algorithm'
+        ];
+
+        var currentInstruction = 0;
+
+        /*
+         A recursive implementation of DFS (Cormen)
+
+         1  procedure DFS(G,v):
+         2      label v as discovered
+         3      for all edges from v to w in G.adjacentEdges(v) do
+         4          if vertex w is not labeled as discovered then
+         5              recursively call DFS(G,w)
+
+         */
+        $scope.steps = [];
+
+        $scope.selectedStep = -1;
+
+        $scope.selectStep = function(step){
+            $scope.selectedStep = step;
+        };
+
+        $scope.runAlg = function(){
+            $scope.steps = [];
+            $scope.depthFirstSearch($scope.h.getNodes()[0]);
+            console.log($scope.steps);
+            $scope.steps.push({ instruction: 5 });
+        };
+
+        // FIXME: recursive execution order
+        // TODO: move to a service (algorithm service), dfs(G,v)
+        $scope.depthFirstSearch = function (visited) {
+
+            $scope.steps.push({ instruction: 0, visited: visited });
+
+            visited.marked = true;
+
+            $scope.steps.push({ instruction: 1, visited: visited });
+
+            $scope.h.adjacentList[visited.index].forEach(function(node){
+                $scope.steps.push({ instruction: 2, visited: visited });
+                $scope.steps.push({ instruction: 3, visited: visited });
+
+                console.log(visited.index);
+
+                if (!node.marked) {
+                    $scope.steps.push({ instruction: 4, visited: visited });
+                    $scope.depthFirstSearch(node);
+                }
+            });
+
+        };
     });

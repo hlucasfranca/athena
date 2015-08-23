@@ -84,7 +84,7 @@ angular.module('grapheApp')
 
                 this.adjacentList.splice(d.index,1);
 
-                this.marked.splice(d.index,1);
+                //this.marked.splice(d.index,1);
                 this.nodeList.splice(d.index,1);
                 this.removeLinksForNode(d);
                 this.nodes--;
@@ -113,18 +113,19 @@ angular.module('grapheApp')
                     fixed: true,
                     color: getColor(),
                     label: getLetter(),
-                    index: len
+                    index: len,
+                    marked: false
                 };
 
                 this.nodeList.push(newNode);
                 this.adjacentList[this.nodes] = [];
-                this.adjacentList[this.nodes].push(newNode);
-                this.marked[this.nodes] = false;
+                //this.adjacentList[this.nodes].push(newNode);
+                //this.marked[this.nodes] = false;
                 this.nodes++;
-                this.fillAdjacencyMatrix();
+                this.updateAdjacencyMatrix();
             };
 
-            this.fillAdjacencyMatrix = function () {
+            this.updateAdjacencyMatrix = function () {
 
                 var self = this;
 
@@ -158,62 +159,41 @@ angular.module('grapheApp')
 
             this.addEdge = function (v, w) {
 
-                this.adjacentList[v].push(this.nodeList[w]);
-                this.adjacentList[w].push(this.nodeList[v]);
+                if($.inArray(this.nodeList[w], this.adjacentList[v]) === -1){
+                    this.adjacentList[v].push(this.nodeList[w]);
 
-                this.linkList.push({
-                    source: this.nodeList[v],
-                    target: this.nodeList[w]
-                });
+                    this.linkList.push({
+                        source: this.nodeList[v],
+                        target: this.nodeList[w]
+                    });
 
-                this.edges++;
-                this.fillAdjacencyMatrix();
+                    this.edges++;
+                    this.updateAdjacencyMatrix();
+                }
+
+                /*if($.inArray(this.nodeList[v], this.adjacentList[w]) === -1){
+                    this.adjacentList[w].push(this.nodeList[v]);
+                }*/
+
+
             };
 
             this.getNodes = function () {
                 return this.nodeList;
             };
 
-            this.showGraph = function () {                
-                var output = "";
-
-                for (var i = 0; i < this.nodes; ++i) {
-                    output += i + " -> ";
-
-                    for (var j = 0; j < this.nodes; ++j) {
-                        if (this.adjacentList[i][j] !== undefined) {
-                            output += this.adjacentList[i][j] + ' ';
-                        }
-                    }
-                   output += '\n';
-                }
-                console.log(output);
-            };
-
-
             this.spliceLinksForNode = function (node) {
+
+                var self = this;
+
                 var toSplice = this.linkList.filter(
-                    function (l) {
-                        return (l.source === node) || (l.target === node);
+                    function (link) {
+                        return (link.source === node) || (link.target === node);
                     });
 
-                toSplice.map(function (l) {
-                    this.linkList.splice(this.linkList.indexOf(l), 1);
+                toSplice.map(function (link) {
+                    self.linkList.splice(self.linkList.indexOf(link), 1);
                 });
-            };
-
-            this.depthFirstSearch = function (v) {
-                this.marked[v] = true;
-
-                if (this.adjacentList[v] !== undefined) {
-                    console.log("Visited vertex: " + v);
-                }
-
-                for (var i = 0; i < this.adjacentList[v].length; i++) {
-                    if (!this.marked[i]) {
-                        this.depthFirstSearch(i);
-                    }
-                }
             };
 
             /**
@@ -225,13 +205,11 @@ angular.module('grapheApp')
             this.nodeList = [];
             this.linkList = [];
             this.matrix = [];
-            this.marked = [];
+            //this.marked = [];
 
             for (var i = 0; i < v; i++) {
-                this.adjacentList[i] = [];
-                this.adjacentList[i].push("");
                 this.addNode(Math.random() * 400,Math.random() * 400);
-                this.marked[i] = false;
+                //this.marked[i] = false;
             }
         }
 
