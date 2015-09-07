@@ -182,7 +182,8 @@ module.exports = function (grunt) {
         // Automatically inject Bower components into the app
         wiredep: {
             app: {
-                src: ['<%= yeoman.app %>/index.html']
+                src: ['<%= yeoman.app %>/index.html'],
+                ignorePath:  /\.\.\//
             },
             test: {
                 devDependencies: true,
@@ -437,7 +438,7 @@ module.exports = function (grunt) {
         'wiredep',
         'useminPrepare',
         'concurrent:dist',
-        'autoprefixer',
+        //'autoprefixer',
         'concat',
         'ngAnnotate',
         'copy:dist',

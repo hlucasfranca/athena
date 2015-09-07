@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name grapheApp.controller:MenuCtrl
+ * @name app.controller:MenuCtrl
  * @description
  * # MenuCtrl
- * Controller of the grapheApp
+ * Controller of the app
  */
-angular.module('grapheApp')
+angular.module('graphe')
     .controller('MenuCtrl', ['$scope','$rootScope', function ($scope, $rootScope) {
 
         this.option = 1;

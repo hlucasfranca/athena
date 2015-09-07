@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name grapheApp.controller:ContactCtrl
+ * @name app.controller:ContactCtrl
  * @description
  * # ContactCtrl
- * Controller of the grapheApp
+ * Controller of the app
  */
-angular.module('grapheApp')
+angular.module('graphe')
     .controller('ContactCtrl', function ($scope) {
         $scope.awesomeThings = [
             'HTML5 Boilerplate',

@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Directive: graph', function () {
+describe('Directive: graphContainer', function () {
 
   // load the directive's module
-  beforeEach(module('app'));
+  beforeEach(module('grapheApp'));
 
   var element,
     scope;
@@ -13,8 +13,8 @@ describe('Directive: graph', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<graph></graph>');
+    element = angular.element('<graph-container></graph-container>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the graph directive');
+    expect(element.text()).toBe('this is the graphContainer directive');
   }));
 });

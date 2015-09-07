@@ -15,13 +15,13 @@
 
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/material_icons.css" />
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/graph.css">
+    <link rel="stylesheet" href="scripts/main/material_icons.css" />
+    <link rel="stylesheet" href="scripts/main/main.css">
+    <link rel="stylesheet" href="views/graph.css">
     <!-- endbuild -->
 
 </head>
-<body ng-app="grapheApp" ng-controller="MainCtrl" layout="row" class="md-body-1">
+<body ng-app="graphe" ng-controller="MainCtrl" layout="row" class="md-body-1">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -109,15 +109,51 @@
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script src="scripts/app.js"></script>
-<script src="scripts/controllers/main.js"></script>
-<script src="scripts/controllers/about.js"></script>
-<script src="scripts/controllers/graph.js"></script>
-<script src="scripts/directives/graph.js"></script>
-<script src="scripts/controllers/contact.js"></script>
-<script src="scripts/controllers/menu.js"></script>
-<script src="scripts/services/graphservice.js"></script>
-<script src="scripts/directives/steps.js"></script>
+<script src="scripts/core/core.module.js"></script>
+
+<script src="scripts/algorithms/algorithms.module.js"></script>
+<script src="scripts/algorithms/dfs.js"></script>
+
+<script src="scripts/fab/fab.module.js"></script>
+<script src="scripts/fab/fab.js"></script>
+
+<script src="scripts/model/model.module.js"></script>
+<script src="scripts/model/labels.js"></script>
+<script src="scripts/model/colors.js"></script>
+<script src="scripts/model/model.js"></script>
+
+
+<script src="scripts/directives/directives.module.js"></script>
+<script src="scripts/directives/gpAlgorithmPlayer.js"></script>
+<script src="scripts/directives/gpStepList.js"></script>
+<script src="scripts/directives/gpContainer.js"></script>
+<script src="scripts/directives/gpStage.js"></script>
+<script src="scripts/directives/gpInfo.js"></script>
+<script src="scripts/directives/gpAdjacentList.js"></script>
+<script src="scripts/directives/gpAdjacentMatrix.js"></script>
+
+<script src="scripts/main/main.js"></script>
+<script src="scripts/about/about.js"></script>
+<script src="scripts/contact/contact.js"></script>
+<script src="scripts/sidenav/menu.js"></script>
+
+
+
 <!-- endbuild -->
 
 </body>

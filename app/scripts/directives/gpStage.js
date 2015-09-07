@@ -4,17 +4,21 @@
  * @description
  * # graph
  */
-angular.module('grapheApp')
-    .directive('graph', function () {
+angular.module('graphe.directives')
+    .directive('gpStage', function () {
         'use strict';
         return {
-            template: '<div></div>',
+            templateUrl: 'scripts/directives/gpStage.html',
             restrict: 'E',
+            replace: true,
+            require: '^gpContainer',
+            controller: 'gpStageCtrl',
 
-            link: function postLink(scope, element, attrs) {
+            link: function postLink(scope, element, attrs, gpContainerCtrl) {
 
                 // clean element content
-                angular.element(element[0]).empty();
+
+                //angular.element(element[0]).empty();
 
                 // mouse event vars
                 var selectedNode = null,
@@ -25,8 +29,8 @@ angular.module('grapheApp')
                 // init svg
                 var outer = d3.select(element[0])
                     .append('svg:svg')
-                    .attr('width', scope.width)
-                    .attr('height', scope.height)
+                    .attr('width', scope.stageWidth)
+                    .attr('height', scope.stageHeight)
                     .attr('pointer-events', 'all')
                     .call(d3.behavior.zoom().on('zoom', rescale));
 
@@ -40,7 +44,8 @@ angular.module('grapheApp')
                     .attr('orient', 'auto')
                     .append('path')
                     .attr('d', 'M0,-5L10,0L0,5 L10,0 L0, -5')
-                    .style('stroke', 'black')
+                    .classed('marker',true)
+                    //.style('stroke', 'black')
                     .style('opacity', '1');
 
                 var xLines, yLines;
@@ -79,7 +84,7 @@ angular.module('grapheApp')
                     if(scope.getCurrentOption() === scope.fabOptions.add) {
                         var coordinates = d3.mouse(d3.event.target);
 
-                        scope.h.addNode(coordinates[0], coordinates[1]);
+                        scope.graph.addNode(coordinates[0], coordinates[1]);
                         scope.updateNodeCount();
 
                         scope.$apply();
@@ -106,20 +111,9 @@ angular.module('grapheApp')
                 // init force layout
                 var force = d3.layout.force()
                     .size([scope.width, scope.height])
-                    .nodes(scope.graph.nodes)
-                    .links(scope.graph.links)
-                    //.linkDistance(50)
-                    //.gravity(0)
-                    //.charge(-200)
+                    .nodes(scope.graph.nodeList)
+                    .links(scope.graph.linkList)
                     .on('tick', tick);
-
-                // line displayed when dragging new nodes
-                var drag_line = vis.append('line')
-                    .attr('class', 'drag_line')
-                    .attr('x1', 0)
-                    .attr('y1', 0)
-                    .attr('x2', 0)
-                    .attr('y2', 0);
 
                 // get layout properties
                 var nodes = force.nodes(),
@@ -161,14 +155,17 @@ angular.module('grapheApp')
                 // redraw force layout
                 function redraw() {
                     outer
-                        .attr('width' , scope.width)
-                        .attr('height', scope.height);
+                        .attr('width' , scope.stageWidth)
+                        .attr('height', scope.stageHeight);
 
                     link = link.data(links);
                     //drawGrid();
 
                     link.enter().append('line')
                         .attr('class', 'link')
+                        .attr('id', function(d){
+                            return 'link_' + d.source.label + '_' + d.target.label;
+                        })
                     //    .on('mousedown',mousedownlink)
                     ;
 
@@ -275,7 +272,7 @@ angular.module('grapheApp')
                         d3.event.stopPropagation(); // silence other listeners
 
                         if(scope.getCurrentOption() === scope.fabOptions.remove){
-                            scope.h.removeNode(d);
+                            scope.graph.removeNode(d);
                             scope.$apply();
                             scope.updateNodeCount();
                             scope.showSimpleToast('node removed!');
@@ -313,7 +310,7 @@ angular.module('grapheApp')
                             }
                             else if(scope.firstNode !== d){
                                 scope.$apply(function () {
-                                    scope.h.addEdge(scope.firstNode.index, d.index);
+                                    scope.graph.addEdge(scope.firstNode.index, d.index);
                                     delete scope.firstNode;
                                     scope.setMessage(null);
                                 });
@@ -340,7 +337,7 @@ angular.module('grapheApp')
 
                 function collide(alpha) {
 
-                    var quadtree = d3.geom.quadtree(scope.h.nodeList);
+                    var quadtree = d3.geom.quadtree(scope.graph.nodeList);
 
                     return function(d) {
                         var rb = 2 * radius + padding,
@@ -370,8 +367,8 @@ angular.module('grapheApp')
                     };
                 }
 
-                scope.$watch('width', redraw);
-                scope.$watch('height', redraw);
+                scope.$watch('stageWidth', redraw);
+                scope.$watch('stageHeight', redraw);
                 scope.$watch('graph', redraw, true);
                 scope.$watch('currentOption', function () {
                     if(scope.currentOption === scope.fabOptions.select) {
@@ -400,4 +397,72 @@ angular.module('grapheApp')
                 });
             }
         };
+    })
+    .controller('gpStageCtrl',function ($scope) {
+        'use strict';
+
+        $scope.selectNode = selectNode;
+        $scope.selectLink = selectLink;
+        $scope.deselectLink = deselectLink;
+        $scope.deselectNode = deselectNode;
+
+
+        function selectNode (id) {
+            d3.select('#node-' + id + ' circle')
+                .transition()
+                .duration(250)
+                //.ease('linear')
+                .style('fill', '#000000')
+                .attr('r', 20);
+
+            d3.select('#node-' + id + ' text')
+                .transition()
+                .duration(250)
+                //.ease('linear')
+                .style('fill', '#ffffff');
+
+            console.log(id);
+        }
+
+        function selectLink (source, target){
+            var link = '#link_' + source + '_'+ target;
+            d3.select(link)
+                .transition()
+                .duration(250)
+                //.ease('linear')
+                .style('stroke', 'red')
+                //.style('stroke-width',5);
+
+            console.log('visiting:' + link);
+        }
+
+        function deselectLink (source, target){
+            var link = '#link_' + source + '_'+ target;
+            d3.select(link)
+                .transition()
+                .duration(250)
+                //.ease('linear')
+                .style('stroke', 'black')
+            //.style('stroke-width',5);
+
+            console.log('exiting link :' + link);
+        }
+
+        function deselectNode (id){
+            d3.select('#node-' + id + ' circle')
+                .transition()
+                .duration(250)
+                .ease('linear')
+                .style('fill', '#ffffff')
+                .attr('r', 15);
+
+            d3.select('#node-' + id + ' text')
+                .transition()
+                .duration(250)
+                .ease('linear')
+                .style('fill', '#000000');
+
+            console.log('deselected:' + id);
+        }
+
     });

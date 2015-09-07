@@ -3,7 +3,7 @@
 describe('Directive: steps', function () {
 
   // load the directive's module
-  beforeEach(module('grapheApp'));
+  beforeEach(module('app'));
 
   var element,
     scope;

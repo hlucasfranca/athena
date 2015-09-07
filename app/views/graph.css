@@ -31,14 +31,15 @@
     pointer-events: none;
 }
 
-.link {
+.link,
+.marker {
     stroke: #434343;
     stroke-width: 2;
-    cursor: crosshair;
 }
 
 .link_selected {
     stroke: #4494ff;
+    stroke-width: 2;
 
 }
 
@@ -71,7 +72,7 @@ table.adjacency-matrix,
     font-family: "Bookman", Georgia, "Times New Roman", serif;
 }
 
-.hover-node-list{
+.hover-node-list span.node-list{
     border: 1px solid black;
     background-color: #b3b3b3;
 }
@@ -103,7 +104,8 @@ md-tabs {
 }
 
 .link{
-    marker-end: url(#arrow);
+    marker-end: url(#arrow) #ff0000;
+
 }
 
 md-tab-content,

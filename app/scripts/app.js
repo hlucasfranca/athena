@@ -2,21 +2,19 @@
 
 /**
  * @ngdoc overview
- * @name grapheApp
+ * @name app
  * @description
- * # grapheApp
+ * # app
  *
  * Main module of the application.
  */
 angular
-    .module('grapheApp', [
-        'ngAnimate',
-        'ngMaterial',
-        'ngCookies',
-        'ngResource',
-        'ngRoute',
-        'ngSanitize',
-        'ngTouch'
+    .module('graphe', [
+        'graphe.core',
+        'graphe.algorithms',
+        'graphe.directives',
+        'graphe.fab',
+        'graphe.model'
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -27,7 +25,7 @@ angular
             })
             .when('/graph', {
                 templateUrl: 'views/graph.html',
-                controller: 'GraphCtrl',
+                //controller: 'GraphCtrl',
                 index: 2
             })
 

@@ -1,148 +1,57 @@
-<style type="text/css">
-    #graphpage.ng-scope {
-        height: 100%;
-        background-color: green;
-    }
-
-
-</style>
-<div layout="row" layout-sm="column" layout-fill style="height: 100%">
-
-
-
-    <div flex id="graphStageDiv" style="position: relative">
-        <graph></graph>
-
-        <div class="graphe-fab">
-            <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'" ng-hide="hideFab">
-                <md-fab-trigger>
-                    <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
-                        <md-icon>menu</md-icon>
-                    </md-button>
-                </md-fab-trigger>
-
-                <md-fab-actions>
-                    <div ng-repeat="option in fabOptions">
-                        <md-button class="md-fab md-mini " ng-click="setSelectedOption(option)"
-                                   style="background-color: {{option.color}}">
-                            <md-tooltip>
-                                {{option.name}}
-                            </md-tooltip>
-                            <md-icon>{{option.icon}}</md-icon>
-                        </md-button>
-                    </div>
-                </md-fab-actions>
-
-            </md-fab-speed-dial>
-        </div>
-
-
+<div layout="row" layout-sm="column" layout-fill style="height: 100%"  gp-container>
+    <div flex layout="column" style="height: 100%;" id="gp-stage-container">
+        <gp-stage></gp-stage>
     </div>
+
     <div flex style="height: 100%">
-
-
-
         <md-tabs class="md-primary md-hue-1" md-align-tabs="top" flex >
             <md-tab id="tab1">
                 <md-tab-label>Graph info</md-tab-label>
+
                 <md-tab-body>
-
-                    <table>
-                        <tr>
-                            <td class="md-body-2">Graph dimensions</td>
-                            <td>[{{width}}x{{height}}]</td>
-                        </tr>
-
-                        <tr>
-                            <td class="md-body-2">Number of nodes</td>
-                            <td>{{h.getNodes().length}}</td>
-                        </tr>
-
-                        <tr>
-                            <td class="md-body-2">Number of links</td>
-                            <td>{{h.getLinks().length}}</td>
-                        </tr>
-                    </table>
-
-
+                    <md-content>
+                        <gp-info></gp-info>
+                    </md-content>
                 </md-tab-body>
             </md-tab>
+
             <md-tab id="tab2">
-                <md-tab-label>Adjacency matrix</md-tab-label>
-                <md-tab-body>
-
-                  <!-- FIXME: very slow performance on nested array iteration -->
-                  <!--  <table class="adjacency-matrix" ng-show="h.getAdjacentMatrix().length > 0">
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th ng-repeat="i in h.getAdjacentMatrix()" ng-mouseenter="selectNode($index)"
-                                ng-mouseleave="deselectNode($index)" class="adjacency-repeat">
-                                {{graph.nodes[$index].label}}
-                            </th>
-                        </tr>
-                        <tr ng-repeat="i in h.getAdjacentMatrix()" class="adjacency-repeat">
-                            <td ng-mouseenter="selectNode($index)" ng-mouseleave="deselectNode($index)">
-                                {{graph.nodes[$index].label}}
-                            </td>
-                            <td ng-repeat="j in i track by index" ng-class="{'selected-cell': $index == selectedColumn || $parent.$index == selectedRow}"
-                                ng-mouseenter="selectCell($parent.$index, $index)" ng-mouseleave="deselectCell()">
-                                <a>{{j.value}}</a>
-                            </td>
-                        </tr>
-                    </table>-->
-
-
-
-                </md-tab-body>
-            </md-tab>
-
-            <md-tab id="tab3">
                 <md-tab-label>Adjacency list</md-tab-label>
                 <md-tab-body>
+                        <gp-adjascent-list></gp-adjascent-list>
+                    </md-tab-body>
+                </md-tab>
 
-                  <!-- FIXME: very slow performance on nested array iteration -->
-                  <!--<p ng-repeat="nodeOrigin in h.getAdjacentList()" ng-show="nodeOrigin.length > 0">-->
-                        <!--<span ng-repeat="nodeDest in nodeOrigin track by index">-->
-                            <!--<span ng-if="!$first"><md-icon>arrow_forward</md-icon></span>-->
-                                <!--<span class="node-list"  ng-class="{'hover-node-list' : hover}"-->
-                                      <!--ng-mouseenter="hover = true;  selectNode(nodeDest.index)"-->
-                                      <!--ng-mouseleave="hover = false; deselectNode(nodeDest.index)">-->
-                                    <!--{{nodeDest.label}}-->
-                                <!--</span>-->
-                            <!--</span>-->
-                    <!--</p>-->
-
-
-                    <p ng-repeat="adjacent in h.getAdjacentList()" ng-class="{'line-hover': hover}"
-                       ng-mouseenter="selectNode(adjacent[0].index); hover = true;"
-                       ng-mouseleave="deselectNode(adjacent[0].index); hover = false">
-                        {{adjacent[0].label}}
-
-
-
-                    </p>
-
-
-
-                </md-tab-body>
-            </md-tab>
-
-            <md-tab id="tab4" ng-style="'height:100%;bottom:48px;'">
-                <md-tab-label>Algorithm steps</md-tab-label>
+            <md-tab id="tab3">
+                <md-tab-label>Adjacency matrix</md-tab-label>
                 <md-tab-body>
+                    <gp-adjascent-matrix></gp-adjascent-matrix>
 
-                    <steps></steps>
+                    </md-tab-body>
+                </md-tab>
 
+            <md-tab id="tab4" >
+                <md-tab-label>Algorithms</md-tab-label>
+                <md-tab-body>
+                    <md-content>
 
+                    <md-select ng-model="selectedAlgorithm">
+                        <md-option ng-repeat="algorithm in algorithms">{{algorithm.name}}</md-option>
+
+                    </md-select>
+
+                    <gp-algorithm-player>
+                        <gp-step-list></gp-step-list>
+                    </gp-algorithm-player>
+                    </md-content>
 
                 </md-tab-body>
             </md-tab>
+
         </md-tabs>
-
-
     </div>
-
 </div>
+
 
 
 

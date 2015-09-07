@@ -1,0 +1,42 @@
+<div style="height: 100%" layout="column">
+
+    <md-content flex>
+        <h1>Algorithm steps</h1>
+
+        <div ng-repeat="step in depthInstructions" ng-class="{'line-hover': selectedStep === $index}">
+            {{$index + 1}}: {{step}}
+        </div>
+    </md-content>
+
+    <div style="height: 50%; overflow: auto" flex>
+        <md-button class="md-icon-button">
+            <md-icon>skip_previous</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button">
+            <md-icon>fast_rewind</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Play" ng-click="runAlg()">
+            <md-icon>play_arrow</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-click="nextStep()">
+            <md-icon>fast_forward</md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button">
+            <md-icon>skip_next</md-icon>
+        </md-button>
+
+    <!--<div ng-repeat="step in steps" ng-class="{'line-hover': hover}" ng-mouseenter="hover=true; selectStep(step.instruction); selectNode(step.visited.index)" ng-mouseleave="hover=false;deselectNode(step.visited.index)">
+        Node: {{step.visited.label}}
+    </div>-->
+
+        <div ng-show="result.length > 0">
+            <h1>Result</h1>
+            <p>{{result}}</p>
+        </div>
+
+    </div>
+</div>
