@@ -14,7 +14,8 @@ angular
         'graphe.algorithms',
         'graphe.directives',
         'graphe.fab',
-        'graphe.model'
+        'graphe.model',
+        'graphe.services'
     ])
     .config(function ($routeProvider) {
         $routeProvider

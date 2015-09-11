@@ -32,8 +32,7 @@
         <td colspan="2" class="md-body-2">E = {
         <span ng-repeat="edge in graph.getLinks()">
             <span ng-show="!$first">,</span>
-                <span ng-mouseenter="selectLink(edge.source.label, edge.target.label)"
-                      ng-mouseleave="deselectLink(edge.source.label, edge.target.label)">{ {{edge.source.label}}, {{edge.target.label}} }</span>
+                <span>{ {{edge.source.label}}, {{edge.target.label}} }</span>
         </span> }
         </td>
     </tr>

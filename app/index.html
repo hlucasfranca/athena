@@ -15,9 +15,10 @@
 
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="scripts/main/material_icons.css" />
-    <link rel="stylesheet" href="scripts/main/main.css">
-    <link rel="stylesheet" href="views/graph.css">
+    <link rel="stylesheet" href="styles/material_icons.css" />
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/graph.css">
+
     <!-- endbuild -->
 
 </head>
@@ -28,7 +29,7 @@
 
 
 <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
-            md-is-locked-open="{{false}}">
+            md-is-locked-open="{{false}}" md-swipe-left="toggleSidenav('left')">
 
     <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
         <div style="padding-left: 25px"><h3>Graphe</h3></div>
@@ -95,16 +96,16 @@
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/angular-aria/angular-aria.js"></script>
-<script src="bower_components/angular-material/angular-material.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -125,6 +126,9 @@
 
 <script src="scripts/app.js"></script>
 <script src="scripts/core/core.module.js"></script>
+
+<script src="scripts/services/services.module.js"></script>
+<script src="scripts/services/contextMessage.js"></script>
 
 <script src="scripts/algorithms/algorithms.module.js"></script>
 <script src="scripts/algorithms/dfs.js"></script>

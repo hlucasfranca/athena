@@ -119,7 +119,7 @@ angular.module('graphe.directives')
                 var nodes = force.nodes(),
                     links = force.links(),
                     // group all links
-                    link = vis.append('g').selectAll('.link'),
+                    link = vis.append('g').attr('id','link-group').selectAll('.link'),
                     // using svg group, make all nodes to be in front of links
                     node = vis.append('g').selectAll('.node');
 
@@ -425,15 +425,51 @@ angular.module('graphe.directives')
         }
 
         function selectLink (source, target){
-            var link = '#link_' + source + '_'+ target;
+
+
+            var link = d3.select('#link_' + source + '_'+ target).data()[0];
+
+            var points = [
+                [link.source.x,link.source.y],
+                [link.target.x,link.target.y]
+            ];
+
+            var line = d3.svg.line();
+
+            var svg = d3.select("svg #link-group")
+                    .datum(points);
+
+            /*svg.append("path")
+                .style("stroke", "#ddd")
+                .style("stroke-dasharray", "4,4")
+                .attr("d", line);*/
+
+            svg.append("path")
+                .attr("d", line)
+                .call(transition);
+
+            function transition(path) {
+                path.transition()
+                    .duration(1000)
+                    .attrTween("stroke-dasharray", tweenDash)
+                    ;
+            }
+
+            function tweenDash() {
+                var l = this.getTotalLength(),
+                    i = d3.interpolateString("0," + l, l + "," + l);
+                return function(t) { return i(t); };
+            }
+
+           /* var link = '#link_' + source + '_'+ target;
             d3.select(link)
                 .transition()
                 .duration(250)
                 //.ease('linear')
-                .style('stroke', 'red')
+                .style('stroke', 'red');
                 //.style('stroke-width',5);
 
-            console.log('visiting:' + link);
+            console.log('visiting:' + link);*/
         }
 
         function deselectLink (source, target){
