@@ -104,8 +104,7 @@ md-tabs {
 }
 
 .link{
-    marker-end: url(#arrow) #ff0000;
-
+    marker-end: url(#arrow);
 }
 
 md-tab-content,
@@ -119,9 +118,9 @@ md-tab-content > div{
     cursor: default;
 }
 
-
 path {
     fill: none;
     stroke: #f00;
     stroke-width: 3px;
+
 }

@@ -57,7 +57,7 @@ table{
 
 .graphe-fab{
     position:absolute;
-    /* FIXME: fab disappearing on big screens. */
+
     bottom: 70px;
     right: 0;
 }

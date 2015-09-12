@@ -19,7 +19,7 @@ angular.module('graphe.algorithms')
                     },
                     {
                         name: 'Add Link',
-                        icon: 'settings_ethernet',
+                        icon: 'border_color',
                         message: 'Select a node to connect to another.',
                         enabled: true,
                         color: '#4CAF50'
