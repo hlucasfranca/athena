@@ -445,39 +445,17 @@ angular.module('graphe.directives')
                 [link.target.x,link.target.y]
             ];
 
-            var line = d3.svg.line();
+            
 
-            var svg = d3.select("svg #link-group")
-                    .datum(points);
+            var line = d3.svg.line()
+                .x(function(d) { return d[0]; })
+                .y(function(d) { return d[1]; })
+                .interpolate('basis');
 
-            /*svg.append("path")
-                .style("stroke", "#ddd")
-                .style("stroke-dasharray", "4,4")
-                .attr("d", line);*/
-
-            /*
-            *
-            *
-             var path = svg.append("path")
-             .attr("d", line(data))
-             .attr("stroke", "steelblue")
-             .attr("stroke-width", "2")
-             .attr("fill", "none");
-
-             var totalLength = path.node().getTotalLength();
-
-             path
-             .attr("stroke-dasharray", totalLength + " " + totalLength)
-             .attr("stroke-dashoffset", totalLength)
-             .transition()
-             .duration(2000)
-             .ease("linear")
-             .attr("stroke-dashoffset", 0);
-            *
-            * */
+            var svg = d3.select("svg #link-group");
 
             var path = svg.append("path")
-                .attr("d", line)
+                .attr("d", line(points))
                 .attr ('marker-end', "url(#arrow)");
 
             var totalLength = path.node().getTotalLength();
@@ -486,7 +464,7 @@ angular.module('graphe.directives')
                 .attr('stroke-dasharray', totalLength + " " + totalLength)
                 .attr('stroke-dashoffset', totalLength)
                 .transition()
-                .duration(2000)
+                .duration(1000)
                 .ease('linear')
                 .attr('stroke-dashoffset', 0);
 
@@ -495,38 +473,59 @@ angular.module('graphe.directives')
             function transition(path) {
                 path.transition()
                     .duration(1000)
-                    .attrTween('stroke-dasharray', tweenDash)
-                    ;
+                    .attrTween('stroke-dasharray', tweenDash);
             }
 
             function tweenDash() {
                 var l = this.getTotalLength(),
                     i = d3.interpolateString('0,' + l, l + ',' + l);
                 return function(t) {
-                    var marker = d3.select("#arrow");
                     
-                    if(showed === false){
-                        showed = true;
-                        console.log(marker);
-                    }
-                      
-                    var p = path.node().getPointAtLength(t * l);
-                    // TODO: not working as expected
-                    //move marker
-                    marker.attr("transform", "translate(" + p.x + "," + p.y + ")");
                     return i(t);
                 };
             }
 
-           /* var link = '#link_' + source + '_'+ target;
-            d3.select(link)
-                .transition()
-                .duration(250)
-                //.ease('linear')
-                .style('stroke', 'red');
-                //.style('stroke-width',5);
+            // TODO: marker animation not working
+            /*var startPoint = pathStartPoint(path);
+            var marker = svg.append("image")
+            .attr("xlink:href", "#arrow")
+            .attr("transform", "translate(" + startPoint[0] + "," + startPoint[1] + ")")
+            .attr("width", 48)
+            .attr("height", 24);
 
-            console.log('visiting:' + link);*/
+            t();*/
+
+            //Get path start point for placing marker
+             /* function pathStartPoint(path) {
+
+                return path[0][0].pathSegList[1].x + "," + path[0][0].pathSegList[1].x;
+              }
+
+              function t() {
+                d3.select(marker).transition()
+                    .duration(1000)
+                    .attrTween("transform", translateAlong(path.node()))
+                    .each("end", t);// infinite loop
+              }*/
+              
+           /*   function translateAlong(path) {
+                var l = path.getTotalLength();
+                var t0 = 0;
+                return function(i) {
+                  return function(t) {
+                    var p0 = path.getPointAtLength(t0 * l);//previous point
+                    var p = path.getPointAtLength(t * l);////current point
+                    var angle = Math.atan2(p.y - p0.y, p.x - p0.x) * 180 / Math.PI;//angle for tangent
+                    t0 = t;
+                    //Shifting center to center of rocket
+                    var centerX = p.x - 24,
+                    centerY = p.y - 12;
+                    return "translate(" + centerX + "," + centerY + ")rotate(" + angle + " 24" + " 12" +")";
+                  }
+                }
+              }*/
+
+           
         }
 
         function deselectLink (source, target){

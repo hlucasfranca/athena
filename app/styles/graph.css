@@ -1,6 +1,6 @@
 .node {
     fill: #666666;
-    cursor: crosshair;
+    cursor: pointer;
 }
 
 .node_selected circle{
