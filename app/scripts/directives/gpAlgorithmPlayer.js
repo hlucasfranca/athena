@@ -51,13 +51,29 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
         }
 
         function run (){
-            var startNode = $scope.graph.getNodes()[0];
-            $scope.selectedAlgorithm.run($scope.graph, startNode);
-            $scope.steps = $scope.selectedAlgorithm.instructions;
 
-            // TODO add stop/pause
-            $interval( $scope.nextStep, 500, $scope.steps.length);
-            //$scope.steps.push({ instruction: 5 });
+            var nodes = $scope.graph.getNodes();
+            var options = [];
+
+            nodes.forEach(function(element,index){
+                options.push(element.label);
+            })
+
+            $scope.setOptions(options);
+
+            $scope.showDialog(function(startNode){
+                $scope.toggleOpacityLinks();
+
+                
+                $scope.selectedAlgorithm.run($scope.graph, startNode);
+                $scope.steps = $scope.selectedAlgorithm.instructions;
+
+                // TODO add stop/pause
+                $interval( $scope.nextStep, 500, $scope.steps.length);
+                //$scope.steps.push({ instruction: 5 });
+            });
+
+            
         }
 
         function selectStep (step){

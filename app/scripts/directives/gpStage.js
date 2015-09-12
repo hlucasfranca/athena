@@ -205,15 +205,15 @@ angular.module('graphe.directives')
                         .attr('r', 15);
 
                     node.exit()
-                        .select('circle')
-                        .attr('r', 15)
                             .transition()
+                            //.select('circle')
+                            //.attr('r', 50)
                             .duration(500)
-                            .ease('linear')
-                                .attr('r',1)
+                            //.ease('linear')
+                            //    .attr('r',1)
                                 .remove();
 
-                    node.exit().select('text').remove();
+                    //node.exit().transition().delay(500).select('text').remove();
 
                     function dragMove (d, i) {
 
@@ -265,6 +265,11 @@ angular.module('graphe.directives')
 
                     function mousedownnode(d) {
 
+                        scope.$apply(function(){
+                            scope.setSelectedNode(d);
+                        });
+
+
                         console.log('mouseDownNode');
 
                         var self = this;
@@ -272,9 +277,12 @@ angular.module('graphe.directives')
                         d3.event.stopPropagation(); // silence other listeners
 
                         if(scope.getCurrentOption() === scope.fabOptions.remove){
-                            scope.graph.removeNode(d);
-                            scope.$apply();
-                            scope.updateNodeCount();
+
+                            scope.$apply(function(){
+                                scope.graph.removeNode(d);
+                                scope.updateNodeCount();
+                            });
+
                             scope.showSimpleToast('node removed!');
                         }
 
@@ -283,8 +291,6 @@ angular.module('graphe.directives')
                             console.log(d);
                         }
                         else if(scope.getCurrentOption() === scope.fabOptions.add.contextOptions[1]){
-
-                            console.log('add link');
 
                             if(!scope.firstNode) {
                                 scope.$apply(function(){
@@ -305,14 +311,14 @@ angular.module('graphe.directives')
                                         });
 
                                     console.log(d);
-                                    scope.setMessage('Select next node.');
+                                    scope.setMessage('Select destination node.');
                                 });
                             }
                             else if(scope.firstNode !== d){
                                 scope.$apply(function () {
                                     scope.graph.addEdge(scope.firstNode.index, d.index);
                                     delete scope.firstNode;
-                                    scope.setMessage(null);
+                                    scope.setMessage('Select origin node.');
                                 });
                             }
                         }
@@ -405,6 +411,11 @@ angular.module('graphe.directives')
         $scope.selectLink = selectLink;
         $scope.deselectLink = deselectLink;
         $scope.deselectNode = deselectNode;
+        $scope.toggleOpacityLinks = toggleOpacityLinks;
+
+        function toggleOpacityLinks(){
+            d3.select('#link-group').select('line').attr('opacity', 0.5);
+        }
 
 
         function selectNode (id) {
@@ -444,21 +455,67 @@ angular.module('graphe.directives')
                 .style("stroke-dasharray", "4,4")
                 .attr("d", line);*/
 
-            svg.append("path")
+            /*
+            *
+            *
+             var path = svg.append("path")
+             .attr("d", line(data))
+             .attr("stroke", "steelblue")
+             .attr("stroke-width", "2")
+             .attr("fill", "none");
+
+             var totalLength = path.node().getTotalLength();
+
+             path
+             .attr("stroke-dasharray", totalLength + " " + totalLength)
+             .attr("stroke-dashoffset", totalLength)
+             .transition()
+             .duration(2000)
+             .ease("linear")
+             .attr("stroke-dashoffset", 0);
+            *
+            * */
+
+            var path = svg.append("path")
                 .attr("d", line)
-                .call(transition);
+                .attr ('marker-end', "url(#arrow)");
+
+            var totalLength = path.node().getTotalLength();
+
+            path
+                .attr('stroke-dasharray', totalLength + " " + totalLength)
+                .attr('stroke-dashoffset', totalLength)
+                .transition()
+                .duration(2000)
+                .ease('linear')
+                .attr('stroke-dashoffset', 0);
+
+                //.call(transition);
 
             function transition(path) {
                 path.transition()
                     .duration(1000)
-                    .attrTween("stroke-dasharray", tweenDash)
+                    .attrTween('stroke-dasharray', tweenDash)
                     ;
             }
 
             function tweenDash() {
                 var l = this.getTotalLength(),
-                    i = d3.interpolateString("0," + l, l + "," + l);
-                return function(t) { return i(t); };
+                    i = d3.interpolateString('0,' + l, l + ',' + l);
+                return function(t) {
+                    var marker = d3.select("#arrow");
+                    
+                    if(showed === false){
+                        showed = true;
+                        console.log(marker);
+                    }
+                      
+                    var p = path.node().getPointAtLength(t * l);
+                    // TODO: not working as expected
+                    //move marker
+                    marker.attr("transform", "translate(" + p.x + "," + p.y + ")");
+                    return i(t);
+                };
             }
 
            /* var link = '#link_' + source + '_'+ target;
@@ -478,7 +535,7 @@ angular.module('graphe.directives')
                 .transition()
                 .duration(250)
                 //.ease('linear')
-                .style('stroke', 'black')
+                .style('stroke', 'black');
             //.style('stroke-width',5);
 
             console.log('exiting link :' + link);

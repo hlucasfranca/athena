@@ -29,6 +29,7 @@ angular.module('graphe.model')
             model.addEdge = addEdge;
             model.getNodes = getNodes;
             model.getLinks = getLinks;
+            model.getNode = getNode;
 
             model.removeNode = removeNode;
             model.removeLinksForNode = removeLinksForNode;
@@ -68,19 +69,30 @@ angular.module('graphe.model')
                 return model.adjacentList;
             }
 
+            /* Get a node by its label */
+            function getNode( label ){
+                var node = null;
+
+                model.nodeList.forEach(function(element){
+                    if( element.label === label){
+                        console.log('found!');
+                        node = element;
+                    }
+                });
+                
+                return node;
+            }
+
             function getAdjacentNodes( index ){
                 var adjacentNodes = [];
 
                 if(model.matrix[index] !== undefined){
-
-                for(var i = 0; i < model.matrix[index].length; i++){
-                    if(model.matrix[i] !== 0){
-                        adjacentNodes.push(model.getNodes()[i]);
+                    for(var i = 0; i < model.matrix[index].length; i++){
+                        if(model.matrix[i] !== 0){
+                            adjacentNodes.push(model.getNodes()[i]);
+                        }
                     }
                 }
-                }
-
-
 
                 return adjacentNodes;
             }

@@ -9,8 +9,18 @@
  */
 
 angular.module('graphe')
-    .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$location', 'fab',
-        function ($scope, $mdSidenav, $mdToast, $location, fab) {
+    .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab',
+        function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab) {
+
+            $scope.options = ['a','b','c'];
+
+            $scope.setOptions = function(options){
+                $scope.options = options;
+            };
+
+            $scope.selectedOption = '';
+
+            
 
             $scope.awesomeThings = [
                 'HTML5 Boilerplate',
@@ -46,6 +56,7 @@ angular.module('graphe')
             $scope.toggleSidenav = toggleSidenav;
             $scope.go = go;
             $scope.cancel = cancel;
+            $scope.showDialog = showDialog;
 
             // Function definitions
             function showHelp (){
@@ -119,6 +130,52 @@ angular.module('graphe')
                 $scope.hideContextToolbar();
                 $scope.setMessage(null);
                 $scope.setCurrentOption({});
+            }
+
+            function showDialog(action) {
+
+                console.log($scope.options);
+
+                $mdDialog.show({
+                    controller: DialogController,
+                    // use parent scope
+                    scope: $scope,
+                    preserveScope : true,
+                    templateUrl: '../../views/selectNodeDialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: null,
+                    clickOutsideToClose:true
+                })
+                .then(
+                    // on sucess
+                    function(){                        
+                        action($scope.selectedOption);
+                    }
+                    ,
+                    // on error 
+                    function() {
+                    $scope.status = 'You cancelled the dialog.';
+                    });
+            };
+
+            function DialogController($scope, $mdDialog) {
+
+                console.log($scope.options);
+
+                $scope.answer = 'A';
+
+                $scope.hide = function() {
+                    console.log('hide');
+                    $mdDialog.hide();
+                };
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.answer = function(answer) {
+                    $mdDialog.hide(answer);
+                };
             }
 
         }]);

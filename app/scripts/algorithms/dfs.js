@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc service
  * @name app.algorithmService
@@ -9,33 +7,36 @@
  */
 angular.module('graphe.algorithms')
     .service('dfs', function () {
-        // AngularJS will instantiate a singleton by calling "new" on this function
-        var service = this;
+        'use strict';
 
-        service.name = 'Depth first search';
+        var service = {};
 
-        service.steps = [
-            'procedure DFS(G,v):',
-            'label v as discovered',
-            'for all edges from v to w in G.adjacentEdges(v) do',
-            'if vertex w is not labeled as discovered then',
-            'recursively call DFS(G,w)',
-            'end of algorithm'
-        ];
 
-        service.instructions = [];
-        service.result = [];
 
-        service.depthSearch = depthSearch;
-        service.run = run;
 
-        
+        var n = 'Depth first search',
+            instructions = [],
+            result = [],
+            steps = [
+                'procedure DFS(G,v):',
+                'label v as discovered',
+                'for all edges from v to w in G.adjacentEdges(v) do',
+                'if vertex w is not labeled as discovered then',
+                'recursively call DFS(G,w)',
+                'end of algorithm'
+            ];
+
+
+
+
 
         /*
         *  Method definitions
         * */
 
         function depthSearch(graph, visited, dfsSteps){
+
+
 
             dfsSteps.push({ instruction: 0, visited: visited });
             visited.marked = true;
@@ -60,6 +61,15 @@ angular.module('graphe.algorithms')
         }
 
          function run(graph, visited){
+
+            if(typeof visited === "string"){
+                console.log('passed string');
+
+                visited = graph.getNode(visited);
+            }
+
+
+
             service.instructions.push({ instruction: 0, visited: visited });
             visited.marked = true;
             service.result.push(visited.label);
@@ -77,4 +87,15 @@ angular.module('graphe.algorithms')
 
 
         }
+
+        service = {
+            name : n,
+            steps: steps,
+            instructions: instructions,
+            depthSearch : depthSearch,
+            run: run,
+            result : result
+        };
+
+        return service;
     });

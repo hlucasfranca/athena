@@ -12,7 +12,7 @@ angular.module('graphe.directives')
             restrict: 'A'
         };
     })
-    .controller('gpContainerCtrl',function ($scope, $window, dfs, $interval, model, colors, labels) {
+    .controller('gpContainerCtrl', function ($scope, $window, dfs, $interval, model, colors, labels) {
         'use strict';
 
         var numberOfNodes = 5;
@@ -23,8 +23,15 @@ angular.module('graphe.directives')
         $scope.selectedColumn = null;
         $scope.stageWidth = 0;
         $scope.stageHeight = 0;
+        $scope.selectedNode = null;
 
-        rescale_panels();
+        $scope.setSelectedNode = setSelectedNode;
+
+        function setSelectedNode(node){
+            $scope.selectedNode = node;
+        }
+
+        rescalePanels();
 
         $scope.graph = model.getGraph(numberOfNodes);
         //var numberOfLinks = Math.floor( Math.random() * numberOfNodes );
@@ -57,16 +64,16 @@ angular.module('graphe.directives')
             console.log($scope.matrix);
         });
 
-        rescale_panels();
+        rescalePanels();
 
         // on window resize, resizes the graph
         angular.element($window).on('resize', function () {
             $scope.$apply(function () {
-                rescale_panels();
+                rescalePanels();
             });
         });
 
-         function setSelectedOption(currentAction) {
+        function setSelectedOption(currentAction) {
             $scope.setCurrentOption(currentAction);
             $scope.toggleFab();
             $scope.showContextToolbar();
@@ -87,7 +94,8 @@ angular.module('graphe.directives')
             $scope.isOpen = !$scope.isOpen;
         }
 
-        function checkAdjacent(nodeA, nodeB){
+        function checkAdjacent(nodeA, nodeB){            
+
             for(var i = 0; i < $scope.graph.linkList.length; i++){
                 if($scope.graph.linkList[i].source.id === nodeA.id && $scope.graph.linkList[i].target.id === nodeB.id){
                     return true;
@@ -96,7 +104,7 @@ angular.module('graphe.directives')
             return false;
         }
 
-        function rescale_panels() {
+        function rescalePanels() {
             // get the width of graph-stage element and set to the graph element itself
             var graphStageDiv = $('#gp-stage-container');
             $scope.stageWidth = graphStageDiv.width();
