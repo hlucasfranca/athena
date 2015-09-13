@@ -1,16 +1,2 @@
-<table class="adjacency-matrix" ng-show="graph.getAdjacentMatrix().length > 0">
-    <tr>
-        <th>&nbsp;</th>
-        <th ng-repeat="node in graph.getNodes()">
-            {{node.label}}
-        </th>
-    </tr>
-    <tr ng-repeat="node in graph.getNodes()" class="adjacency-repeat">
-        <td>
-            {{node.label}}
-        </td>
-        <td ng-repeat="node in graph.getNodes()" class="adjacency-repeat">
-            <a>{{graph.getAdjacentMatrix()[$parent.$index][$index].value}}</a>
-        </td>
-    </tr>
-</table>
+<div class="adjacency-matrix">
+</div>

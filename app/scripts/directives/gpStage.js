@@ -414,7 +414,10 @@ angular.module('graphe.directives')
         $scope.toggleOpacityLinks = toggleOpacityLinks;
 
         function toggleOpacityLinks(){
-            d3.select('#link-group').select('line').attr('opacity', 0.5);
+            d3.select('#link-group').selectAll('line')
+                .transition()
+                .duration(250)
+                .attr('opacity', 0.1);
         }
 
 

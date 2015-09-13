@@ -92,3 +92,7 @@ body{
     stroke-width: 2;
 }
 
+md-tabs {
+display: flex;
+    flex-direction: column;
+}

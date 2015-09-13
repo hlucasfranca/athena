@@ -107,10 +107,11 @@ md-tabs {
     marker-end: url(#arrow);
 }
 
+/*
 md-tab-content,
 md-tab-content > div{
     height: 100%;
-}
+}*/
 
 .line-hover{
     background-color: darkgray;
@@ -122,5 +123,21 @@ path {
     fill: none;
     stroke: #f00;
     stroke-width: 3px;
+
+}
+
+
+
+.highlight-cell{
+    cursor: pointer;
+    background-color: #b3b3b3;
+}
+
+.adjacency-matrix table,
+.adjacency-matrix table tr,
+.adjacency-matrix table td{
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #bebebe;
 
 }
