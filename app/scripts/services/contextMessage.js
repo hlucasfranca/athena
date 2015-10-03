@@ -6,8 +6,8 @@ function contextMessage () {
 
     var message = "";
 
-    function setMessage(message){
-        message = message;
+    function setMessage(m){
+        message = m;
     }
 
     var service = {

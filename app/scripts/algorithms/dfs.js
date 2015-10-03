@@ -1,18 +1,8 @@
-/**
- * @ngdoc service
- * @name app.algorithmService
- * @description
- * # algorithmService
- * Service in the app.
- */
 angular.module('graphe.algorithms')
     .service('dfs', function () {
         'use strict';
 
         var service = {};
-
-
-
 
         var n = 'Depth first search',
             instructions = [],
@@ -26,18 +16,11 @@ angular.module('graphe.algorithms')
                 'end of algorithm'
             ];
 
-
-
-
-
         /*
         *  Method definitions
         * */
 
         function depthSearch(graph, visited, dfsSteps){
-
-
-
             dfsSteps.push({ instruction: 0, visited: visited });
             visited.marked = true;
             dfsSteps.push({ instruction: 1, visited: visited });
@@ -64,11 +47,8 @@ angular.module('graphe.algorithms')
 
             if(typeof visited === "string"){
                 console.log('passed string');
-
                 visited = graph.getNode(visited);
             }
-
-
 
             service.instructions.push({ instruction: 0, visited: visited });
             visited.marked = true;
@@ -84,8 +64,6 @@ angular.module('graphe.algorithms')
                     service.run(graph, node);
                 }
             });
-
-
         }
 
         service = {

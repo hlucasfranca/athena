@@ -1,5 +1,6 @@
 angular
     .module('graphe.core', [
+        
         // angular modules
         'ngAnimate',
         'ngCookies',

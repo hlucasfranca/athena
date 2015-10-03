@@ -23,7 +23,6 @@ angular.module('graphe.algorithms')
                         message: 'Select a node to connect to another.',
                         enabled: true,
                         color: '#4CAF50'
-
                     }
                 ]
             },

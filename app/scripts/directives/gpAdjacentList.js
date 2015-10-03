@@ -1,3 +1,9 @@
+/*
+* gpAdjascentList
+* 
+* Directive to display the adjacency list.
+*
+* */
 angular.module('graphe.directives')
     .directive('gpAdjascentList', function () {
         'use strict';

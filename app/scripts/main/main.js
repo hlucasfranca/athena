@@ -1,16 +1,7 @@
-'use strict';
-
-/**
- * @ngdoc function
- * @name app.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the app
- */
-
 angular.module('graphe')
     .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab',
         function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab) {
+            'use strict';
 
             $scope.options = ['a','b','c'];
 
@@ -19,8 +10,6 @@ angular.module('graphe')
             };
 
             $scope.selectedOption = '';
-
-            
 
             $scope.awesomeThings = [
                 'HTML5 Boilerplate',
@@ -156,8 +145,7 @@ angular.module('graphe')
                     function() {
                     $scope.status = 'You cancelled the dialog.';
                     });
-            };
-
+            }
             function DialogController($scope, $mdDialog) {
 
                 console.log($scope.options);
