@@ -1,7 +1,12 @@
 <div id="gp-stage" style="height: 100%; position: relative;">
 
-    <div  class="graphe-fab">
-        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'" ng-hide="hideFab" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false">
+    <div class="graphe-fab">
+        <md-fab-speed-dial md-open='isOpen'
+                           md-direction="up"
+                           ng-class="'md-scale'"
+                           ng-hide="hideFab"
+                           ng-mouseenter="isFabOpen=true"
+                           ng-mouseleave="isFabOpen=false">
             <md-fab-trigger>
                 <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
                     <md-icon>menu</md-icon>
@@ -10,7 +15,8 @@
 
             <md-fab-actions>
                 <div ng-repeat="option in fabOptions">
-                    <md-button class="md-fab md-mini " ng-click="setSelectedOption(option)"
+                    <md-button class="md-fab md-mini"
+                               ng-click="setSelectedOption(option)"
                                style="background-color: {{option.color}}">
                         <md-tooltip>
                             {{option.name}}

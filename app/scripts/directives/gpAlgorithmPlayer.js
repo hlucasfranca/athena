@@ -1,3 +1,10 @@
+/**
+ * gpAlgorithmPlayer
+ *
+ * Directive to control the algorithm execution, gives a interface to communication
+ * through the gpAlgorithmPlayerCtrl
+ */
+
 angular.module('graphe.directives')
     .directive('gpAlgorithmPlayer', gpAlgorithmPlayer)
     .controller('gpAlgorithmPlayerCtrl', gpAlgorithmPlayerCtrl);
@@ -40,11 +47,11 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
                     var sourceNode = $scope.steps[currentStep - 1].visited;
                     var targetNode = $scope.steps[currentStep].visited;
                     if(sourceNode !== targetNode){
-                        $scope.selectLink(sourceNode.label, targetNode.label);
+                        $scope.selectLink(sourceNode, targetNode);
                     }
                 }
                 var step = $scope.steps[currentStep];
-                $scope.selectNode(step.visited.index);
+                $scope.selectNode(step.visited);
                 $scope.selectedStep = step.instruction;
                 currentStep++;
             }
@@ -53,18 +60,19 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
         function run (){
 
             var nodes = $scope.graph.getNodes();
+
+            // List of nodes to select from
             var options = [];
 
             nodes.forEach(function(element,index){
                 options.push(element.label);
-            })
+            });
 
             $scope.setOptions(options);
 
             $scope.showDialog(function(startNode){
                 $scope.toggleOpacityLinks();
 
-                
                 $scope.selectedAlgorithm.run($scope.graph, startNode);
                 $scope.steps = $scope.selectedAlgorithm.instructions;
 
@@ -72,8 +80,6 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
                 $interval( $scope.nextStep, 500, $scope.steps.length);
                 //$scope.steps.push({ instruction: 5 });
             });
-
-            
         }
 
         function selectStep (step){

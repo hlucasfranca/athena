@@ -1,40 +1,36 @@
-/**
- * @ngdoc directive
- * @name grapheApp.directive:graphContainer
- * @description
- * # graphContainer
- */
-angular.module('graphe.directives')
-    .directive('gpContainer', function () {
-        'use strict';
+(function() {
+    'use strict';
+    angular
+        .module('graphe.directives')
+        .directive('gpContainer', gpContainer)
+        .controller('gpContainerCtrl', gpContainerCtrl);
+
+    function gpContainer() {
         return {
             controller: 'gpContainerCtrl',
             restrict: 'A'
         };
-    })
-    .controller('gpContainerCtrl', function ($scope, $window, dfs, $interval, model, colors, labels) {
-        'use strict';
+    }
 
+    function gpContainerCtrl($scope, $window, dfs, $interval, model, colors, labels) {
         var numberOfNodes = 5;
+        // Sets the default menu option
         $scope.currentOption = $scope.fabOptions.add;
-        $scope.isOpen = false;
+        $scope.isFabOpen = false;
         $scope.graphideFab = false;
         $scope.selectedRow = null;
         $scope.selectedColumn = null;
+        // The stage dimensions
         $scope.stageWidth = 0;
         $scope.stageHeight = 0;
         $scope.selectedNode = null;
 
-        $scope.setSelectedNode = setSelectedNode;
-
-        function setSelectedNode(node){
-            $scope.selectedNode = node;
-        }
-
         rescalePanels();
 
+        // Creates a simple graph
         $scope.graph = model.getGraph(numberOfNodes);
-        //var numberOfLinks = Math.floor( Math.random() * numberOfNodes );
+
+        // Connect the nodes with each other
         for(var i = 0; i < numberOfNodes; i++){
             for( var j = 0; j < numberOfNodes; j++){
                 if(i !== j) {
@@ -43,24 +39,20 @@ angular.module('graphe.directives')
             }
         }
 
-        /*$scope.graph = {
-            nodes:  $scope.graph.getNodes(),
-            links: $scope.graph.getLinks()
-        };*/
-
         // functions
-        $scope.checkAdjacent = checkAdjacent;
         $scope.updateNodeCount = updateNodeCount;
         $scope.setSelectedOption = setSelectedOption;
         $scope.selectCell = selectCell;
         $scope.deselectCell = deselectCell;
         $scope.toggleFab = toggleFab;
+        $scope.setSelectedNode = setSelectedNode;
         // end functions
 
         $scope.matrix = $scope.graph.getAdjacentMatrix();
 
         $scope.$watch('scope.graph.getAdjacentMatrix()', function(){
             $scope.matrix = $scope.graph.getAdjacentMatrix();
+            console.log('matrix changed');
             console.log($scope.matrix);
         });
 
@@ -72,6 +64,10 @@ angular.module('graphe.directives')
                 rescalePanels();
             });
         });
+
+        function setSelectedNode(node){
+            $scope.selectedNode = node;
+        }
 
         function setSelectedOption(currentAction) {
             $scope.setCurrentOption(currentAction);
@@ -91,17 +87,7 @@ angular.module('graphe.directives')
         }
 
         function toggleFab () {
-            $scope.isOpen = !$scope.isOpen;
-        }
-
-        function checkAdjacent(nodeA, nodeB){            
-
-            for(var i = 0; i < $scope.graph.linkList.length; i++){
-                if($scope.graph.linkList[i].source.id === nodeA.id && $scope.graph.linkList[i].target.id === nodeB.id){
-                    return true;
-                }
-            }
-            return false;
+            $scope.isFabOpen = !$scope.isFabOpen;
         }
 
         function rescalePanels() {
@@ -114,7 +100,9 @@ angular.module('graphe.directives')
         function updateNodeCount (){
             console.log('updating node count');
             $scope.graph.nodes = $scope.graph.getNodes();
-            $scope.graph.links = $scope.graph.getLinks();
+            $scope.graph.links = $scope.graph.getEdges();
         }
 
-    });
+    }
+
+})();

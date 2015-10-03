@@ -1,4 +1,4 @@
-.node {
+.node, .link {
     fill: #666666;
     cursor: pointer;
 }

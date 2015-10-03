@@ -7,16 +7,13 @@
 
     <tr>
         <td class="md-body-2">Graph size |E|</td>
-        <td>{{graph.getLinks().length}}</td>
+        <td>{{graph.getEdges().length}}</td>
     </tr>
 
     <tr>
         <td class="md-body-2">G = (V,E)</td>
         <td>
-
         </td>
-
-
     </tr>
 
     <tr>
@@ -30,7 +27,7 @@
 
     <tr>
         <td colspan="2" class="md-body-2">E = {
-        <span ng-repeat="edge in graph.getLinks()">
+        <span ng-repeat="edge in graph.getEdges()">
             <span ng-show="!$first">,</span>
                 <span>{ {{edge.source.label}}, {{edge.target.label}} }</span>
         </span> }

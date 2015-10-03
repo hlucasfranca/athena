@@ -35,11 +35,13 @@
                 <md-tab-label>Algorithms</md-tab-label>
                 <md-tab-body>
                     <!--
+
                     TODO: add list of all available algorithms
+                    -->
                     <md-select ng-model="selectedAlgorithm">
                         <md-option ng-repeat="algorithm in algorithms">{{algorithm.name}}</md-option>
 
-                    </md-select>-->
+                    </md-select>
 
                     <gp-algorithm-player>
                         <gp-step-list></gp-step-list>
