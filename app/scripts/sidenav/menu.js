@@ -7,7 +7,7 @@
             this.option = 1;
             var self = this;
 
-            $rootScope.$on("$routeChangeSuccess", function (e, current, previous) {
+            $rootScope.$on('$routeChangeSuccess', function (e, current) {
                 self.selectOption(current.index);
             });
 

@@ -6,7 +6,7 @@
 
     function contextMessage() {
 
-        var message = "";
+        var message = '';
 
         function setMessage(m) {
             message = m;

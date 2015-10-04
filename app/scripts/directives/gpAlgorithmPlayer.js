@@ -1,4 +1,5 @@
 (function () {
+    'use strict';
     /**
      * gpAlgorithmPlayer
      *
@@ -11,7 +12,6 @@
         .controller('gpAlgorithmPlayerCtrl', gpAlgorithmPlayerCtrl);
 
     function gpAlgorithmPlayer() {
-        'use strict';
         return {
             restrict: 'E',
             require: ['^gpContainer', '^?gpStage'],
@@ -19,15 +19,13 @@
         };
     }
 
-    function gpAlgorithmPlayerCtrl($scope, $interval, dfs) {
-        'use strict';
+    function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs) {
         var currentInstruction = 0;
         $scope.steps = [];
         $scope.selectedStep = -1;
-        $scope.depthInstructions = dfs.steps;
-        $scope.result = dfs.result;
+        //$scope.depthInstructions = dfs.steps;
 
-        $scope.algorithms = [dfs];
+        $scope.algorithms = [dfs,bfs];
         $scope.selectedAlgorithm = $scope.algorithms[0];
 
         var currentStep = 0;
@@ -53,6 +51,7 @@
                 }
                 var step = $scope.steps[currentStep];
                 $scope.selectNode(step.visited);
+
                 $scope.selectedStep = step.instruction;
                 currentStep++;
             }
@@ -75,11 +74,12 @@
                 $scope.toggleOpacityLinks();
 
                 $scope.selectedAlgorithm.run($scope.graph, startNode);
+
                 $scope.steps = $scope.selectedAlgorithm.instructions;
 
                 // TODO add stop/pause
                 $interval($scope.nextStep, 500, $scope.steps.length);
-                //$scope.steps.push({ instruction: 5 });
+                $scope.steps.push({ instruction: 5 });
             });
         }
 
