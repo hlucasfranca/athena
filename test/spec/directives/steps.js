@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: graph', function () {
+describe('Directive: steps', function () {
 
   // load the directive's module
   beforeEach(module('app'));
@@ -13,8 +13,8 @@ describe('Directive: graph', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<graph></graph>');
+    element = angular.element('<steps></steps>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the graph directive');
+    expect(element.text()).toBe('this is the steps directive');
   }));
 });

@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Service: GraphService', function () {
+describe('Service: data', function () {
 
   // load the service's module
-  beforeEach(module('grapheApp'));
+  beforeEach(module('app'));
 
   // instantiate service
   var GraphService;

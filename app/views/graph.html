@@ -1,53 +1,64 @@
-<div layout="column" style="position: relative">
-    <div layout="row">
-        <graph></graph>
+<div layout="row" layout-sm="column" style="height: 100%"  gp-container>
+    <div flex style="height: 100%;" id="gp-stage-container">
+        <gp-stage></gp-stage>
     </div>
-    <div style="position: absolute; bottom: 30px; right: 30px;">
 
+    <div flex style="background-color:red;" layout="column">
+        <md-content id="mdcontent" flex layout="column">
+        <md-tabs class="md-primary md-hue-1" md-align-tabs="top" flex>
+            <md-tab id="tab1">
+                <md-tab-label>Graph info</md-tab-label>
 
-        <md-fab-speed-dial md-open='fab.isOpen' md-direction="up" ng-class="'md-scale'">
+                <md-tab-body>
+                    <md-content flex>
+                        <gp-info></gp-info>
+                    </md-content>
+                </md-tab-body>
 
-           <md-fab-trigger>
-               <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
-                   <md-icon>{{currentOption.icon}}</md-icon>
-               </md-button>
-           </md-fab-trigger>
+            </md-tab>
 
+            <md-tab id="tab2">
+                <md-tab-label>Adjacency list</md-tab-label>
+                <md-tab-body>
+                    <md-content flex>
+                        <gp-adjascent-list></gp-adjascent-list>
+                    </md-content>
+                    </md-tab-body>
 
-           <md-fab-actions>
+                </md-tab>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.add)">
-                   <md-tooltip>
-                       {{fabOptions.add.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.add.icon}}</md-icon>
-               </md-button>
+            <md-tab id="tab3">
+                <md-tab-label>Adjacency matrix</md-tab-label>
+                <md-tab-body>
+                        <md-content>
+                            <gp-adjascent-matrix></gp-adjascent-matrix>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.remove)">
-                   <md-tooltip>
-                       {{fabOptions.remove.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.remove.icon}}</md-icon>
-               </md-button>
+            <md-tab id="tab4" >
+                <md-tab-label>Algorithms</md-tab-label>
+                <md-tab-body>
+                    <md-content flex>
+                    <h3>Algorithm:</h3>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.select)">
-                   <md-tooltip>
-                       {{fabOptions.select.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.select.icon}}</md-icon>
-               </md-button>
+                    <md-select ng-model="selectedAlgorithm">
+                        <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
+                    </md-select>
 
-               <md-button class="md-fab md-mini " ng-click="setSelected(fabOptions.info)">
-                   <md-tooltip>
-                       {{fabOptions.info.name}}
-                   </md-tooltip>
-                   <md-icon>{{fabOptions.info.icon}}</md-icon>
-               </md-button>
+                    <gp-algorithm-player>
+                        <gp-step-list></gp-step-list>
+                    </gp-algorithm-player>
+                    </md-content>
 
-           </md-fab-actions>
+                </md-tab-body>
+            </md-tab>
 
-       </md-fab-speed-dial>
-
+        </md-tabs>
+        </md-content>
     </div>
 </div>
+
+
+
 
