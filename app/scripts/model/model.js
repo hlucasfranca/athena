@@ -145,8 +145,27 @@
                 
             }
 
-            function removeLink(d) {
-                console.log('removing link');
+            function removeLink(edge) {
+                model.adjacentList.forEach(function (element, index) {
+
+                    // get the node
+                    var toSplice = model.adjacentList[index].filter(function (node) {
+                        return edge.source.index === node.index || edge.target.index === node.index;
+                    });
+
+                    // remove the node
+                    toSplice.map(function (node) {
+                        model.adjacentList[index].splice(model.adjacentList[index].indexOf(node), 1);
+                    });
+                });
+
+                // updates the adjacency matrix
+                model.matrix[edge.source.index][edge.target.index] = 0;
+                //if undirected
+                //model.matrix[targetNode.index][sourceNode.index] = 0;
+
+                // updates the edge list
+                model.edgeList.splice(model.edgeList.indexOf(edge), 1);
             }
 
             function getEdges() {
@@ -208,6 +227,8 @@
             }
 
             function addEdge(v, w) {
+
+
 
                 if ($.inArray(model.nodeList[w], model.adjacentList[v]) === -1) {
                     model.adjacentList[v].push(model.nodeList[w]);

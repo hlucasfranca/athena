@@ -175,15 +175,13 @@
                 .attr('height', scope.stageHeight);
 
             link = link.data(links);
-            //drawGrid();
 
-                    link.enter().append('line')
+            link.enter().append('line')
                 .attr('class', 'link')
                 .attr('id', function (d) {
                     return 'link_' + d.source.label + '_' + d.target.label;
                 })
-                    //    .on('mousedown',mousedownlink)
-                    ;
+                .on('mousedown', mousedownlink);
 
             link.exit().remove();
             link.classed('link_selected', function (d) {
@@ -286,7 +284,7 @@
                         redraw();
                     });
 
-                    scope.showSimpleToast('node removed!');
+                    scope.showSimpleToast('link removed!');
                 }
 
             }
