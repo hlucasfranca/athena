@@ -65,8 +65,7 @@
                     <h3>Algorithm:</h3>
 
                     <md-select ng-model="selectedAlgorithm">
-                        <md-option ng-repeat="algorithm in algorithms">{{algorithm.name}}</md-option>
-
+                        <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
                     </md-select>
 
                     <gp-algorithm-player>
