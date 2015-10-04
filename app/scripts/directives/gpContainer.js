@@ -15,7 +15,7 @@
     function gpContainerCtrl($scope, $window, dfs, $interval, model, colors, labels) {
         var numberOfNodes = 5;
         // Sets the default menu option
-        $scope.currentOption = $scope.fabOptions.add;
+        $scope.currentOption = $scope.fab.fabOptions.add;
         $scope.isFabOpen = false;
         $scope.graphideFab = false;
         $scope.selectedRow = null;
@@ -70,7 +70,7 @@
         }
 
         function setSelectedOption(currentAction) {
-            $scope.setCurrentOption(currentAction);
+            $scope.fab.currentOption = currentAction;
             $scope.toggleFab();
             $scope.showContextToolbar();
             //$scope.graphideFab = true;
@@ -95,6 +95,8 @@
             var graphStageDiv = $('#gp-stage-container');
             $scope.stageWidth = graphStageDiv.width();
             $scope.stageHeight= graphStageDiv.height();
+
+            $scope.mdcontent = $('#mdcontent').width() + ',' + $('#mdcontent').height();
         }
 
         function updateNodeCount (){

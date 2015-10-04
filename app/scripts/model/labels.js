@@ -1,31 +1,33 @@
-angular.module('graphe.model')
-    .service('labels', labels);
-
-function labels () {
+(function () {
     'use strict';
+    angular.module('graphe.model')
+        .service('labels', labels);
 
-    var letter = 'A';
+    function labels() {
 
-    function nextChar(c) {
-        return String.fromCharCode(c.charCodeAt(0) + 1);
+        var letter = 'A';
+
+        function nextChar(c) {
+            return String.fromCharCode(c.charCodeAt(0) + 1);
+        }
+
+        function getLetter() {
+            var temp = letter;
+            letter = nextChar(letter);
+            return temp;
+        }
+
+        function restart() {
+            letter = 'A';
+        }
+
+
+        var service = {
+            nextChar: nextChar,
+            getLetter: getLetter,
+            restart: restart
+        };
+
+        return service;
     }
-
-    function getLetter() {
-        var temp = letter;
-        letter = nextChar(letter);
-        return temp;
-    }
-
-    function restart() {
-        letter = 'A';
-    }
-
-
-    var service = {
-        nextChar : nextChar,
-        getLetter : getLetter,
-        restart: restart
-    };
-
-    return service;
-}
+})();

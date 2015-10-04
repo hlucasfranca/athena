@@ -1,24 +1,25 @@
-/**
- * gpAlgorithmPlayer
- *
- * Directive to control the algorithm execution, gives a interface to communication
- * through the gpAlgorithmPlayerCtrl
- */
+(function () {
+    /**
+     * gpAlgorithmPlayer
+     *
+     * Directive to control the algorithm execution, gives a interface to communication
+     * through the gpAlgorithmPlayerCtrl
+     */
 
-angular.module('graphe.directives')
-    .directive('gpAlgorithmPlayer', gpAlgorithmPlayer)
-    .controller('gpAlgorithmPlayerCtrl', gpAlgorithmPlayerCtrl);
+    angular.module('graphe.directives')
+        .directive('gpAlgorithmPlayer', gpAlgorithmPlayer)
+        .controller('gpAlgorithmPlayerCtrl', gpAlgorithmPlayerCtrl);
 
-function gpAlgorithmPlayer(){
+    function gpAlgorithmPlayer() {
         'use strict';
         return {
             restrict: 'E',
             require: ['^gpContainer', '^?gpStage'],
             controller: 'gpAlgorithmPlayerCtrl'
         };
-}
+    }
 
-function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
+    function gpAlgorithmPlayerCtrl($scope, $interval, dfs) {
         'use strict';
         var currentInstruction = 0;
         $scope.steps = [];
@@ -40,13 +41,13 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
          *
          * */
 
-        function nextStep (){
-            if(currentStep < $scope.steps.length) {
-                if(currentStep > 0) {
+        function nextStep() {
+            if (currentStep < $scope.steps.length) {
+                if (currentStep > 0) {
                     // $scope.deselectNode($scope.steps[currentStep - 1].visited.index);
                     var sourceNode = $scope.steps[currentStep - 1].visited;
                     var targetNode = $scope.steps[currentStep].visited;
-                    if(sourceNode !== targetNode){
+                    if (sourceNode !== targetNode) {
                         $scope.selectLink(sourceNode, targetNode);
                     }
                 }
@@ -57,32 +58,33 @@ function gpAlgorithmPlayerCtrl ($scope, $interval, dfs){
             }
         }
 
-        function run (){
+        function run() {
 
             var nodes = $scope.graph.getNodes();
 
             // List of nodes to select from
             var options = [];
 
-            nodes.forEach(function(element,index){
+            nodes.forEach(function (element, index) {
                 options.push(element.label);
             });
 
             $scope.setOptions(options);
 
-            $scope.showDialog(function(startNode){
+            $scope.showDialog(function (startNode) {
                 $scope.toggleOpacityLinks();
 
                 $scope.selectedAlgorithm.run($scope.graph, startNode);
                 $scope.steps = $scope.selectedAlgorithm.instructions;
 
                 // TODO add stop/pause
-                $interval( $scope.nextStep, 500, $scope.steps.length);
+                $interval($scope.nextStep, 500, $scope.steps.length);
                 //$scope.steps.push({ instruction: 5 });
             });
         }
 
-        function selectStep (step){
+        function selectStep(step) {
             $scope.selectedStep = step;
         }
-}
+    }
+})();

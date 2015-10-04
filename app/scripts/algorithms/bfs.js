@@ -1,9 +1,9 @@
-angular.module('graphe.algorithms')
-    .service('bfs', function () {
-        'use strict';
+(function () {
+    'use strict';
+    angular.module('graphe.algorithms')
+        .service('bfs', function () {
+            var service = {};
 
-        var service = {};
-
-
-        return service;
-    });
+            return service;
+        });
+})();

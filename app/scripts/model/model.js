@@ -1,8 +1,10 @@
-angular.module('graphe.model')
-    .factory('model', ['colors', 'labels', model]);
+(function () {
+    'use strict';
+
+    angular.module('graphe.model')
+        .factory('model', ['colors', 'labels', model]);
 
     function model(colors, labels) {
-        'use strict';
 
         var service = {
             getGraph: getGraph
@@ -10,11 +12,10 @@ angular.module('graphe.model')
 
         return service;
 
-        function getGraph(v){
+        function getGraph(v) {
             labels.restart();
             return new Graph(v);
         }
-
 
         function Graph(v) {
             var model = this;
@@ -47,41 +48,41 @@ angular.module('graphe.model')
             model.matrix = [];
 
             for (var i = 0; i < v; i++) {
-                this.addNode(Math.random() * 400,Math.random() * 400);
+                this.addNode(Math.random() * 400, Math.random() * 400);
             }
 
             /**
              * Function definitions
              */
 
-            function getAdjacentMatrix () {
+            function getAdjacentMatrix() {
                 return model.matrix;
             }
 
-            function getAdjacentList () {
+            function getAdjacentList() {
                 return model.adjacentList;
             }
 
             /* Get a node by its label */
-            function getNode( label ){
+            function getNode(label) {
                 var node = null;
 
-                model.nodeList.forEach(function(element){
-                    if( element.label === label){
+                model.nodeList.forEach(function (element) {
+                    if (element.label === label) {
                         console.log('found!');
                         node = element;
                     }
                 });
-                
+
                 return node;
             }
 
-            function getAdjacentNodes( index ){
+            function getAdjacentNodes(index) {
                 var adjacentNodes = [];
 
-                if(model.matrix[index] !== undefined){
-                    for(var i = 0; i < model.matrix[index].length; i++){
-                        if(model.matrix[i] !== 0){
+                if (model.matrix[index] !== undefined) {
+                    for (var i = 0; i < model.matrix[index].length; i++) {
+                        if (model.matrix[i] !== 0) {
                             adjacentNodes.push(model.getNodes()[i]);
                         }
                     }
@@ -90,36 +91,36 @@ angular.module('graphe.model')
                 return adjacentNodes;
             }
 
-            function getIncidentNodes(index){
+            function getIncidentNodes(index) {
                 return [];
             }
 
             function removeLinksForNode(node) {
 
                 // Gets only the edges starting or ending in node
-                var toSplice = model.edgeList.filter(function(edge) {
+                var toSplice = model.edgeList.filter(function (edge) {
                     return (edge.source.index === node.index || edge.target.index === node.index);
                 });
 
                 // Remove the edges from the edgeList
-                var removedEdges = toSplice.map(function(edge) {
+                var removedEdges = toSplice.map(function (edge) {
 
                     //Gets the position of the edge in the edgeList
                     var indexToRemove = model.edgeList.indexOf(edge);
 
-                    model.edgeList.splice(indexToRemove, 1);
+                    return model.edgeList.splice(indexToRemove, 1);
                 });
 
                 console.log('Removed edges: ');
                 console.log(removedEdges);
             }
 
-            function removeNode (n){
+            function removeNode(n) {
                 // updates the adjacency list
-                model.adjacentList.forEach(function(element, index){
+                model.adjacentList.forEach(function (element, index) {
 
                     // get the node
-                    var toSplice = model.adjacentList[index].filter( function (data) {
+                    var toSplice = model.adjacentList[index].filter(function (data) {
                         return n.index === data.index;
                     });
 
@@ -129,28 +130,30 @@ angular.module('graphe.model')
                     });
                 });
 
-                model.adjacentList.splice(n.index,1);
-                model.nodeList.splice(n.index,1);
+                model.adjacentList.splice(n.index, 1);
+                model.nodeList.splice(n.index, 1);
                 model.removeLinksForNode(n);
                 model.nodes--;
 
                 // updates the adjacency matrix
-                model.matrix.forEach(function(element, index){
-                    model.matrix[index].splice(n.index,1);
+                model.matrix.forEach(function (element, index) {
+                    model.matrix[index].splice(n.index, 1);
                 });
 
-                model.matrix.splice(n.index,1);
+                model.matrix.splice(n.index, 1);
+
+                
             }
 
-            function removeLink (d){
+            function removeLink(d) {
                 console.log('removing link');
             }
 
-            function getEdges () {
+            function getEdges() {
                 return model.edgeList;
             }
 
-            function addNode (xPosition, yPosition) {
+            function addNode(xPosition, yPosition) {
                 // as index is zero-based, use the nodes number before increment
                 var len = model.nodeList.length;
 
@@ -173,17 +176,19 @@ angular.module('graphe.model')
                 model.updateAdjacencyMatrix();
             }
 
-            function updateAdjacencyMatrix () {
+            function updateAdjacencyMatrix() {
                 model.matrix = [];
                 var numberOfNodes = model.nodeList.length;
 
-                if(numberOfNodes > 0){
+                if (numberOfNodes > 0) {
 
-                    model.nodeList.forEach(function(node, i) {
-                        model.matrix[i] = d3.range(numberOfNodes).map(function() { return {value: 0}; });
+                    model.nodeList.forEach(function (node, i) {
+                        model.matrix[i] = d3.range(numberOfNodes).map(function () {
+                            return {value: 0};
+                        });
                     });
 
-                    model.edgeList.forEach(function(link){
+                    model.edgeList.forEach(function (link) {
                         /*
                          Using id beause of:
 
@@ -202,9 +207,9 @@ angular.module('graphe.model')
                 }
             }
 
-            function addEdge (v, w) {
+            function addEdge(v, w) {
 
-                if($.inArray(model.nodeList[w], model.adjacentList[v]) === -1){
+                if ($.inArray(model.nodeList[w], model.adjacentList[v]) === -1) {
                     model.adjacentList[v].push(model.nodeList[w]);
 
                     model.edgeList.push({
@@ -218,11 +223,11 @@ angular.module('graphe.model')
 
             }
 
-            function getNodes () {
+            function getNodes() {
                 return model.nodeList;
             }
 
-            function spliceLinksForNode (node) {
+            function spliceLinksForNode(node) {
 
                 var toSplice = model.edgeList.filter(
                     function (link) {
@@ -234,7 +239,5 @@ angular.module('graphe.model')
                 });
             }
         }
-
     }
-
-
+})();

@@ -25,33 +25,34 @@
 
 <!--[if lt IE 7]>
 <p class="browsehappy">
-    You are using an <strong>outdated</strong> browser. 
+    You are using an <strong>outdated</strong> browser.
     Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
 
-<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
-            md-is-locked-open="{{false}}" md-swipe-left="toggleSidenav('left')">
-
-    <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
-        <div style="padding-left: 25px"><h3>Graphe</h3></div>
-    </md-toolbar>
-
-    <md-list>
-        <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
-
-            {{option.label}}
-
-        </md-list-item>
-    </md-list>
-
-</md-sidenav>
 
 
-<div id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" style="height: 100%;">
+<md-content id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" style="height: 100%;">
+
+    <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
+                md-is-locked-open="{{false}}" md-swipe-left="toggleSidenav('left')">
+
+        <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
+            <div style="padding-left: 25px"><h3>Graphe</h3></div>
+        </md-toolbar>
+
+        <md-list>
+            <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+
+                {{option.label}}
+
+            </md-list-item>
+        </md-list>
+
+    </md-sidenav>
 
     <md-toolbar id="toolbar" ng-hide="isShowContextToolbar">
-        <div class="md-toolbar-tools">
+        <span class="md-toolbar-tools">
 
             <md-button ng-click="toggleSidenav('left')"  class="md-icon-button">
                 <md-icon>menu</md-icon>
@@ -59,23 +60,23 @@
 
             <h1>Graphe</h1>
 
-        </div>
+        </span>
     </md-toolbar>
 
     <md-toolbar id="contexttoolbar" ng-show="isShowContextToolbar" >
-        <div class="md-toolbar-tools" style="background-color:{{currentOption.color}};">
+        <div class="md-toolbar-tools" style="background-color:{{fab.currentOption.color}};">
 
             <md-button class="md-icon-button">
                 <md-icon ng-click="cancel()">arrow_back</md-icon>
             </md-button>
 
-            <md-button ng-repeat="option in currentOption.contextOptions" class="md-icon-button">
-                <md-icon ng-click="setCurrentOption(option)">{{option.icon}}</md-icon>
+            <md-button ng-repeat="option in fab.currentOption.contextOptions" class="md-icon-button">
+                <md-icon ng-click="fab.currentOption = option">{{option.icon}}</md-icon>
             </md-button>
 
             <span flex></span>
 
-            {{currentOption.name}}
+            {{fab.currentOption.name}}
 
             <md-button class="md-icon-button">
                 <md-icon ng-click="showHelp()">help</md-icon>
@@ -92,7 +93,7 @@
 
     <div  ng-view id="content" style="height: 100%;"></div>
 
-</div>
+</md-content>
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->

@@ -1,25 +1,28 @@
-angular.module('graphe')
-    .controller('MenuCtrl', ['$scope','$rootScope', function ($scope, $rootScope) {
-        'use strict';
+(function () {
+    'use strict';
 
-        this.option = 1;
-        var self = this;
+    angular.module('graphe')
+        .controller('MenuCtrl', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
-        $rootScope.$on("$routeChangeSuccess", function (e, current, previous) {
-            self.selectOption(current.index);
-        });
+            this.option = 1;
+            var self = this;
 
-        this.selectOption = function(setOption){
-            this.option = setOption;
-        };
+            $rootScope.$on("$routeChangeSuccess", function (e, current, previous) {
+                self.selectOption(current.index);
+            });
 
-        this.isSelected = function(index){
-            return this.option === index;
-        };
+            this.selectOption = function (setOption) {
+                this.option = setOption;
+            };
 
-        $scope.awesomeThings = [
-            'HTML5 Boilerplate',
-            'AngularJS',
-            'Karma'
-        ];
-    }]);
+            this.isSelected = function (index) {
+                return this.option === index;
+            };
+
+            $scope.awesomeThings = [
+                'HTML5 Boilerplate',
+                'AngularJS',
+                'Karma'
+            ];
+        }]);
+})();

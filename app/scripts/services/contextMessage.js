@@ -1,20 +1,22 @@
-angular.module('graphe.services')
-    .service('contextMessage', contextMessage);
-
-function contextMessage () {
+(function () {
     'use strict';
 
-    var message = "";
+    angular.module('graphe.services')
+        .service('contextMessage', contextMessage);
 
-    function setMessage(m){
-        message = m;
+    function contextMessage() {
+
+        var message = "";
+
+        function setMessage(m) {
+            message = m;
+        }
+
+        var service = {
+            message: message,
+            setMessage: setMessage
+        };
+
+        return service;
     }
-
-    var service = {
-        message: message,
-        setMessage: setMessage
-
-    };
-
-    return service;
-}
+})();

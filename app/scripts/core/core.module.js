@@ -1,15 +1,17 @@
-angular
-    .module('graphe.core', [
-        
-        // angular modules
-        'ngAnimate',
-        'ngCookies',
-        'ngResource',
-        'ngRoute',
-        'ngSanitize',
-        'ngTouch',
+(function () {
+    'use strict';
+    angular
+        .module('graphe.core', [
 
-        // 3rd party modules
-        'ngMaterial'
+            // angular modules
+            'ngAnimate',
+            'ngCookies',
+            'ngResource',
+            'ngRoute',
+            'ngSanitize',
+            'ngTouch',
 
-    ]);
+            // 3rd party modules
+            'ngMaterial'
+        ]);
+})();
