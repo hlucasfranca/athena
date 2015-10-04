@@ -9,6 +9,8 @@
                 restrict: 'E',
                 require: '^gpAlgorithmPlayer',
                 link: function postLink(scope, element, attrs, gpStageCtrl) {
+
+                    scope.hideSteps = false;
                 }
             };
         });
