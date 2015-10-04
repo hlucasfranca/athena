@@ -3,15 +3,7 @@
 
     angular.module('graphe.algorithms')
         .service('dfs', function () {
-            var service = {};
 
-            function next(){
-
-            }
-
-            function previous(){
-
-            }
 
             var n = 'Depth first search',
                 instructions = [],
@@ -23,42 +15,56 @@
                     'if vertex w is not labeled as discovered then',
                     'recursively call DFS(G,w)',
                     'end of algorithm'
-                ],
-                stepList = [];
-
-
+                ];
 
             function run(graph, visited) {
 
-                if (typeof visited === "string") {
+
+
+                console.log('starting algorithm');
+
+                dfs(graph,visited);
+
+                instructions.push({instruction: steps.length - 1, visited: visited});
+
+                console.log('end of algorithm');
+            }
+
+            function dfs(graph, visited) {
+                var node = visited;
+
+                if (typeof visited === 'string') {
                     console.log('passed string');
-                    visited = graph.getNode(visited);
+                    node = graph.getNode(visited);
                 }
 
-                service.instructions.push({instruction: 0, visited: visited});
-                visited.marked = true;
-                service.result.push(visited.label);
-                service.instructions.push({instruction: 1, visited: visited});
+                           instructions.push({instruction: 0, visited: node});
+                node.marked = true;
+                         result.push(node.label);
+                       instructions.push({instruction: 1, visited: node});
 
-                graph.adjacentList[visited.index].forEach(function (node) {
-                    service.instructions.push({instruction: 2, visited: visited});
-                    service.instructions.push({instruction: 3, visited: visited});
+                graph.adjacentList[node.index].forEach(function (n) {
+                             instructions.push({instruction: 2, visited: node});
+                           instructions.push({instruction: 3, visited: node});
 
-                    if (!node.marked) {
-                        service.instructions.push({instruction: 4, visited: visited});
-                        service.run(graph, node);
+                    if (!n.marked) {
+                                 instructions.push({instruction: 4, visited: node});
+                        dfs(graph, n);
                     }
                 });
             }
 
-            service = {
+
+            var service = {
                 name: n,
                 steps: steps,
+                result: result,
                 instructions: instructions,
-                run: run,
-                result: result
+                run: run
             };
 
             return service;
+
+
         });
 })();
