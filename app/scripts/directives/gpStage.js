@@ -177,6 +177,8 @@
             link = link.data(links);
 
             link.enter().append('line')
+                // TODO remove unnecessary code
+                // .classed('link_selected', function (d) { return d === selectedLink; })
                 .attr('class', 'link')
                 .attr('id', function (d) {
                     return 'link_' + d.source.label + '_' + d.target.label;
@@ -184,9 +186,6 @@
                 .on('mousedown', mousedownlink);
 
             link.exit().remove();
-            link.classed('link_selected', function (d) {
-                return d === selectedLink;
-            });
 
             node = node.data(nodes);
 
@@ -223,9 +222,9 @@
                 .attr('id', function (d, i) {
                     return 'node-' + i;
                 })*/
-                ;
+            //    ;
 
-            nodeGroup
+           // nodeGroup
                 .attr('class', 'node')
                 .append('circle')
                 .attr('fill', function(d){ return d.color; })
