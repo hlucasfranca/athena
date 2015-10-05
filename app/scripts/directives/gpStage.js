@@ -197,8 +197,11 @@
             //linkGroup.select('.g text')
             //    .text(function (d) { return d.label || 'dummy'; });
 
+            /*
+            TODO: remove unnecessary code
             nodeGroup = node.select('g')
                 .attr('id', function (d, i) { return 'node-' + i;});
+            */
 
             node.select('.node circle')
                 .attr('fill', function (d) { return d.color; });
@@ -215,9 +218,12 @@
 
             nodeGroup = node.enter()
                 .append('g')
+                
+                /*TODO remove unused code
                 .attr('id', function (d, i) {
                     return 'node-' + i;
-                });
+                })*/
+                ;
 
             nodeGroup
                 .attr('class', 'node')
@@ -569,6 +575,8 @@
             .style('fill', '#000');
     }
 
+    /*
+    TODO: remove unused code
     function tweenDash() {
         var l = this.getTotalLength(),
             i = d3.interpolateString('0,' + l, l + ',' + l);
@@ -577,12 +585,16 @@
             return i(t);
         };
     }
+    */
 
+    /*
+    TODO: remove unused code
     function transition(path) {
         path.transition()
             .duration(1000)
             .attrTween('stroke-dasharray', tweenDash);
     }
+    */
 
     function dragStart(d, i) {
         // silence other listeners
