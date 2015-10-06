@@ -177,6 +177,8 @@
             link = link.data(links);
 
             link.enter().append('line')
+                // TODO remove unnecessary code
+                // .classed('link_selected', function (d) { return d === selectedLink; })
                 .attr('class', 'link')
                 .attr('id', function (d) {
                     return 'link_' + d.source.label + '_' + d.target.label;
@@ -184,9 +186,6 @@
                 .on('mousedown', mousedownlink);
 
             link.exit().remove();
-            link.classed('link_selected', function (d) {
-                return d === selectedLink;
-            });
 
             node = node.data(nodes);
 
@@ -197,8 +196,11 @@
             //linkGroup.select('.g text')
             //    .text(function (d) { return d.label || 'dummy'; });
 
+            /*
+            TODO: remove unnecessary code
             nodeGroup = node.select('g')
                 .attr('id', function (d, i) { return 'node-' + i;});
+            */
 
             node.select('.node circle')
                 .attr('fill', function (d) { return d.color; });
@@ -215,11 +217,14 @@
 
             nodeGroup = node.enter()
                 .append('g')
+                
+                /*TODO remove unused code
                 .attr('id', function (d, i) {
                     return 'node-' + i;
-                });
+                })*/
+            //    ;
 
-            nodeGroup
+           // nodeGroup
                 .attr('class', 'node')
                 .append('circle')
                 .attr('fill', function(d){ return d.color; })
@@ -569,6 +574,8 @@
             .style('fill', '#000');
     }
 
+    /*
+    TODO: remove unused code
     function tweenDash() {
         var l = this.getTotalLength(),
             i = d3.interpolateString('0,' + l, l + ',' + l);
@@ -577,12 +584,16 @@
             return i(t);
         };
     }
+    */
 
+    /*
+    TODO: remove unused code
     function transition(path) {
         path.transition()
             .duration(1000)
             .attrTween('stroke-dasharray', tweenDash);
     }
+    */
 
     function dragStart(d, i) {
         // silence other listeners

@@ -176,6 +176,7 @@
                 // as index is zero-based, use the nodes number before increment
                 var len = model.nodeList.length;
 
+                // TODO remove this
                 var newNode = {
                     name: 'dummy node',
                     x: xPosition !== undefined ? xPosition : Math.random() * 200,
