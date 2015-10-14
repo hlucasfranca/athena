@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
     // Configurable paths for the application
     var grapheConfig = {
-        appPath: require('./bower.json').appPath || 'app',
+        appPath: require('./bower.json').appPath || 'client/app',
         distPath: 'dist'
     };
 
@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                 tasks: ['newer:jshint:test', 'karma']
             },
             styles: {
-                files: ['<%= grapheConfig.appPath %>/**/*.css'],
+                files: ['<%= grapheConfig.appPath %>/content/styles/**/*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
             },
             gruntfile: {
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= grapheConfig.appPath %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
-                    '<%= grapheConfig.appPath %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= grapheConfig.appPath %>/content/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
         },
@@ -85,8 +85,8 @@ module.exports = function (grunt) {
                                 connect.static('./bower_components')
                             ),
                             connect().use(
-                                '/app/styles',
-                                connect.static('./app/styles')
+                                '/client/content/styles',
+                                connect.static('./client/content/styles')
                             ),
                             connect.static(grapheConfig.appPath)
                         ];
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    '<%= grapheConfig.appPath %>/scripts/**/*.js'
+                    '<%= grapheConfig.appPath %>/app/**/*.js'
                 ]
             },
             test: {
