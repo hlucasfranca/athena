@@ -88,7 +88,7 @@
             }
 
             return {
-                templateUrl: 'app/directives/gpAdjacencyMatrix.html',
+                templateUrl: 'components/directives/adjacencyMatrix/gpAdjacencyMatrix.html',
                 restrict: 'E',
                 require: ['^gpContainer', '^?gpStage'],
                 link: postLink

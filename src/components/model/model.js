@@ -112,8 +112,6 @@
 
             function addNode(node) {
                 //if node isn't provided
-
-
                 node.id = id++;
                 adj[vertices.length] = [];
                 vertices.push(node);

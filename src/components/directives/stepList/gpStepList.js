@@ -5,7 +5,7 @@
         .directive('gpStepList', function () {
 
             return {
-                templateUrl: 'app/directives/gpStepList.html',
+                templateUrl: 'components/directives/stepList/gpStepList.tpl.html',
                 restrict: 'E',
                 require: '^gpAlgorithmPlayer',
                 link: function postLink(scope, element, attrs, gpStageCtrl) {
