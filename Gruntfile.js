@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
     // Configurable paths for the application
     var grapheConfig = {
-        appPath: require('./bower.json').appPath || 'client/app',
+        appPath: require('./bower.json').appPath || 'src',
         distPath: 'dist'
     };
 
@@ -29,7 +29,7 @@ module.exports = function (grunt) {
         // Watches files for changes and runs tasks based on the changed files
         watch: {
             options: {
-                spawn: false,
+               // spawn: false,
                 reload: true
             },
             bower: {
@@ -37,18 +37,23 @@ module.exports = function (grunt) {
                 tasks: ['wiredep']
             },
             js: {
-                files: ['<%= grapheConfig.appPath %>/scripts/**/*.js'],
-                tasks: ['newer:jshint:all'],
+                files: ['!<%= grapheConfig.appPath %>/**/*_test.js',
+                    '<%= grapheConfig.appPath %>/app/**/*.js',
+                    '<%= grapheConfig.appPath %>/components/**/*.js'
+                    ],
+                //tasks: ['newer:jshint:all'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             jsTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
+                files: ['**/*_test.js'],
+                tasks: [
+                    //'newer:jshint:test',
+                    'karma']
             },
             styles: {
-                files: ['<%= grapheConfig.appPath %>/content/styles/**/*.css'],
+                files: ['<%= grapheConfig.appPath %>/**/*.css'],
                 tasks: ['newer:copy:styles', 'autoprefixer']
             },
             gruntfile: {
@@ -59,7 +64,7 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= grapheConfig.appPath %>/{,*/}*.html',
+                    '<%= grapheConfig.appPath %>/**/*.html',
                     '.tmp/styles/{,*/}*.css',
                     '<%= grapheConfig.appPath %>/content/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
@@ -85,8 +90,8 @@ module.exports = function (grunt) {
                                 connect.static('./bower_components')
                             ),
                             connect().use(
-                                '/client/content/styles',
-                                connect.static('./client/content/styles')
+                                '/assets/styles',
+                                connect.static('./assets/styles')
                             ),
                             connect.static(grapheConfig.appPath)
                         ];
@@ -126,14 +131,14 @@ module.exports = function (grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    '<%= grapheConfig.appPath %>/app/**/*.js'
+                    '<%= grapheConfig.appPath %>/**/*.js'
                 ]
             },
             test: {
                 options: {
-                    jshintrc: 'test/.jshintrc'
+                    jshintrc: '.jshintrc'
                 },
-                src: ['test/spec/{,*/}*.js']
+                src: ['**/*_test.js']
             }
         },
 
@@ -143,9 +148,10 @@ module.exports = function (grunt) {
                 files: [{
                     dot: true,
                     src: [
+                        '!<%= grapheConfig.distPath %>/.git{,*/}*',
                         '.tmp',
-                        '<%= grapheConfig.distPath %>/{,*/}*',
-                        '!<%= grapheConfig.distPath %>/.git{,*/}*'
+                        '<%= grapheConfig.distPath %>/{,*/}*'
+
                     ]
                 }]
             },
@@ -399,7 +405,7 @@ module.exports = function (grunt) {
         // Test settings
         karma: {
             unit: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma/karma.conf.js',
                 singleRun: true
             }
         }
