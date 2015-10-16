@@ -24,25 +24,16 @@
     var selectedNode = null,
         selectedLink = null,
         nodeGroup,
-        xLines,
-        yLines,
         gridSize = 20,
         gridWidth = 2000,
         gridHeight = 2000,
-
         outer,
         vis,
-
-        nodes,
-        links,
-    // groups all links
-        link,
-    // using svg group, make all nodes to be in front of links
-        node,
-    // separation between circles
-    padding = 2,
-    // TODO: replace by node radius
-        radius = 15,
+        allLinksGroup,
+        allNodesGroup,
+        nodePadding = 2,
+        // TODO: replace by node radius
+        nodeRadius = 15,
         force,
         scope;
 
@@ -97,13 +88,10 @@
             .links(scope.graph.getEdges())
             .on('tick', tick);
 
-        // get layout properties
-        nodes = force.nodes();
-        links = force.links();
         // groups all links
-        link = vis.append('g').attr('id', 'link-group').selectAll('.link');
+        allLinksGroup = vis.append('g').attr('id', 'link-group').selectAll('.link');
         // using svg group, make all nodes to be in front of links
-        node = vis.append('g').selectAll('.node');
+        allNodesGroup = vis.append('g').selectAll('.node');
 
         // TODO: add keyboard callback
         //d3.select(window).on('keydown', keydown);
@@ -114,22 +102,12 @@
         scope.$watch('stageHeight', redraw);
         scope.$watch('graph', redraw, true);
         scope.$watch('fab.currentOption', function () {
-            if (scope.fab.currentOption === scope.fab.fabOptions.select) {
-                nodeGroup.select('.node').style({ 'cursor': 'hand' });
+
+            switch (scope.fab.currentOption){
+                case scope.fab.fabOptions.select: nodeGroup.select('.node').style({ 'cursor': 'hand' }); break;
+                case scope.fab.fabOptions.add: nodeGroup.select('.node').style({ 'cursor': 'hand' }); break;
+                case scope.fab.fabOptions.remove: nodeGroup.style({ 'cursor': 'pointer' }); break;
             }
-
-            if (scope.fab.currentOption === scope.fab.fabOptions.add) {
-                nodeGroup.select('.node').style({ 'cursor': 'hand' });
-            }
-
-            if (scope.fab.currentOption === scope.fab.fabOptions.remove) {
-                nodeGroup.style({ 'cursor': 'pointer' });
-
-                nodeGroup.call(function () {
-                    console.log(this);
-                });
-            }
-
             console.log('currentOption: ');
             console.log(scope.fab.currentOption);
         });
@@ -149,9 +127,9 @@
             .attr('width', scope.stageWidth)
             .attr('height', scope.stageHeight);
 
-        link = link.data(links);
+        allLinksGroup = allLinksGroup.data(scope.graph.getEdges());
 
-        link.enter().append('line')
+        allLinksGroup.enter().append('line')
             // TODO remove unnecessary code
             // .classed('link_selected', function (d) { return d === selectedLink; })
             .attr('class', 'link')
@@ -160,25 +138,26 @@
             })
             .on('mousedown', mousedownlink);
 
-        link.exit().remove();
+        allLinksGroup.exit().remove();
 
-        node = node.data(nodes);
+        allNodesGroup = allNodesGroup.data(scope.graph.getNodes());
 
         /*
          *  UPDATE
          */
 
-        //linkGroup.select('.g text')
-        //    .text(function (d) { return d.label || 'dummy'; });
+        allLinksGroup.select('.g text')
+            .text(function (d) { return d.label || 'dummy'; });
 
+        nodeGroup = allNodesGroup.select('g')
+            .attr('id', function (d, i) {
+                return 'node-' + i;
+            });
 
-         nodeGroup = node.select('g')
-         .attr('id', function (d, i) { return 'node-' + i;});
-
-        node.select('.node circle')
+        allNodesGroup.select('.node circle')
             .attr('fill', function (d) { return d.color; });
 
-        node.select('.node text')
+        allNodesGroup.select('.node text')
             .text(function (d) { return d.label; });
 
         /*
@@ -188,7 +167,7 @@
         //linkGroup.append('text')
         //    .text(function (d) { return d.label || 'dummy'; });
 
-        nodeGroup = node.enter()
+        nodeGroup = allNodesGroup.enter()
             .append('g')
             .attr('id', function (d, i) {
                 return 'node-' + i;
@@ -205,18 +184,16 @@
             .ease('elastic')
             .attr('r', 15);
 
-        node.exit()
+        allNodesGroup.exit()
             .transition()
-            //.select('circle')
-            //.attr('r', 50)
-            //.duration(500)
-            //.ease('linear')
-            //.attr('r',1)
+            .select('circle')
+            .attr('r', 50)
+            .duration(500)
+            .ease('linear')
+            .attr('r',1)
             .remove();
 
         //node.exit().transition().delay(500).select('text').remove();
-
-
 
         var nodeDrag = d3.behavior.drag()
             .on('drag', dragMove)
@@ -243,11 +220,11 @@
                  console.log(d);*/
             });
 
-        node.exit().transition()
+        allNodesGroup.exit().transition()
             .attr('r', 0)
             .remove();
 
-        node.classed('node_selected', function (d) {
+        allNodesGroup.classed('node_selected', function (d) {
             return d === selectedNode;
         });
 
@@ -287,63 +264,61 @@
 
         d3.event.stopPropagation(); // silence other listeners
 
-        if (scope.fab.currentOption === scope.fab.fabOptions.remove) {
-
-            scope.$apply(function () {
-                scope.graph.removeNode(d);
-                scope.updateNodeCount();
-                redraw();
-            });
-
-            scope.showSimpleToast('node removed!');
-        }
-
-        else if (scope.fab.currentOption === scope.fab.fabOptions.info) {
-            //TODO: add info screen
-            console.log(d);
-        }
-        else if (scope.fab.currentOption === scope.fab.fabOptions.add.contextOptions[1]) {
-
-            if (!scope.firstNode) {
+        switch (scope.fab.currentOption){
+            case scope.fab.fabOptions.remove:
                 scope.$apply(function () {
-                    scope.firstNode = d;
-
-                    d3.select(self)
-                        .selectAll('circle')
-                        .style({
-                            'stroke': 'black',
-                            'stroke-width': 0
-                        })
-                        .transition()
-                        .duration(100)
-                        .ease('linear')
-                        .style({
-                            'stroke': 'black',
-                            'stroke-width': 2
-                        });
-
-                    console.log(d);
-                    scope.setMessage('Select destination node.');
+                    scope.graph.removeNode(d);
+                    scope.updateNodeCount();
+                    redraw();
                 });
-            }
-            else if (scope.firstNode !== d) {
-                scope.$apply(function () {
-                    scope.graph.addEdge(scope.firstNode.index, d.index);
-                    delete scope.firstNode;
-                    scope.setMessage('Select origin node.');
-                });
-            }
+
+                scope.showSimpleToast('node removed!');
+                break;
+            case scope.fab.fabOptions.info:
+                console.log(d);
+                break;
+            case scope.fab.fabOptions.add.contextOptions[1]:
+                if (!scope.firstNode) {
+                    scope.$apply(function () {
+                        scope.firstNode = d;
+
+                        d3.select(self)
+                            .selectAll('circle')
+                            .style({
+                                'stroke': 'black',
+                                'stroke-width': 0
+                            })
+                            .transition()
+                            .duration(100)
+                            .ease('linear')
+                            .style({
+                                'stroke': 'black',
+                                'stroke-width': 2
+                            });
+
+                        console.log(d);
+                        scope.setMessage('Select destination node.');
+                    });
+                }
+                else if (scope.firstNode !== d) {
+                    scope.$apply(function () {
+                        scope.graph.addEdge(scope.firstNode.index, d.index);
+                        delete scope.firstNode;
+                        scope.setMessage('Select origin node.');
+                    });
+                }
+                break;
         }
+
         redraw();
     }
 
     function collideNodes(alpha) {
 
-        var nodeList = scope.graph.getNodes();
-        var quadtree = d3.geom.quadtree(nodeList);
+        var quadtree = d3.geom.quadtree(scope.graph.getNodes());
 
         return function (d) {
-            var rb = 2 * radius + padding,
+            var rb = 2 * nodeRadius + nodePadding,
                 nx1 = d.x - rb,
                 nx2 = d.x + rb,
                 ny1 = d.y - rb,
@@ -398,14 +373,10 @@
     }
 
     function selectLink(source, target) {
-
-
         // Select the link based on source and target objects
         var selectedLink = d3.selectAll('.link').filter(function (d, i) {
             return d.source === source && d.target === target;
         }).data()[0];
-
-
 
         if (selectedLink === undefined) {
             console.log('link doesnt exists! ' + source.label + ' ' + target.label);
@@ -475,10 +446,6 @@
         }
     }
 
-
-
-
-
     function deselectLink(source, target) {
         var link = '#link_' + source + '_' + target;
         d3.select(link)
@@ -497,8 +464,6 @@
             return d.index === node.index;
         });
 
-
-
         selection.select('circle')
             .transition()
             .duration(250)
@@ -513,33 +478,10 @@
             .style('fill', '#000');
     }
 
-    /*
-    TODO: remove unused code
-    function tweenDash() {
-        var l = this.getTotalLength(),
-            i = d3.interpolateString('0,' + l, l + ',' + l);
-        return function (t) {
-
-            return i(t);
-        };
-    }
-    */
-
-    /*
-    TODO: remove unused code
-    function transition(path) {
-        path.transition()
-            .duration(1000)
-            .attrTween('stroke-dasharray', tweenDash);
-    }
-    */
-
     function dragStart(d, i) {
         // silence other listeners
         d3.event.sourceEvent.stopPropagation();
         console.log('dragStart');
-
-
     }
 
     function dragEnd(d, i) {
@@ -547,7 +489,7 @@
     }
 
     function drawGrid() {
-        xLines = vis.append('g')
+        vis.append('g')
             .attr('class', 'x axis')
             .selectAll('line')
             .data(d3.range(0, gridWidth, gridSize))
@@ -562,7 +504,7 @@
             })
             .attr('y2', gridHeight);
 
-        yLines = vis.append('g')
+        vis.append('g')
             .attr('class', 'y axis')
             .selectAll('line')
             .data(d3.range(0, gridHeight, gridSize))
@@ -593,14 +535,14 @@
 
     function tick() {
         // Collision detection
-        // node.each(collideNodes(0.5));
+        allNodesGroup.each(collideNodes(0.5));
 
-        node.attr('transform', function (d) {
+        allNodesGroup.attr('transform', function (d) {
             return 'translate(' + d.x + ',' + d.y + ')';
         });
 
-        link.
-            attr('x1', function (d) { return d.source.x; })
+        allLinksGroup
+            .attr('x1', function (d) { return d.source.x; })
             .attr('y1', function (d) { return d.source.y; })
             .attr('x2', function (d) { return d.target.x; })
             .attr('y2', function (d) { return d.target.y; });
