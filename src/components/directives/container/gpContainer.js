@@ -13,6 +13,9 @@
     }
 
     function gpContainerCtrl($scope, $window, dfs, $interval, model, colors, labels) {
+
+        var vm = this;
+
         var numberOfNodes = 5;
         // Sets the default menu option
         $scope.currentOption = $scope.fab.fabOptions.add;
@@ -21,9 +24,13 @@
         $scope.selectedRow = null;
         $scope.selectedColumn = null;
         // The stage dimensions
-        $scope.stageWidth = 0;
-        $scope.stageHeight = 0;
+        $scope.width = 0;
+        $scope.height = 0;
         $scope.selectedNode = null;
+
+        vm.getCurrentOption = function(){
+            return $scope.currentOption;
+        };
 
         rescalePanels();
 
@@ -51,7 +58,7 @@
         }
 
         // functions
-        $scope.updateNodeCount = updateNodeCount;
+        vm.updateNodeCount = updateNodeCount;
         $scope.setSelectedOption = setSelectedOption;
         $scope.selectCell = selectCell;
         $scope.deselectCell = deselectCell;
@@ -104,8 +111,8 @@
         function rescalePanels() {
             // get the width of graph-stage element and set to the graph element itself
             var graphStageDiv = $('#gp-stage-container');
-            $scope.stageWidth = graphStageDiv.width();
-            $scope.stageHeight= graphStageDiv.height();
+            $scope.width = graphStageDiv.width();
+            $scope.height= graphStageDiv.height();
 
             $scope.mdcontent = $('#mdcontent').width() + ',' + $('#mdcontent').height();
         }

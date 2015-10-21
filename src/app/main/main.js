@@ -17,12 +17,12 @@
                     'AngularJS',
                     'Karma'
                 ];
-                $scope.toastPosition = {
-                    bottom: true,
-                    top: false,
-                    left: false,
-                    right: true
-                };
+                //$scope.toastPosition = {
+                //    bottom: true,
+                //    top: false,
+                //    left: false,
+                //    right: true
+                //};
 
                 $scope.menuOptions = [
                     {label: 'Home', link: '/'},
@@ -34,14 +34,16 @@
                 //$scope.fabOptions = fab.fabOptions;
                 $scope.fab = fab;
 
+                
+
                 // Functions
                 $scope.showHelp = showHelp;
                 $scope.setMessage = setMessage;
                 $scope.hasMessages = hasMessages;
                 $scope.showContextToolbar = showContextToolbar;
                 $scope.hideContextToolbar = hideContextToolbar;
-                $scope.showSimpleToast = showSimpleToast;
-                $scope.getToastPosition = getToastPosition;
+                //$scope.showSimpleToast = showSimpleToast;
+                //$scope.getToastPosition = getToastPosition;
                 $scope.toggleSidenav = toggleSidenav;
                 $scope.go = go;
                 $scope.cancel = cancel;
@@ -69,35 +71,40 @@
                     $scope.hideFab = false;
                 }
 
-                function showSimpleToast(message) {
+                //function showSimpleToast(message) {
+                //
+                //    if ($mdToast !== undefined) {
+                //        console.log('toast');
+                //        $mdToast.show(
+                //            $mdToast.simple()
+                //                .content(message)
+                //                .action('Got it.')
+                //                .highlightAction(false)
+                //                .position($scope.getToastPosition())
+                //                .hideDelay(3000))
+                //            .then(function () {
+                //                console.log('got it.');
+                //            });
+                //    }
+                //}
 
-                    if ($mdToast !== undefined) {
-                        console.log('toast');
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .content(message)
-                                .action('Got it.')
-                                .highlightAction(false)
-                                .position($scope.getToastPosition())
-                                .hideDelay(3000))
-                            .then(function () {
-                                console.log('got it.');
-                            });
-                    }
-                }
-
-                function getToastPosition() {
-                    return Object.keys($scope.toastPosition)
-                        .filter(function (pos) {
-                            return $scope.toastPosition[pos];
-                        })
-                        .join(' ');
-                }
+                //function getToastPosition() {
+                //    return Object.keys($scope.toastPosition)
+                //        .filter(function (pos) {
+                //            return $scope.toastPosition[pos];
+                //        })
+                //        .join(' ');
+                //}
 
                 function toggleSidenav(menuId) {
                     $mdSidenav(menuId).toggle();
                 }
 
+                /**
+                 * Executa a mudança de página
+                 * @param url
+                 * @param hideNavigationBar
+                 */
                 function go(url, hideNavigationBar) {
                     $location.path(url);
 

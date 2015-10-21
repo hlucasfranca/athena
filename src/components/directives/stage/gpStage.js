@@ -3,16 +3,27 @@
 
     angular
         .module('graphe.directives')
-        .directive('gpStage', gpStage)
+        .directive('gpStage', ['fab', 'toast', gpStage])
         .controller('gpStageCtrl', gpStageCtrl);
 
-    function gpStage() {
+    var _fab,toast;
+
+    function gpStage(fab, _toast) {
+
+        _fab = fab;
+        toast = _toast;
 
         var directive =
         {
             templateUrl: 'components/directives/stage/gpStage.tpl.html',
             restrict: 'E',
             replace: true,
+            scope: {
+                width: '=',
+                height: '=',
+                graph: '='
+
+            },
             require: '^gpContainer',
             controller: 'gpStageCtrl',
             link: linkFn
@@ -35,10 +46,17 @@
         // TODO: replace by node radius
         nodeRadius = 15,
         force,
-        scope;
+        scope,
+        currentOption,
+        containerCtrl
+        ;
 
     function linkFn(s, element, attrs, gpContainerCtrl) {
         scope = s;
+        scope.fab = _fab;
+        containerCtrl = gpContainerCtrl;
+
+        currentOption = gpContainerCtrl.getCurrentOption();
 
     // clean element content
     //angular.element(element[0]).empty();
@@ -98,18 +116,18 @@
 
         redraw();
 
-        scope.$watch('stageWidth', redraw);
-        scope.$watch('stageHeight', redraw);
+        scope.$watch('width', redraw);
+        scope.$watch('height', redraw);
         scope.$watch('graph', redraw, true);
         scope.$watch('fab.currentOption', function () {
 
-            switch (scope.fab.currentOption){
+            switch (currentOption){
                 case scope.fab.fabOptions.select: nodeGroup.select('.node').style({ 'cursor': 'hand' }); break;
                 case scope.fab.fabOptions.add: nodeGroup.select('.node').style({ 'cursor': 'hand' }); break;
                 case scope.fab.fabOptions.remove: nodeGroup.style({ 'cursor': 'pointer' }); break;
             }
             console.log('currentOption: ');
-            console.log(scope.fab.currentOption);
+            console.log(currentOption);
         });
 
     }
@@ -243,7 +261,7 @@
     }
 
     function mousedownlink(d) {
-        if (scope.fab.currentOption === scope.fab.fabOptions.remove) {
+        if (currentOption === scope.fab.fabOptions.remove) {
 
             scope.$apply(function () {
                 scope.graph.removeEdge(d.source, d.target);
@@ -264,11 +282,11 @@
 
         d3.event.stopPropagation(); // silence other listeners
 
-        switch (scope.fab.currentOption){
+        switch (currentOption){
             case scope.fab.fabOptions.remove:
                 scope.$apply(function () {
                     scope.graph.removeNode(d);
-                    scope.updateNodeCount();
+                    containerCtrl.updateNodeCount();
                     redraw();
                 });
 
@@ -522,14 +540,14 @@
 
     function clickedOnStage() {
 
-        if (scope.fab.currentOption === scope.fab.fabOptions.add) {
+        if (currentOption === scope.fab.fabOptions.add) {
             var coordinates = d3.mouse(d3.event.target);
 
             scope.graph.addNode({x:coordinates[0], y:coordinates[1], fixed:true});
-            scope.updateNodeCount();
+            containerCtrl.updateNodeCount();
 
             scope.$apply();
-            scope.showSimpleToast('node added!');
+            toast.showSimpleToast('node added!');
         }
     }
 
