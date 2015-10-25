@@ -126,7 +126,9 @@
 
                     });
 
-                allLinksGroup.exit().remove();
+                allLinksGroup
+                    .exit()
+                    .remove();
 
                 // use a custom function to get the key associated with the node
                 allNodesGroup = allNodesGroup.data(scope.graph.getNodes(), function(d){return d.id;});
@@ -221,7 +223,7 @@
                         var texto = d3.select(this.parentNode).select('text')[0][0].getBBox() || 0;
 
                         if(texto.width > d.radius * 2){
-                            d.radius = texto.width + 2;
+                            d.radius = texto.width / 2 + 4;
                         }
 
                         return d.radius;
@@ -265,7 +267,7 @@
 
                 var self = this;
 
-                d3.event.stopPropagation(); // silence other listeners
+                //d3.event.stopPropagation(); // silence other listeners
 
                 switch (fab.currentOption) {
                     case fab.fabOptions.remove:
@@ -279,7 +281,7 @@
                             redraw();
                         });
 
-                        scope.showSimpleToast('node removed!');
+                        toast.showSimpleToast('node removed!');
                         break;
                     case fab.fabOptions.info:
                         console.log(d);
