@@ -115,7 +115,16 @@
                     // TODO remove unnecessary code
                     .attr('class', 'link')
                     .attr('id', function (d) { return 'link_' + d.source.label + '_' + d.target.label; })
-                    .on('mousedown', mousedownlink);
+                    .on('mousedown', mousedownlink)
+                    .on('dblclick', function (d) {
+                        d3.event.stopPropagation(); // silence other listeners
+
+                        //edit the double clicked node
+                        gpContainerCtrl.showLinkEditDialog(d, function(){
+                            redraw();
+                        });
+
+                    });
 
                 allLinksGroup.exit().remove();
 
@@ -409,8 +418,6 @@
                     n = nodes.length;
 
                 while (++i < n) q.visit(collide(nodes[i]));
-
-
 
                 function collide(node) {
                     var r = node.radius + 16,

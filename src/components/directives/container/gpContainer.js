@@ -25,6 +25,7 @@
         $scope.isFabOpen = false;
         $scope.showDialog = showDialog;
         $scope.showNodeEditDialog = showNodeEditDialog;
+        $scope.showLinkEditDialog = showLinkEditDialog;
 
         //unused
         //$scope.graphideFab = false;
@@ -50,6 +51,7 @@
         vm.updateNodeCount = updateNodeCount;
         vm.setSelectedOption = setSelectedOption;
         vm.showNodeEditDialog = $scope.showNodeEditDialog;
+        vm.showLinkEditDialog = $scope.showLinkEditDialog;
 
         //unused
         //$scope.selectCell = selectCell;
@@ -162,24 +164,7 @@
             }
         }
 
-        function NodeEditDialogController($scope, $mdDialog) {
 
-            $scope.color = $scope.selectedNode.color || {
-                r : 255,
-                g: 255,
-                b: 255
-            };
-
-            $scope.label = $scope.selectedNode.label || 'Node Label';
-
-            $scope.cancel = function () {
-                $mdDialog.cancel();
-            };
-
-            $scope.answer = function (answer) {
-                $mdDialog.hide(answer);
-            };
-        }
 
         function showNodeEditDialog(node, action) {
 
@@ -197,39 +182,30 @@
                 parent: angular.element(document.body),
                 targetEvent: null,
                 clickOutsideToClose: true
-            })
-                .then(
+            }).then(
                 // on sucess
-                function () {
-                    action();
-                    
-                },
+                function () { action(); },
                 // on error
-                function () {
-
-                });
+                function () {}
+            );
         }
 
-        function DialogController($scope, $mdDialog) {
+        function NodeEditDialogController($scope, $mdDialog) {
 
-            console.log($scope.options);
+            $scope.color = $scope.selectedNode.color || d3.rgb(255,255,255);
 
-
-            $scope.hide = function () {
-                console.log('hide');
-                $mdDialog.hide();
-            };
+            $scope.label = $scope.selectedNode.label || 'Node Label';
 
             $scope.cancel = function () {
-
                 $mdDialog.cancel();
             };
 
             $scope.answer = function (answer) {
-                $scope.$apply();
                 $mdDialog.hide(answer);
             };
         }
+
+
 
         function showDialog(action) {
 
@@ -254,6 +230,60 @@
                 });
         }
 
+        function DialogController($scope, $mdDialog) {
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+
+            $scope.answer = function (answer) {
+                $scope.$apply();
+                $mdDialog.hide(answer);
+            };
+        }
+
+
+        /**
+         *  Link edit dialog
+         */
+
+        function showLinkEditDialog(link, action) {
+
+            $scope.selectedLink = link;
+
+            $mdDialog.show({
+                controller: LinkEditDialogController,
+                // use parent scope
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: '../../components/directives/container/linkEditDialog.tpl.html',
+                parent: angular.element(document.body),
+                targetEvent: null,
+                clickOutsideToClose: true
+            }).then(
+                // on sucess
+                function () { action(); },
+                // on error
+                function () {}
+            );
+        }
+
+        function LinkEditDialogController($scope, $mdDialog) {
+
+            $scope.selectedLink.weight = $scope.selectedLink.weight || 1;
+
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+        }
     }
 
 })();
