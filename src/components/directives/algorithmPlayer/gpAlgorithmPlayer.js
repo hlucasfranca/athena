@@ -20,7 +20,7 @@
     }
 
     function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs) {
-        var currentInstruction = 0;
+        //var currentInstruction = 0;
         $scope.steps = [];
         $scope.selectedStep = -1;
         //$scope.depthInstructions = dfs.steps;

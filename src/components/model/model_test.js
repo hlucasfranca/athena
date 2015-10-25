@@ -1,6 +1,8 @@
-'use strict';
+/*globals module, inject*/
 
 describe('Service: model', function () {
+
+    'use strict';
 
     beforeEach(module('graphe'));
 
@@ -174,8 +176,7 @@ describe('Service: model', function () {
         it("should allow add edges for nodes by reference", function () {
 
             var a = {id: 0},
-                b = {id: 1},
-                c = {id: 2};
+                b = {id: 1};
 
             graph.addNode(a);
             graph.addNode(b);

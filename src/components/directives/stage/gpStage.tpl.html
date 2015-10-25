@@ -1,16 +1,16 @@
 
+
+
 <div id="gp-stage" style="height: 100%; position: relative;">
+    {{width}}x{{height}}
+
+
     <link href="gpstage.css" type="text/css">
 
     <div class="graphe-fab">
-        <md-fab-speed-dial md-open='isOpen'
-                           md-direction="up"
-                           ng-class="'md-scale'"
-                           ng-hide="hideFab"
-                           ng-mouseenter="isFabOpen=true"
-                           ng-mouseleave="isFabOpen=false">
+        <md-fab-speed-dial md-open='isOpen' md-direction="up" ng-class="'md-scale'">
             <md-fab-trigger>
-                <md-button aria-label="menu" class="md-fab md-warn" ng-click="toggleFab()">
+                <md-button aria-label="menu" class="md-fab md-warn">
                     <md-icon>menu</md-icon>
                 </md-button>
             </md-fab-trigger>

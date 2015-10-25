@@ -22,6 +22,7 @@
         }
 
 
+        //noinspection UnnecessaryLocalVariableJS
         var service = {
             nextChar: nextChar,
             getLetter: getLetter,

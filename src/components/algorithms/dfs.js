@@ -16,6 +16,10 @@
                     'end of algorithm'
                 ];
 
+            /**
+             * @param  {Graph} graph The graph to be visited
+             * @param  {Node} visited The initial node.
+             */
             function run(graph, visited) {
                 console.log('starting algorithm');
 
@@ -27,8 +31,13 @@
                 return result;
             }
 
+            /**
+             *
+             * @param G
+             * @param v
+             */
             function dfs(G, v) {
-                //add flag
+                //temporary flag
                 v.marked = true;
 
                 G.getAdjacencyList(v).forEach(function(node){
@@ -42,6 +51,7 @@
                 delete v.marked;
             }
 
+            //noinspection UnnecessaryLocalVariableJS
             var service = {
                 name: n,
                 steps: steps,

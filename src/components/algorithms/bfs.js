@@ -10,12 +10,13 @@
                 distTo = [],
                 edgeTo =[];
 
+
             function run(G, v) {
                 var node = G.getNode(v);
                 result.push(node);
                 bfs(G, node);
 
-                G.getNodes().forEach(function(node,index){
+                G.getNodes().forEach(function(node){
                     delete node.marked;
                 });
 
@@ -37,7 +38,7 @@
                 while (q.length !== 0) {
                     var v = q.pop();
 
-                    G.getAdjacencyList(v).forEach(function(w,index){
+                    G.getAdjacencyList(v).forEach(function(w){
                         if (!w.marked) {
                             result.push(w);
                             edgeTo[w.id] = v;
@@ -49,6 +50,7 @@
                 }
             }
 
+            //noinspection UnnecessaryLocalVariableJS
             var service = {
                 name: n,
                 steps: steps,

@@ -1,6 +1,7 @@
-'use strict';
+/*globals module, inject*/
 
 describe('Service: bfs', function () {
+    'use strict';
 
     beforeEach(module('graphe'));
 

@@ -45,7 +45,6 @@
                             message: 'Select all.'
                         }
                     ]
-
                 },
                 info: {
                     name: 'Information',
@@ -56,9 +55,11 @@
                 }
             };
 
-            var service = this;
-            service.fabOptions = fabOptions;
-            service.currentOption = service.fabOptions[0];
+            var service = {
+                fabOptions : fabOptions,
+                currentOption : fabOptions[0]
+            };
+
             return service;
         });
 })();

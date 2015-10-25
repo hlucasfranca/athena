@@ -6,6 +6,7 @@
 
     function model(colors, labels) {
 
+        //noinspection UnnecessaryLocalVariableJS
         var service = {
             getGraph: getGraph
         };
@@ -19,6 +20,7 @@
 
         function Graph() {
 
+            // private variables
             var vertices = [],
                 adj = [],
                 directed = false,
@@ -65,6 +67,8 @@
                 var s = getNode(source);
                 var t = getNode(target);
 
+
+                //noinspection UnnecessaryLocalVariableJS
                 var foundLink = links.filter(function (element) {
                     return element.source.id === s.id && element.target.id === t.id;
                 });
@@ -76,7 +80,7 @@
             function getNode(id) {
 
                 if (typeof id === 'number') {
-                    return getNodes().filter(function (element, index) {
+                    return getNodes().filter(function (element) {
                         return element.id === id;
                     })[0];
                 }
@@ -184,14 +188,16 @@
 
                 links.push({
                     source: getNode(v),
-                    target: getNode(w)
+                    target: getNode(w),
+                    id: id++
                 });
 
                 if (!directed) {
                     adj[targetIndex].push(v);
                     links.push({
                         source: getNode(w),
-                        target: getNode(v)
+                        target: getNode(v),
+                        id: id++
                     });
                 }
 

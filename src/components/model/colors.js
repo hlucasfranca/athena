@@ -15,10 +15,11 @@
 
         function getColor() {
             var index = Math.floor(Math.random() * materialColors.length);
-            var color = materialColor(index);
-            return color;
+            return materialColor(index);
+
         }
 
+        //noinspection UnnecessaryLocalVariableJS
         var service = {
             materialColors: materialColors,
             materialColor: materialColor,

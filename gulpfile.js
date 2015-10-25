@@ -14,16 +14,15 @@ var wrench = require('wrench');
  *  in order to load all gulp tasks
  */
 wrench.readdirSyncRecursive('./gulp').filter(function(file) {
-  return (/\.(js|coffee)$/i).test(file);
+    return (/\.(js|coffee)$/i).test(file);
 }).map(function(file) {
-  require('./gulp/' + file);
+    require('./gulp/' + file);
 });
-
 
 /**
  *  Default task clean temporaries directories and launch the
  *  main optimization build task
  */
 gulp.task('default', ['clean'], function () {
-  gulp.start('build');
+    gulp.start('build');
 });
