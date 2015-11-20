@@ -1,5 +1,5 @@
 <div ng-show="!hideSteps">
-    <h4>Steps</h4>
+    <h4>Passos</h4>
 
     <div ng-repeat="step in selectedAlgorithm.steps" ng-class="{'line-hover': selectedStep === $index}">
         {{$index + 1}}: {{step}}
@@ -8,7 +8,7 @@
 
 <md-button ng-click="hideSteps = !hideSteps"
            class="md-raised {{hideSteps ? 'md-primary':'md-warn'}}">
-    {{hideSteps ? 'show' : 'hide'}} steps
+    {{hideSteps ? 'exibir' : 'ocultar'}} passos
 </md-button>
 
 <div>
@@ -20,7 +20,7 @@
         <md-icon>fast_rewind</md-icon>
     </md-button>
 
-    <md-button class="md-icon-button" aria-label="Play" ng-click="runAlg()">
+    <md-button class="md-fab md-icon-button md-primary" aria-label="Play" ng-click="runAlg()">
         <md-icon>play_arrow</md-icon>
     </md-button>
 
