@@ -311,7 +311,7 @@
                 d.y += d3.event.dy;
 
                 d3.select(this).attr('transform', function (d) {
-                    console.log('translate');
+                    //console.log('translate');
                     return 'translate(' + d.x + ',' + d.y + ')';
                 });
                 //scope.$apply();
@@ -393,13 +393,13 @@
 
                             scope.$apply(function () {
 
-                                console.log(scope.firstNode);
-                                console.log(d);
+                                //console.log(scope.firstNode);
+                                //console.log(d);
 
                                 scope.graph.addEdge(scope.firstNode, d);
                                 delete scope.firstNode;
 
-                                console.log('broadcasting a');
+                                //console.log('broadcasting a');
 
                                 //limpa as mensagens do contexto
                                 broadcastService.broadcast('new_message', '');
@@ -537,7 +537,7 @@
                 }
 
                 allNodesGroup.attr('transform', function (d) {
-                    console.log('translate');
+                    //console.log('translate');
                     return 'translate(' + d.x + ',' + d.y + ')';
                 });
 

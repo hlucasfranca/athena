@@ -5,7 +5,6 @@
         .directive('gpContainer', gpContainer)
         .controller('gpContainerCtrl', gpContainerCtrl);
 
-
     function gpContainer() {
         return {
             controller: 'gpContainerCtrl',
@@ -16,112 +15,56 @@
     function gpContainerCtrl($rootScope, $scope, $window, $mdDialog, dfs, $interval, model, colors, labels) {
         var vm = this;
 
+
+        init();
+
+        console.log('gpcontainerctrl init');
+
         // Sets the default menu option
         $scope.currentOption = $scope.fab.fabOptions.add;
-
         $scope.isFabOpen = false;
-        $scope.showDialog = showDialog;
-        $scope.showNodeEditDialog = showNodeEditDialog;
-        $scope.showLinkEditDialog = showLinkEditDialog;
-
-        //unused
-        //$scope.graphideFab = false;
-        //$scope.selectedRow = null;
-
         $scope.selectedColumn = null;
         // The stage dimensions
         $scope.width = 0;
         $scope.height = 0;
         $scope.selectedNode = null;
 
-        vm.getCurrentOption = function(){
-            return $scope.currentOption;
-        };
+        $scope.showDialog = showDialog;
+        $scope.showNodeEditDialog = showNodeEditDialog;
+        $scope.showLinkEditDialog = showLinkEditDialog;
+        $scope.setSelectedNode = setSelectedNode;
+        $scope.matrix = $scope.graph.getAdjacencyMatrix();
+        $scope.adjacencyList = $scope.graph.getAdjacencyMatrix();
+        $scope.$watch('scope.graph.getAdjacentMatrix()', updateMatrix);
+        $scope.$watch('scope.graph.getAdjacentList()', updateAdjacencyList);
+        angular.element($window).on('resize', rescaleGraph());
 
-        rescalePanels();
-
-        // instantiate the graph
-        init();
 
         // functions
+        vm.getCurrentOption = getCurrentOption;
         vm.updateNodeCount = updateNodeCount;
         vm.setSelectedOption = setSelectedOption;
         vm.showNodeEditDialog = $scope.showNodeEditDialog;
         vm.showLinkEditDialog = $scope.showLinkEditDialog;
-
-        //unused
-        //$scope.selectCell = selectCell;
-        //$scope.deselectCell = deselectCell;
-
-        //$scope.toggleFab = toggleFab;
-        $scope.setSelectedNode = setSelectedNode;
-
         vm.setSelectedNode = setSelectedNode;
-        // end functions
-
-        $scope.matrix = $scope.graph.getAdjacencyMatrix();
-
-        $scope.adjacencyList = $scope.graph.getAdjacencyMatrix();
-
-        $scope.$watch('scope.graph.getAdjacentMatrix()', function(){
-            $scope.matrix = $scope.graph.getAdjacencyMatrix();
-            console.log('matrix changed');
-            console.log($scope.matrix);
-        });
-
-        /*$scope.$watch('scope.graph.getAdjacentList()', function(){
-            $scope.adjacencyList = $scope.graph.getAdjacencyList();
-            console.log('list changed');
-            console.log($scope.adjacencyList);
-        });*/
-
 
         rescalePanels();
 
-        // on window resize, resize the graph
-        angular.element($window).on('resize', function () {
+        // instantiate the graph
 
-            $scope.$apply(function () {
-                rescalePanels();
-            });
-
-            var dimensions = {
-                width: $scope.width,
-                height: $scope.height
-            };
-
-            $rootScope.$broadcast('window.resized' , dimensions);
-        });
 
         function setSelectedNode(node){
-            console.log(node);
-
+            //console.log(node);
             $scope.selectedNode = node;
         }
 
         function setSelectedOption(currentAction) {
-
-            console.log('selected option');
-            console.log(currentAction);
+            //console.log('selected option');
+            //console.log(currentAction);
             $scope.fab.currentOption = currentAction;
             //$scope.toggleFab();
             $scope.showContextToolbar();
         }
-
-        //unused
-        //function selectCell(row, column){
-        //    $scope.selectedRow = row;
-        //    $scope.selectedColumn = column;
-        //}
-        //
-        //function deselectCell() {
-        //    $scope.selectedRow = null;
-        //    $scope.selectedColumn = null;
-        //}
-
-        //function toggleFab () {
-        //    $scope.isFabOpen = !$scope.isFabOpen;
-        //}
 
         function rescalePanels() {
             // get the width of graph-stage element and set to the graph element itself
@@ -135,13 +78,12 @@
         }
 
         function updateNodeCount (){
-            console.log('updating node count');
+            //console.log('updating node count');
             $scope.graph.nodes = $scope.graph.getNodes();
             $scope.graph.links = $scope.graph.getEdges();
         }
 
         function init(){
-
             // Creates a simple graph
             $scope.graph = model.getGraph();
 
@@ -171,8 +113,8 @@
 
         function showNodeEditDialog(node, action) {
 
-            console.log('editing');
-            console.log(node);
+            //console.log('editing');
+            //console.log(node);
 
             $scope.selectedNode = node;
 
@@ -197,7 +139,6 @@
         function NodeEditDialogController($scope, $mdDialog) {
 
             $scope.color = $scope.selectedNode.color || d3.rgb(255,255,255);
-
             $scope.label = $scope.selectedNode.label || 'Node Label';
 
             $scope.cancel = function () {
@@ -205,7 +146,7 @@
             };
 
             $scope.answer = function (answer) {
-                console.log('node edit complete');
+                //console.log('node edit complete');
                 $mdDialog.hide(answer);
             };
         }
@@ -240,18 +181,11 @@
 
         function DialogController($scope, $mdDialog) {
 
-            $scope.hide = function () {
-                $mdDialog.hide();
-            };
+            $scope.hide = function () { $mdDialog.hide(); };
 
-            $scope.cancel = function () {
-                $mdDialog.cancel();
-            };
+            $scope.cancel = function () { $mdDialog.cancel(); };
 
-            $scope.answer = function (answer) {
-                //$scope.$apply();
-                $mdDialog.hide(answer);
-            };
+            $scope.answer = function (answer) { $mdDialog.hide(answer);};
         }
 
 
@@ -290,6 +224,36 @@
             $scope.answer = function (answer) {
                 $mdDialog.hide(answer);
             };
+        }
+
+        function getCurrentOption(){
+            return $scope.currentOption;
+        }
+
+        function updateMatrix(){
+            $scope.matrix = $scope.graph.getAdjacencyMatrix();
+            //console.log('matrix changed');
+            //console.log($scope.matrix);
+        }
+
+        function updateAdjacencyList(){
+            $scope.adjacencyList = $scope.graph.getAdjacencyList();
+            //console.log('list changed');
+            //console.log($scope.adjacencyList);
+        }
+
+        function rescaleGraph () {
+
+            //$scope.$apply(function () {
+                rescalePanels();
+            //});
+
+            var dimensions = {
+                width: $scope.width,
+                height: $scope.height
+            };
+
+            $rootScope.$broadcast('window.resized' , dimensions);
         }
     }
 

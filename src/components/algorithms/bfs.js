@@ -3,47 +3,69 @@
     angular.module('graphe.algorithms')
         .service('bfs', function () {
 
-            var n = 'Breadth first search',
+            var n = 'Percurso em largura',
                 instructions = [],
                 result = [],
-                steps = [],
+                steps = [
+                    "Visita-se um nó n previamente selecionado;",
+                    "Marca o nó n",
+                    "Inserir n em uma fila F",
+                    "Enquanto a fila F não estiver vazia",
+                    "Retira um elemento da fila F e atribui ao nó n",
+                    "Para cada nó m não marcado e adjacente a n faça",
+                    "O nó m é visitado",
+                    "O nó m é colocado na fila F",
+                    "O nó m é marcado"
+                ],
                 distTo = [],
                 edgeTo =[];
 
-            function run(G, v) {
-                var node = G.getNode(v);
+            /**
+             * @param  {Graph} graph The graph to be visited
+             * @param  {Node} visited The initial node.
+             */
+            function run(graph, visited) {
+                console.log('starting algorithm');
+
+                var node = graph.getNode(visited);
+
                 result.push(node);
-                bfs(G, node);
 
-                G.getNodes().forEach(function(node){
-                    delete node.marked;
-                });
+                dfs(graph, node);
+                console.log('end of algorithm');
 
+                console.log(result);
                 return result;
             }
 
-            function bfs(G, s) {
-                var q = [];
+            /**
+             *
+             * @param G
+             * @param v
+             */
+            function dfs(G, verticeInicial) {
+                //temporary flag
 
-                G.getEdges().forEach(function(element,index){
-                    distTo[index] = Infinity;
-                });
+                var pilha = [];
+                verticeInicial.marked = true;
 
-                distTo[s] = 0;
-                s.marked = true;
+                // Adiciona à pilha
+                pilha.push(verticeInicial);
 
-                q.push(s);
+                while (pilha.length > 0) {
+                    //Popa da pilha
+                    var verticeVisitado = pilha.shift();
+                    if (verticeVisitado) {
+                        console.log("Visited vertex: ");
+                        console.log(verticeVisitado);
+                    }
 
-                while (q.length !== 0) {
-                    var v = q.pop();
-
-                    G.getAdjacencyList(v).forEach(function(w){
-                        if (!w.marked) {
-                            result.push(w);
-                            edgeTo[w.id] = v;
-                            distTo[w.id] = distTo[v] + 1;
-                            w.marked = true;
-                            q.push(w);
+                    G.getAdjacencyList(verticeInicial).forEach(function(verticeAdjacente){
+                        if (!verticeAdjacente.marked) {
+                            verticeAdjacente.marked = true;
+                            pilha.push(verticeAdjacente);
+                            console.log('pilha');
+                            console.log(pilha);
                         }
                     });
                 }

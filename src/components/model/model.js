@@ -107,10 +107,8 @@
                     links.forEach(function (link) {
 
                         if(link.source.id === undefined || link.target.id === undefined){
-                            debugger;
+                            console.log('undefined link');
                         }
-
-
 
                         adjMatrix[link.source.id][link.target.id] = 1;
 
@@ -222,14 +220,13 @@
 
             function getAdjacencyList(node) {
 
-                
-
                 if(angular.isDefined(node)){
                     return adj[getNodeIndex(node)];
                 }
 
                 else{
-                    throw Error('undefined');
+                    //retorna lista completa
+                    return adj;
                 }
             }
 
