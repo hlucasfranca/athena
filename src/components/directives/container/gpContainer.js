@@ -18,6 +18,7 @@
 
         // Sets the default menu option
         $scope.currentOption = $scope.fab.fabOptions.add;
+
         $scope.isFabOpen = false;
         $scope.showDialog = showDialog;
         $scope.showNodeEditDialog = showNodeEditDialog;

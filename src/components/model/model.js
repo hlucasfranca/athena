@@ -105,6 +105,13 @@
                     });
 
                     links.forEach(function (link) {
+
+                        if(link.source.id === undefined || link.target.id === undefined){
+                            debugger;
+                        }
+
+
+
                         adjMatrix[link.source.id][link.target.id] = 1;
 
                         if (!directed) {

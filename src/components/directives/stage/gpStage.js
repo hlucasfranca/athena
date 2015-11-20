@@ -261,6 +261,10 @@
                 allNodesGroup.select('.node circle')
                     .attr('r', function(d){
 
+                        /**
+                         * TODO HIGH CPU
+                         * alterar lógica para armazenar bbox e só alterar quando texto do nó for alterado
+                         */
                         var texto = d3.select(this.parentNode).select('text')[0][0].getBBox() || 0;
 
                         if(texto.width > d.radius * 2){
@@ -290,7 +294,7 @@
                         else { return (d.target.y + (d.source.y - d.target.y)/2); }
                     })
 
-                    .text(function(d) { return 'teste'; });
+                    .text(function(d) { return 'não deveria estar aqui'; });
             }
 
             /**
@@ -310,11 +314,6 @@
                     console.log('translate');
                     return 'translate(' + d.x + ',' + d.y + ')';
                 });
-
-
-
-
-
                 //scope.$apply();
             }
 
@@ -372,6 +371,7 @@
                             scope.$apply(function () {
                                 scope.firstNode = d;
 
+                                    //TODO NÃO SERIA ESSE O SELECTNODE?
                                 d3.select(self)
                                     .selectAll('circle')
                                     .style({
@@ -386,21 +386,23 @@
                                         'stroke-width': 2
                                     });
 
-                                console.log(d);
-                                console.log('broadcasting');
-
-                                broadcastService.broadcast('new_message', 'Select destination node.');
-
+                                broadcastService.broadcast('new_message', 'Selecione nó destino.');
                             });
                         }
                         else if (scope.firstNode !== d) {
+
                             scope.$apply(function () {
-                                scope.graph.addEdge(scope.firstNode.index, d.index);
+
+                                console.log(scope.firstNode);
+                                console.log(d);
+
+                                scope.graph.addEdge(scope.firstNode, d);
                                 delete scope.firstNode;
 
-                                console.log('broadcasting');
+                                console.log('broadcasting a');
 
-                                broadcastService.broadcast('new_message', 'Select origin node.');
+                                //limpa as mensagens do contexto
+                                broadcastService.broadcast('new_message', '');
 
                             });
                         }
@@ -566,7 +568,16 @@
 
                 allNodesGroup.select('.node circle')
                     .attr('r', function(d){
+
+                        /**
+                         * TODO HIGH CPU
+                         * alterar lógica para armazenar bbox e só alterar quando texto do nó for alterado
+                         */
+
+
                         var texto = d3.select(this.parentNode).select('text')[0][0].getBBox() || 0;
+
+                        var texto = 0;
 
                         if(texto.width > d.radius * 2){
                             d.radius = texto.width / 2 + 4;
@@ -622,6 +633,9 @@
                         break;
                     case fab.fabOptions.remove:
                         nodeGroup.style({'cursor': 'pointer'});
+                        break;
+                    case fab.fabOptions.add.contextOptions[1]:
+                        broadcastService.broadcast('new_message', 'Selecione nó origem.');
                         break;
                 }
                 console.log('currentOption: ');

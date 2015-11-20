@@ -20,7 +20,7 @@
 
 
             service.message = m || '';
-            service.object = o || {};
+            service.object = o;
 
             $rootScope.$broadcast(m);
         }

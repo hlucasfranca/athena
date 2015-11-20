@@ -25,7 +25,7 @@
 
                 var node = graph.getNode(visited);
 
-
+                result.push(node);
 
                 dfs(graph, node);
                 console.log('end of algorithm');
