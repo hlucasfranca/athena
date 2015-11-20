@@ -1,45 +1,43 @@
 (function () {
     'use strict';
     angular.module('graphe')
-        .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab',
-            function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab) {
+        .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab', 'broadcastService',
+            function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab, broadcastService) {
 
                 $scope.appName = "[ Nome do projeto ]";
 
                 $scope.menuOptions = [
-                    {label: 'Home', link: '/'},
-                    {label: 'New Graph', link: '/graph'},
-                    {label: 'Help', link: '/about'}
+                    {label: 'Página inicial', link: '/'},
+                    {label: 'Novo grafo', link: '/graph'},
+                    {label: 'Sobre', link: '/about'}
                 ];
 
                 $scope.isShowContextToolbar = false;
-                //$scope.fabOptions = fab.fabOptions;
                 $scope.fab = fab;
 
                 // Functions
                 $scope.showHelp = showHelp;
-                $scope.setMessage = setMessage;
-                $scope.hasMessages = hasMessages;
+
                 $scope.showContextToolbar = showContextToolbar;
                 $scope.hideContextToolbar = hideContextToolbar;
-                //$scope.showSimpleToast = showSimpleToast;
-                //$scope.getToastPosition = getToastPosition;
                 $scope.toggleSidenav = toggleSidenav;
                 $scope.go = go;
                 $scope.cancel = cancel;
+                $scope.message = '';
 
+                $scope.$on('new_message',function(){
+
+                    $scope.message = broadcastService.object;
+
+                    console.log(broadcastService);
+
+                    console.log('received');
+
+                });
 
                 // Function definitions
                 function showHelp() {
                     $scope.showSimpleToast($scope.currentOption.message);
-                }
-
-                function setMessage(message) {
-                    $scope.message = message;
-                }
-
-                function hasMessages() {
-                    return $scope.message !== null && $scope.message !== undefined && $scope.message !== '';
                 }
 
                 function showContextToolbar() {
@@ -71,9 +69,8 @@
 
                 function cancel() {
                     $scope.hideContextToolbar();
-                    $scope.setMessage(null);
+                    $scope.message = '';
                     $scope.fab.currentOption = {};
                 }
-
             }]);
 })();

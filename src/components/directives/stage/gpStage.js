@@ -113,9 +113,9 @@
                     .attr('width', scope.width)
                     .attr('height', scope.height);
 
+
+
                 allLinksGroup = allLinksGroup.data(scope.graph.getEdges());
-
-
 
                 allLinksGroup.enter()
                     .append('g')
@@ -135,9 +135,11 @@
                     .append('line')
                     .classed('link', true);
 
-                var linkText = allLinksGroup
-                    // TODO DUPLICANDO TEXTO EM TODOS OS LINKS
-                    .append("text")
+
+
+                var path_text = allLinksGroup.selectAll(".linkgroup")
+                    .data(force.links())
+                    .enter().append("text")
                     .attr("font-family", "Arial, Helvetica, sans-serif")
                     .attr("x", function(d) {
                         if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
@@ -150,7 +152,26 @@
                     .attr("fill", "Black")
                     .style("font", "normal 12px Arial")
                     .attr("dy", ".35em")
-                    .text(function(d) { return d.weight | 1; });
+                    .text(function(d) { return d.weight; });
+
+
+
+
+                    //// TODO DUPLICANDO TEXTO EM TODOS OS LINKS
+                    //.append("text")
+                    //.attr("font-family", "Arial, Helvetica, sans-serif")
+                    //.attr("x", function(d) {
+                    //    if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
+                    //    else { return (d.target.x + (d.source.x - d.target.x)/2); }
+                    //})
+                    //.attr("y", function(d) {
+                    //    if (d.target.y > d.source.y) { return (d.source.y + (d.target.y - d.source.y)/2); }
+                    //    else { return (d.target.y + (d.source.y - d.target.y)/2); }
+                    //})
+                    //.attr("fill", "Black")
+                    //.style("font", "normal 12px Arial")
+                    //.attr("dy", ".35em")
+                    //.text(function(d) { return d.weight | 1; });
 
                 allLinksGroup
                     .exit()
@@ -344,6 +365,9 @@
                         console.log(d);
                         break;
                     case fab.fabOptions.add.contextOptions[1]:
+
+                        console.log('add link');
+
                         if (!scope.firstNode) {
                             scope.$apply(function () {
                                 scope.firstNode = d;
@@ -363,14 +387,21 @@
                                     });
 
                                 console.log(d);
-                                scope.setMessage('Select destination node.');
+                                console.log('broadcasting');
+
+                                broadcastService.broadcast('new_message', 'Select destination node.');
+
                             });
                         }
                         else if (scope.firstNode !== d) {
                             scope.$apply(function () {
                                 scope.graph.addEdge(scope.firstNode.index, d.index);
                                 delete scope.firstNode;
-                                scope.setMessage('Select origin node.');
+
+                                console.log('broadcasting');
+
+                                broadcastService.broadcast('new_message', 'Select origin node.');
+
                             });
                         }
                         break;
@@ -403,7 +434,7 @@
                 console.log('dragEnd');
 
                 //previne de o force layout ficar rodando após os nós já terem sido movidos
-                force.stop();
+                //force.stop();
             }
 
             /**

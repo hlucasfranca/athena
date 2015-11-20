@@ -75,7 +75,6 @@
         });*/
 
 
-
         rescalePanels();
 
         // on window resize, resize the graph

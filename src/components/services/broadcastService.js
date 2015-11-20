@@ -17,8 +17,10 @@
         };
 
         function broadcast(m,o){
-            service.message = m | '';
-            service.object = o | undefined;
+
+
+            service.message = m || '';
+            service.object = o || {};
 
             $rootScope.$broadcast(m);
         }
