@@ -4,7 +4,7 @@
      * gpAdjascentList
      *
      * Directive to display the adjacency list.
-     *
+     * gpAdjacencyList
      * */
     angular.module('graphe.directives')
         .directive('gpAdjascentList', function () {

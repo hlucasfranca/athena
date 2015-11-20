@@ -215,7 +215,15 @@
 
             function getAdjacencyList(node) {
 
-                return adj[getNodeIndex(node)];
+                
+
+                if(angular.isDefined(node)){
+                    return adj[getNodeIndex(node)];
+                }
+
+                else{
+                    throw Error('undefined');
+                }
             }
 
             function getAdjacencyMatrix() {

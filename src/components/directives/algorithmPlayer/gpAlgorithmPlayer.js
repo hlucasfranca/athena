@@ -19,7 +19,10 @@
         };
     }
 
-    function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs) {
+    function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, broadcastService) {
+
+
+
         //var currentInstruction = 0;
         $scope.steps = [];
         $scope.selectedStep = -1;
@@ -46,11 +49,12 @@
                     var sourceNode = $scope.steps[currentStep - 1].visited;
                     var targetNode = $scope.steps[currentStep].visited;
                     if (sourceNode !== targetNode) {
-                        $scope.selectLink(sourceNode, targetNode);
+                        broadcastService.broadcast('select_link', {source:sourceNode, target: targetNode});
                     }
                 }
                 var step = $scope.steps[currentStep];
-                $scope.selectNode(step.visited);
+
+                broadcastService.broadcast('select_node', step.visited);
 
                 $scope.selectedStep = step.instruction;
                 currentStep++;
@@ -59,23 +63,14 @@
 
         function run() {
 
-            //var nodes = $scope.graph.getNodes();
-
-            // List of nodes to select from
-            //var nodes = [];
-            //
-            //nodes.forEach(function (element, index) {
-            //    nodes.push(element);
-            //});
-
-            //$scope.setOptions(nodes);
-
             $scope.showDialog(function (startNode) {
-                $scope.toggleOpacityLinks();
+                //gpStageController.toggleOpacityLinks();
 
                 $scope.selectedAlgorithm.run($scope.graph, startNode);
 
                 $scope.steps = $scope.selectedAlgorithm.instructions;
+
+                console.log($scope.steps);
 
                 // TODO add stop/pause
                 $interval($scope.nextStep, 500, $scope.steps.length);

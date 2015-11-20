@@ -5,10 +5,7 @@
         .directive('gpContainer', gpContainer)
         .controller('gpContainerCtrl', gpContainerCtrl);
 
-    /**
-     *
-     * @returns {{controller: string, restrict: string}}
-     */
+
     function gpContainer() {
         return {
             controller: 'gpContainerCtrl',
@@ -17,7 +14,6 @@
     }
 
     function gpContainerCtrl($rootScope, $scope, $window, $mdDialog, dfs, $interval, model, colors, labels) {
-
         var vm = this;
 
         // Sets the default menu option
@@ -30,7 +26,6 @@
         //unused
         //$scope.graphideFab = false;
         //$scope.selectedRow = null;
-
 
         $scope.selectedColumn = null;
         // The stage dimensions
@@ -65,11 +60,21 @@
 
         $scope.matrix = $scope.graph.getAdjacencyMatrix();
 
+        $scope.adjacencyList = $scope.graph.getAdjacencyMatrix();
+
         $scope.$watch('scope.graph.getAdjacentMatrix()', function(){
             $scope.matrix = $scope.graph.getAdjacencyMatrix();
             console.log('matrix changed');
             console.log($scope.matrix);
         });
+
+        /*$scope.$watch('scope.graph.getAdjacentList()', function(){
+            $scope.adjacencyList = $scope.graph.getAdjacencyList();
+            console.log('list changed');
+            console.log($scope.adjacencyList);
+        });*/
+
+
 
         rescalePanels();
 
@@ -164,8 +169,6 @@
             }
         }
 
-
-
         function showNodeEditDialog(node, action) {
 
             console.log('editing');
@@ -190,6 +193,7 @@
             );
         }
 
+        //TODO: atualizar apenas quando der ok?
         function NodeEditDialogController($scope, $mdDialog) {
 
             $scope.color = $scope.selectedNode.color || d3.rgb(255,255,255);
@@ -201,12 +205,16 @@
             };
 
             $scope.answer = function (answer) {
+                console.log('node edit complete');
                 $mdDialog.hide(answer);
             };
         }
 
 
-
+        /**
+         * Dialogo de selecao de nó para execucao de algoritmo
+         * @param action
+         */
         function showDialog(action) {
 
             $mdDialog.show({
@@ -241,16 +249,15 @@
             };
 
             $scope.answer = function (answer) {
-                $scope.$apply();
+                //$scope.$apply();
                 $mdDialog.hide(answer);
             };
         }
 
 
         /**
-         *  Link edit dialog
+         *  Diálogo de edição de arestas
          */
-
         function showLinkEditDialog(link, action) {
 
             $scope.selectedLink = link;
