@@ -1,10 +1,9 @@
-<div layout="row" layout-sm="column" style="height: 100%"  gp-container>
-    <div flex style="height: 100%;" id="gp-stage-container">
+<md-content layout="row" layout-sm="column" style="height: 100%" gp-container>
+    <md-content flex style="height: 100%;" id="gp-stage-container" layout="column" layout-sm="row">
         <gp-stage width="width" height="height" graph="graph"></gp-stage>
-    </div>
+    </md-content>
 
-    <div flex style="background-color:red;" layout="column">
-        <md-content id="mdcontent" flex layout="column">
+    <md-content id="mdcontent" flex layout="column" layout-sm="row" >
         <md-tabs class="md-primary md-hue-1" md-align-tabs="top" flex>
             <md-tab id="tab1">
                 <md-tab-label>Graph info</md-tab-label>
@@ -23,41 +22,42 @@
                     <md-content flex>
                         <gp-adjascent-list></gp-adjascent-list>
                     </md-content>
-                    </md-tab-body>
+                </md-tab-body>
 
-                </md-tab>
+            </md-tab>
 
             <md-tab id="tab3">
                 <md-tab-label>Adjacency matrix</md-tab-label>
                 <md-tab-body>
-                        <md-content>
-                            <gp-adjascent-matrix></gp-adjascent-matrix>
-                        </md-content>
-                    </md-tab-body>
-                </md-tab>
+                    <md-content>
+                        <gp-adjascent-matrix></gp-adjascent-matrix>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
 
-            <md-tab id="tab4" >
+            <md-tab id="tab4">
                 <md-tab-label>Algorithms</md-tab-label>
                 <md-tab-body>
-                    <md-content flex>
-                    <h3>Algorithm:</h3>
+                    <md-content flex class="md-padding">
+                        <h3>Algorithm:</h3>
 
-                    <md-select ng-model="selectedAlgorithm">
-                        <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
-                    </md-select>
+                        <md-select ng-model="selectedAlgorithm">
+                            <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}
+                            </md-option>
+                        </md-select>
 
-                    <gp-algorithm-player>
-                        <gp-step-list></gp-step-list>
-                    </gp-algorithm-player>
+                        <gp-algorithm-player>
+                            <gp-step-list></gp-step-list>
+                        </gp-algorithm-player>
                     </md-content>
 
                 </md-tab-body>
             </md-tab>
 
         </md-tabs>
-        </md-content>
-    </div>
-</div>
+    </md-content>
+
+</md-content>
 
 
 

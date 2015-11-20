@@ -6,7 +6,10 @@
     </div>
 </div>
 
-<md-button ng-click="hideSteps = !hideSteps" class="{{hideSteps ? 'md-primary':'md-warn'}}">{{hideSteps ? 'show' : 'hide'}} steps</md-button>
+<md-button ng-click="hideSteps = !hideSteps"
+           class="md-raised {{hideSteps ? 'md-primary':'md-warn'}}">
+    {{hideSteps ? 'show' : 'hide'}} steps
+</md-button>
 
 <div>
     <md-button class="md-icon-button">
@@ -29,7 +32,7 @@
         <md-icon>skip_next</md-icon>
     </md-button>
 
-    <div ng-show="result.length > 0">
+    <div ng-show="result.length ">
         <h1>Result</h1>
 
         <p>{{selectedAlgorithm.result}}</p>

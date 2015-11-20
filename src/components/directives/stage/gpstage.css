@@ -12,7 +12,6 @@
 
 .node_selected text {
     fill: #4494ff;
-
 }
 
 .edittext{
@@ -32,7 +31,8 @@
 }
 
 .link,
-.marker {
+.marker,
+#link-group line{
     stroke: #434343;
     stroke-width: 2;
 }
@@ -50,17 +50,15 @@
 table.adjacency-matrix,
 .adjacency-matrix tr,
 .adjacency-matrix td,
-.adjacency-matrix th
-{
+.adjacency-matrix th {
     text-align: center;
     border: 1px solid #9E9E9E;
     border-collapse: collapse;
     border-spacing: 0;
-
 }
 
 .adjacency-matrix td,
-.adjacency-matrix tr{
+.adjacency-matrix tr {
     padding: 0;
 }
 
@@ -123,10 +121,7 @@ path {
     fill: none;
     stroke: #f00;
     stroke-width: 3px;
-
 }
-
-
 
 .highlight-cell{
     cursor: pointer;

@@ -30,15 +30,14 @@
 <![endif]-->
 
 
-
-
-<md-content id="maindiv" flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z3" style="height: 100%;">
+<md-content flex layout="column"  class="md-whiteframe-z3"
+    id="maindiv" tabIndex="-1" role="main" style="height: 100%;">
 
     <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
                 md-is-locked-open="{{false}}" md-swipe-left="toggleSidenav('left')">
 
         <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
-            <div style="padding-left: 25px"><h3>Graphe</h3></div>
+            <div style="padding-left: 25px"><h3>{{appName}}</h3></div>
         </md-toolbar>
 
         <md-list>
@@ -58,7 +57,7 @@
                 <md-icon>menu</md-icon>
             </md-button>
 
-            <h1>Graphe</h1>
+            <h1>{{appName}}</h1>
 
         </span>
     </md-toolbar>
@@ -120,6 +119,7 @@
 <script src="components/services/services.module.js"></script>
 <script src="components/services/contextMessage.js"></script>
 <script src="components/services/toast.js"></script>
+<script src="components/services/broadcastService.js"></script>
 
 <script src="components/algorithms/algorithms.module.js"></script>
 <script src="components/algorithms/dfs.js"></script>

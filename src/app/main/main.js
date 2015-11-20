@@ -4,6 +4,8 @@
         .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab',
             function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab) {
 
+                $scope.appName = "[ Nome do projeto ]";
+
                 $scope.menuOptions = [
                     {label: 'Home', link: '/'},
                     {label: 'New Graph', link: '/graph'},
@@ -72,15 +74,6 @@
                     $scope.setMessage(null);
                     $scope.fab.currentOption = {};
                 }
-
-
-
-
-
-
-
-
-
 
             }]);
 })();

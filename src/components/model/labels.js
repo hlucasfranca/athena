@@ -21,7 +21,6 @@
             letter = 'A';
         }
 
-
         //noinspection UnnecessaryLocalVariableJS
         var service = {
             nextChar: nextChar,

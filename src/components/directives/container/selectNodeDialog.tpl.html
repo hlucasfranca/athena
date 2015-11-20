@@ -1,37 +1,36 @@
 <md-dialog aria-label="Node selection">
-  <form>
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <h2>Node selection</h2>
-      <span flex></span>
-      <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon>close</md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
-  <md-dialog-content>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Node selection</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content class="md-padding">
 
-  <p>Please select a node to start the algorithm:</p>
+            <p>Please select a node to start the algorithm:</p>
 
 
+            <md-select ng-model="selectedNode">
+                <md-option ng-repeat="node in graph.getNodes()" ng-value="node">{{node.label}}</md-option>
+            </md-select>
 
-  <md-select ng-model="selectedNode">
-      <md-option ng-repeat="node in graph.getNodes()" ng-value="node">{{node.label}}</md-option>
-  </md-select>
-    
-  </md-dialog-content>
-  <div class="md-actions" layout="row">
+        </md-dialog-content>
+        <div class="md-actions md-padding" layout="row">
 
-    <md-button ng-click="cancel()" md-autofocus>
-     Cancel
-    </md-button>
+            <md-button ng-click="cancel()" md-autofocus>
+                Cancel
+            </md-button>
 
-    <span flex></span>
+            <span flex></span>
 
-    <md-button ng-click="answer(selectedOption)" style="margin-right:20px;" >
-      Run!
-    </md-button>
+            <md-button class="md-raised" ng-click="answer(selectedOption)">
+                Run!
+            </md-button>
 
-  </div>
-  </form>
+        </div>
+    </form>
 </md-dialog>

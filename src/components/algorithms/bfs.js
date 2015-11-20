@@ -10,7 +10,6 @@
                 distTo = [],
                 edgeTo =[];
 
-
             function run(G, v) {
                 var node = G.getNode(v);
                 result.push(node);
