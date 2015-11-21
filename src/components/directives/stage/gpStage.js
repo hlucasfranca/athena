@@ -40,9 +40,6 @@
                 vis,
                 allLinksGroup,
                 allNodesGroup,
-                nodePadding = 2,
-                // TODO: replace by node radius
-                nodeRadius = 15,
                 force;
 
             // init svg
@@ -66,6 +63,8 @@
                 .classed('marker', true)
                 //.style('stroke', 'black')
                 .style('opacity', '1');
+
+
 
             vis = outer
                 .append('svg:g')
@@ -113,15 +112,15 @@
                     .attr('width', scope.width)
                     .attr('height', scope.height);
 
-
-
                 allLinksGroup = allLinksGroup.data(scope.graph.getEdges());
 
                 allLinksGroup.enter()
                     .append('g')
                     // TODO remove unnecessary code
                     .attr('class', 'linkgroup')
-                    .attr('id', function (d) { return 'link_' + d.source.label + '_' + d.target.label; })
+                    .classed('directed', scope.graph.isDirected())
+                    .classed('undirected', !scope.graph.isDirected())
+                    //.attr('id', function (d) { return 'link_' + d.source.label + '_' + d.target.label; })
                     .on('mousedown', mousedownlink)
                     .on('dblclick', function (d) {
                         // silence other listeners
@@ -525,7 +524,7 @@
                                 l = Math.sqrt(x * x + y * y),
                                 r = node.radius + quad.point.radius;
                             if (l < r) {
-                                l = (l - r) / l * .5;
+                                l = (l - r) / l * 0.5;
                                 node.x -= x *= l;
                                 node.y -= y *= l;
                                 quad.point.x += x;
@@ -564,7 +563,7 @@
                             return (d.target.y + (d.source.y - d.target.y) / 2);
                         }
                     })
-                    .text(function(d) { return d.weight | 1; });
+                    .text(function(d) { return d.weight || 1; });
 
                 allNodesGroup.select('.node circle')
                     .attr('r', function(d){
@@ -577,7 +576,7 @@
 
                         var texto = d3.select(this.parentNode).select('text')[0][0].getBBox() || 0;
 
-                        var texto = 0;
+
 
                         if(texto.width > d.radius * 2){
                             d.radius = texto.width / 2 + 4;

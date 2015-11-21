@@ -45,7 +45,9 @@
                 getAdjacencyMatrix: getAdjacencyMatrix,
 
                 setDirected: setDirected,
-                isDirected: isDirected
+                isDirected: isDirected,
+
+                getNeighboors : getNeighboors
 
             };
 
@@ -216,6 +218,40 @@
 
             function getNodes() {
                 return vertices;
+            }
+
+            /**
+             *
+             * @param vertice vertice ou indice do vertice
+             * @returns {Array} lista dos vizinhos do vértice
+             */
+            function getNeighboors(vertice){
+
+                var vizinhos = [];
+                var indice = vertice;
+
+                if (typeof vertice !== 'number') {
+                    indice = vertices.indexOf(vertice);
+                }
+
+                for(var i = 0; i < vertices.length; i++){
+                    //pega todos da linha que possuam valor != 0, tenham ligação, exceto a si mesmo
+                    if(adjMatrix[indice][i] !== 0 && i !== indice ) {
+                        vizinhos.push(vertices[i]);
+                    }
+                }
+
+                for(var i = 0; i < vertices.length; i++){
+                    //pega todos da coluna que possuam valor != 0, tenham ligação, exceto a si mesmo e exceto duplicados
+                    var jaExiste = vizinhos.indexOf(vertices[i]) > -1;
+
+                    if(adjMatrix[i][indice] !== 0 && i !== indice &&  !jaExiste) {
+                        vizinhos.push(vertices[i]);
+                    }
+                }
+
+                return vizinhos;
+
             }
 
             function getAdjacencyList(node) {

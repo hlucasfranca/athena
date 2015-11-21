@@ -8,7 +8,7 @@
      */
 
     angular.module('graphe.directives')
-        .directive('gpAlgorithmPlayer', gpAlgorithmPlayer)
+        .directive('gpAlgorithmPlayer', ['dfs','bfs','coloracaoSequencial',gpAlgorithmPlayer])
         .controller('gpAlgorithmPlayerCtrl', gpAlgorithmPlayerCtrl);
 
     function gpAlgorithmPlayer() {
@@ -19,7 +19,7 @@
         };
     }
 
-    function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, broadcastService) {
+    function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, coloracaoSequencial, broadcastService) {
 
 
 
@@ -28,7 +28,7 @@
         $scope.selectedStep = -1;
         //$scope.depthInstructions = dfs.steps;
 
-        $scope.algorithms = [dfs,bfs];
+        $scope.algorithms = [dfs,bfs,coloracaoSequencial];
         $scope.selectedAlgorithm = $scope.algorithms[0];
 
         var currentStep = 0;

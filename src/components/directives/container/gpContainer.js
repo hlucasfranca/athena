@@ -87,7 +87,7 @@
             // Creates a simple graph
             $scope.graph = model.getGraph();
 
-            var numberOfNodes = 5;
+            var numberOfNodes = 5 + Math.random() * 10;
 
             for(var i = 0; i < numberOfNodes; i++) {
                 $scope.graph.addNode({
@@ -101,9 +101,11 @@
                 });
             }
 
+            var numArestas = Math.random() * numberOfNodes;
+
             // Connect the nodes with each other
-            for(i = 0; i < numberOfNodes; i++){
-                for( var j = 0; j < numberOfNodes; j++){
+            for(i = 0; i < numArestas; i++){
+                for( var j = 0; j < numArestas; j++){
                     if(i !== j) {
                         $scope.graph.addEdge(i,j);
                     }

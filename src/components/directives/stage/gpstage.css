@@ -101,8 +101,12 @@ md-tabs {
     height: 100%;
 }
 
-.link{
+.directed .link{
     marker-end: url(#arrow);
+}
+
+.undirected .link{
+    marker-end: none;
 }
 
 /*

@@ -7,7 +7,7 @@
     function broadcastService($rootScope) {
 
         var message = '';
-        var object = undefined;
+        var object;
 
 
         var service = {

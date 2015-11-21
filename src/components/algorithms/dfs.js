@@ -4,7 +4,7 @@
     angular.module('graphe.algorithms')
         .service('dfs', function () {
 
-            var n = 'Depth first search',
+            var n = 'Busca em profundidade',
                 instructions = [],
                 result = [],
                 steps = [
