@@ -151,7 +151,9 @@
                     .attr("fill", "Black")
                     .style("font", "normal 12px Arial")
                     .attr("dy", ".35em")
-                    .text(function(d) { return d.weight; });
+                    .text(function(d) {
+                        return d.peso;
+                    });
 
 
 

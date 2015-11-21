@@ -23,7 +23,7 @@
             // private variables
             var vertices = [],
                 adj = [],
-                directed = false,
+                directed = true,
                 links = [],
                 id = 0,
                 adjMatrix = [];
@@ -50,8 +50,8 @@
                 getVizinhos : getVizinhos,
                 getSucessores: getSucessores,
                 getAntecessores: getAntecessores
-
             };
+
 
             function isDirected() {
                 // prevent unwanted manipulation
@@ -94,11 +94,9 @@
             }
 
             function updateAdjacencyMatrix() {
-
                 adjMatrix = [];
-                var numberOfNodes = vertices.length;
 
-                if (numberOfNodes > 0) {
+                if (vertices.length > 0) {
                     vertices.forEach(function (node, i) {
                         adjMatrix[i] = [];
 
@@ -112,6 +110,7 @@
 
                         if(link.source.id === undefined || link.target.id === undefined){
                             console.log('undefined link');
+                            return;
                         }
 
                         adjMatrix[link.source.id][link.target.id] = 1;
@@ -186,6 +185,7 @@
                     w = getNode(w);
                 }
 
+                // se já existir uma aresta associada
                 if (getEdge(v, w).length > 0) {
                     return;
                 }
@@ -198,8 +198,11 @@
                 links.push({
                     source: getNode(v),
                     target: getNode(w),
-                    id: id++
+                    id: id++,
+                    peso: 1
                 });
+
+                console.log(v.label + '>' + w.label);
 
                 if (!directed) {
                     adj[targetIndex].push(v);
@@ -208,6 +211,8 @@
                         target: getNode(v),
                         id: id++
                     });
+
+                    console.log(w.label + '>' + v.label);
                 }
 
                 updateAdjacencyMatrix();

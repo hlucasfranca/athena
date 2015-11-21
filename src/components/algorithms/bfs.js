@@ -3,6 +3,12 @@
     angular.module('graphe.algorithms')
         .service('bfs', function () {
 
+            /**
+             * Percurso em largura, adaptado de handbook of graph theory
+             * 2.1.2
+             * @type {string}
+             */
+
             var n = 'Percurso em largura',
                 instructions = [],
                 result = [],

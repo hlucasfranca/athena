@@ -1,6 +1,11 @@
 (function () {
     'use strict';
 
+    /**
+     * Algoritmo depth first search, adaptado de handbook of graph theory
+     *  seção 2.1.2
+     */
+
     angular.module('graphe.algorithms')
         .service('dfs', function () {
 
@@ -16,39 +21,51 @@
                     'end of algorithm'
                 ];
 
-            /**
-             * @param  {Graph} graph The graph to be visited
-             * @param  {Node} visited The initial node.
-             */
+
             function run(graph, visited) {
-                console.log('starting algorithm');
+                result = [];
+
+                console.log('starting dfs');
+
                 var node = graph.getNode(visited);
+
                 result.push(node);
+
                 dfs(graph, node);
-                console.log('end of algorithm');
+
+                console.log('end of dfs');
 
                 console.log(result);
-                return result;
-            }
 
-            /**
-             *
-             * @param G
-             * @param v
-             */
-            function dfs(G, v) {
-                //temporary flag
-                v.marked = true;
-
-                G.getAdjacencyList(v).forEach(function(node){
-                    if(!node.marked){
-                        result.push(node);
-                        dfs(G,node);
+                // remove flag auxiliar
+                graph.getNodes().forEach(function(vertice){
+                    if(angular.isDefined(vertice.marcado)){
+                        delete vertice.marcado;
                     }
                 });
 
-                // clean up flag
-                delete v.marked;
+                return result;
+            }
+
+            function dfs(G, v) {
+                //flag auxiliar
+                v.marcado = true;
+
+                console.log('marcando');
+                console.log(v.label);
+                var listaAdjacencia = G.getAdjacencyList(v);
+
+                console.log('listaAdjacencia');
+                console.log(listaAdjacencia);
+
+                listaAdjacencia.forEach(function(vertice){
+                    if(!vertice.marcado){
+                        result.push(vertice);
+                        console.log('visitando');
+                        console.log(vertice.label);
+                        dfs(G, vertice);
+                    }
+                });
             }
 
             //noinspection UnnecessaryLocalVariableJS
