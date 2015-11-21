@@ -17,13 +17,49 @@ describe('Service: bfs', function () {
     }));
 
     it('deve retornar um array com o percurso em largura', function () {
-        graph.addNode({id: 0});
-        graph.addNode({id: 1});
-        graph.addNode({id: 2});
-        graph.addEdge(0, 1);
-        graph.addEdge(1, 2);
 
-        expect(breadthFirstSearch.run(graph, 0)).toEqual([{id: 0}, {id: 1}, {id: 2}]);
+        var a = {},
+            b = {},
+            c = {},
+            d = {},
+            e = {},
+            f = {},
+            g = {},
+            h = {};
+
+
+        graph.addNode(a);
+        graph.addNode(b);
+        graph.addNode(c);
+        graph.addNode(d);
+        graph.addNode(e);
+        graph.addNode(f);
+        graph.addNode(g);
+        graph.addNode(h);
+
+
+        graph.addEdge(a,b);
+        graph.addEdge(a,c);
+        graph.addEdge(a,e);
+
+        graph.addEdge(b,d);
+        graph.addEdge(b,e);
+
+        graph.addEdge(c,f);
+        graph.addEdge(c,g);
+
+        graph.addEdge(d,h);
+
+        graph.addEdge(e,h);
+
+        graph.addEdge(f,e);
+        graph.addEdge(f,g);
+
+        graph.addEdge(g,h);
+
+        var resultadoEsperado = [a,b,c,e,d,f,g,h];
+
+        expect(breadthFirstSearch.run(graph, a)).toEqual(resultadoEsperado);
     });
 
     it('deve retornar um array com pelo menos um nó(o nó inicial)', function () {

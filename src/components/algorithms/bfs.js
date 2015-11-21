@@ -16,9 +16,7 @@
                     "O nó m é visitado",
                     "O nó m é colocado na fila F",
                     "O nó m é marcado"
-                ],
-                distTo = [],
-                edgeTo =[];
+                ];
 
             /**
              * @param  {Graph} graph The graph to be visited
@@ -29,7 +27,7 @@
 
                 var node = graph.getNode(visited);
 
-                result.push(node);
+
 
                 bfs(graph, node);
                 console.log('end of algorithm');
@@ -46,31 +44,35 @@
             function bfs(G, verticeInicial) {
                 //temporary flag
 
-                var pilha = [];
+                var fila = [];
                 verticeInicial.marked = true;
 
-                // Adiciona à pilha
-                pilha.push(verticeInicial);
+                // Adiciona à fila
+                fila.push(verticeInicial);
 
-                while (pilha.length > 0) {
-                    //Popa da pilha
-                    var verticeVisitado = pilha.shift();
-                    if (verticeVisitado) {
+                while (fila.length > 0) {
+                    //Pega primeiro item da fila
+                    var n = fila.shift();
+                    if (n) {
                         console.log("Visited vertex: ");
-                        console.log(verticeVisitado);
+                        console.log(n);
+                        result.push(n);
                     }
 
-                    G.getAdjacencyList(verticeInicial).forEach(function(verticeAdjacente){
-                        if (!verticeAdjacente.marked) {
-                            verticeAdjacente.marked = true;
-                            pilha.push(verticeAdjacente);
-                            console.log('pilha');
-                            console.log(pilha);
+                    G.getAdjacencyList(n).forEach(function(m){
+                        if (!m.marked) {
+                            m.marked = true;
+                            fila.push(m);
+                            console.log(fila);
                         }
                     });
                 }
 
-                delete verticeInicial.marked;
+                G.getNodes().forEach(function(vertice){
+                    if(angular.isDefined(vertice.marked)) {
+                        delete vertice.marked;
+                    }
+                });
             }
 
             //noinspection UnnecessaryLocalVariableJS
