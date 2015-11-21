@@ -22,11 +22,8 @@
              */
             function run(graph, visited) {
                 console.log('starting algorithm');
-
                 var node = graph.getNode(visited);
-
                 result.push(node);
-
                 dfs(graph, node);
                 console.log('end of algorithm');
 
@@ -41,20 +38,10 @@
              */
             function dfs(G, v) {
                 //temporary flag
-
                 v.marked = true;
-
-                instructions.push({
-                    visited: v,
-                    instruction: 0
-                });
 
                 G.getAdjacencyList(v).forEach(function(node){
                     if(!node.marked){
-                        instructions.push({
-                            visited: v,
-                            instruction: 1
-                        });
                         result.push(node);
                         dfs(G,node);
                     }

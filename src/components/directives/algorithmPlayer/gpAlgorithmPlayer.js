@@ -21,12 +21,8 @@
 
     function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, coloracaoSequencial, coloracaoClasse, broadcastService) {
 
-
-
-        //var currentInstruction = 0;
         $scope.steps = [];
         $scope.selectedStep = -1;
-        //$scope.depthInstructions = dfs.steps;
 
         $scope.algorithms = [
             dfs,
@@ -34,7 +30,8 @@
             coloracaoSequencial,
             coloracaoClasse
         ];
-        $scope.selectedAlgorithm = $scope.algorithms[0];
+
+        $scope.algoritmoSelecionado = $scope.algorithms[0];
 
         var currentStep = 0;
 
@@ -71,9 +68,9 @@
             $scope.showDialog(function (startNode) {
                 //gpStageController.toggleOpacityLinks();
 
-                $scope.selectedAlgorithm.run($scope.graph, startNode);
+                $scope.algoritmoSelecionado.run($scope.graph, startNode);
 
-                $scope.steps = $scope.selectedAlgorithm.instructions;
+                $scope.steps = $scope.algoritmoSelecionado.instructions;
 
                 console.log($scope.steps);
 

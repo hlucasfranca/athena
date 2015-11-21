@@ -18,17 +18,18 @@ describe('Service: dfs', function () {
     }));
 
 
-    it('should return a array with the dfs path', function () {
+    it('deve retornar um array com o percurso em profundidade', function () {
         graph.addNode({id: 0});
         graph.addNode({id: 1});
         graph.addNode({id: 2});
         graph.addEdge(0, 1);
+        graph.addEdge(1, 2);
         graph.addEdge(0, 2);
 
         expect(depthFirstSearch.run(graph, 0)).toEqual([{id: 0}, {id: 1}, {id: 2}]);
     });
 
-    it('should return a array with at least one node (the starting node)', function () {
+    it('deve retornar um array com pelo menos um nó (o nó inicial)', function () {
         graph.addNode({id: 0});
         expect(depthFirstSearch.run(graph, 0)).toEqual([{id: 0}]);
     });

@@ -87,7 +87,9 @@
             // Creates a simple graph
             $scope.graph = model.getGraph();
 
-            var numberOfNodes = 5 + Math.random() * 10;
+            $scope.graph.setDirected(true);
+
+            var numberOfNodes = 5 + Math.random() * 5;
 
             for(var i = 0; i < numberOfNodes; i++) {
                 $scope.graph.addNode({

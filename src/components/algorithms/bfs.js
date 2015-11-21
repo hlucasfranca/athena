@@ -31,7 +31,7 @@
 
                 result.push(node);
 
-                dfs(graph, node);
+                bfs(graph, node);
                 console.log('end of algorithm');
 
                 console.log(result);
@@ -43,7 +43,7 @@
              * @param G
              * @param v
              */
-            function dfs(G, verticeInicial) {
+            function bfs(G, verticeInicial) {
                 //temporary flag
 
                 var pilha = [];
@@ -69,6 +69,8 @@
                         }
                     });
                 }
+
+                delete verticeInicial.marked;
             }
 
             //noinspection UnnecessaryLocalVariableJS
