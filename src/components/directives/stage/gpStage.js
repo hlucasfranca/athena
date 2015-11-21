@@ -64,8 +64,6 @@
                 //.style('stroke', 'black')
                 .style('opacity', '1');
 
-
-
             vis = outer
                 .append('svg:g')
                 .attr('width', gridWidth)
@@ -154,25 +152,6 @@
                     .text(function(d) {
                         return d.peso;
                     });
-
-
-
-
-                    //// TODO DUPLICANDO TEXTO EM TODOS OS LINKS
-                    //.append("text")
-                    //.attr("font-family", "Arial, Helvetica, sans-serif")
-                    //.attr("x", function(d) {
-                    //    if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
-                    //    else { return (d.target.x + (d.source.x - d.target.x)/2); }
-                    //})
-                    //.attr("y", function(d) {
-                    //    if (d.target.y > d.source.y) { return (d.source.y + (d.target.y - d.source.y)/2); }
-                    //    else { return (d.target.y + (d.source.y - d.target.y)/2); }
-                    //})
-                    //.attr("fill", "Black")
-                    //.style("font", "normal 12px Arial")
-                    //.attr("dy", ".35em")
-                    //.text(function(d) { return d.weight | 1; });
 
                 allLinksGroup
                     .exit()
@@ -394,13 +373,8 @@
 
                             scope.$apply(function () {
 
-                                //console.log(scope.firstNode);
-                                //console.log(d);
-
                                 scope.graph.addEdge(scope.firstNode, d);
                                 delete scope.firstNode;
-
-                                //console.log('broadcasting a');
 
                                 //limpa as mensagens do contexto
                                 broadcastService.broadcast('new_message', '');
@@ -574,11 +548,7 @@
                          * TODO HIGH CPU
                          * alterar lógica para armazenar bbox e só alterar quando texto do nó for alterado
                          */
-
-
                         var texto = d3.select(this.parentNode).select('text')[0][0].getBBox() || 0;
-
-
 
                         if(texto.width > d.radius * 2){
                             d.radius = texto.width / 2 + 4;
@@ -615,6 +585,8 @@
             });
 
             scope.$on('select_node', selectNode);
+
+            scope.$on('select_link', selectLink);
 
             scope.$watch('graph', redraw, true);
 
@@ -689,7 +661,12 @@
              * @param source
              * @param target
              */
-            function selectLink(source, target) {
+            function selectLink() {
+
+                var source = broadcastService.object.source;
+                var target = broadcastService.object.target;
+
+
                 // Select the link based on source and target objects
                 var selectedLink = d3.selectAll('.link').filter(function (d, i) {
                     return d.source === source && d.target === target;
@@ -770,7 +747,9 @@
              */
             function selectNode() {
 
-                var node = broadcastService.object;
+                console.log('ouvido');
+
+                var node = scope.graph.getNode(broadcastService.object);
 
                 var selection = d3.selectAll('.node').filter(function (d, i) {
                     return d.index === node.index;
@@ -807,176 +786,8 @@
     }
 
 
-    /**
-     * Controller da diretiva gpStage
-     * @param $scope
-     */
     function gpStageCtrl($scope) {
         var vm = this;
-
-        //vm.selectNode = selectNode;
-        //vm.selectLink = selectLink;
-        //vm.deselectLink = deselectLink;
-        //vm.deselectNode = deselectNode;
-        //vm.toggleOpacityLinks = toggleOpacityLinks;
-
-
-        /**
-         * Função de deseleção dos links
-         * @param source
-         * @param target
-         */
-        //function deselectLink(source, target) {
-        //    var link = '#link_' + source + '_' + target;
-        //    d3.select(link)
-        //        .transition()
-        //        .duration(250)
-        //        //.ease('linear')
-        //        .style('stroke', 'black');
-        //    //.style('stroke-width',5);
-        //    console.log('exiting link :' + link);
-        //}
-        //
-        ///**
-        // * Função de deseleção dos nós, incluindo animação de transição.
-        // * @param node
-        // */
-        //function deselectNode(node) {
-        //    var selection = d3.selectAll('.node').filter(function (d, i) {
-        //        return d.index === node.index;
-        //    });
-        //
-        //    selection.select('circle')
-        //        .transition()
-        //        .duration(250)
-        //        //.ease('linear')
-        //        .style('fill', '#fff')
-        //        .attr('r', function(d){ return d.radius;});
-        //
-        //    selection.select('text')
-        //        .transition()
-        //        .duration(250)
-        //        //.ease('linear')
-        //        .style('fill', '#000');
-        //}
-        //
-        ///**
-        // * Função de seleção de arestas, incluindo animação de inicio/fim.
-        // * @param source
-        // * @param target
-        // */
-        //function selectLink(source, target) {
-        //    // Select the link based on source and target objects
-        //    var selectedLink = d3.selectAll('.link').filter(function (d, i) {
-        //        return d.source === source && d.target === target;
-        //    }).data()[0];
-        //
-        //    if (selectedLink === undefined) {
-        //        console.log('link doesnt exists! ' + source.label + ' ' + target.label);
-        //        return;
-        //    }
-        //
-        //    var points = [
-        //        // start
-        //        [selectedLink.source.x, selectedLink.source.y],
-        //        // end
-        //        [selectedLink.target.x, selectedLink.target.y]
-        //    ];
-        //
-        //    var line = d3.svg.line()
-        //        .x(function (d) { return d[0]; })
-        //        .y(function (d) { return d[1]; })
-        //        .interpolate('basis');
-        //
-        //    var linkgroup = d3.select("svg #link-group");
-        //
-        //    var path = linkgroup.append("path")
-        //        .attr("d", line(points));
-        //
-        //    var arrow = linkgroup.append("path")
-        //        .style("fill", "none")
-        //        .style("stroke", "red")
-        //        .style("stroke-width", "red")
-        //        .attr("d", "M0, -5L10, 0L0, 5");
-        //
-        //    var totalLength = path.node().getTotalLength() - 30;
-        //    var animationTime = 1000;
-        //    var currentPath = path.node();
-        //
-        //    transition();
-        //
-        //    // Faz a interpolação da linha que realçará a linha atual selecionada.
-        //    function transition() {
-        //        arrow
-        //            .transition()
-        //            .duration(animationTime)
-        //            .attrTween("transform", arrowTween);
-        //        path
-        //            .transition()
-        //            .duration(animationTime)
-        //            .attrTween('stroke-dasharray', tweenDash);
-        //    }
-        //
-        //    function tweenDash() {
-        //        return function (t) {
-        //            var length = totalLength * t;
-        //            return length + ',' + totalLength;
-        //        };
-        //    }
-        //
-        //    function arrowTween(d, i, a) {
-        //        var t0 = 0;
-        //        // time, between 0 and 1
-        //        return function (t) {
-        //            var pointAtLenght = currentPath.getPointAtLength(totalLength * t);
-        //            //previous point
-        //            var previousPosition = currentPath.getPointAtLength(totalLength * t0);
-        //            //angle for tangent
-        //            var angle = Math.atan2(pointAtLenght.y - previousPosition.y, pointAtLenght.x - previousPosition.x) * 180 / Math.PI;
-        //            t0 = t;
-        //
-        //            return "translate(" + pointAtLenght.x + ',' + pointAtLenght.y + ')rotate(' + angle + ")";
-        //        };
-        //    }
-        //}
-        //
-        ///**
-        // * Função de seleção de nó.
-        // * @param node
-        // */
-        //function selectNode() {
-        //
-        //    var node = broadcastService.object;
-        //
-        //    var selection = d3.selectAll('.node').filter(function (d, i) {
-        //        return d.index === node.index;
-        //    });
-        //
-        //    selection.select('circle')
-        //        .transition()
-        //        .duration(250)
-        //        //.ease('linear')
-        //        .style('fill', '#000000')
-        //        .attr('r', function(d){
-        //            return d.radius * 2;
-        //        });
-        //
-        //    selection.select('text')
-        //        .transition()
-        //        .duration(250)
-        //        //.ease('linear')
-        //        .style('fill', '#ffffff');
-        //}
-        //
-        ///**
-        // * Função que ativa/desativa a opacidade dos links.
-        // */
-        //function toggleOpacityLinks() {
-        //    d3.select('#link-group').selectAll('line')
-        //        .transition()
-        //        .duration(250)
-        //        .attr('opacity', 0.1);
-        //}
     }
 
 })();

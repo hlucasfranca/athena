@@ -9,7 +9,7 @@
              * @type {string}
              */
 
-            var n = 'Percurso em largura',
+            var nome = 'Percurso em largura',
                 instructions = [],
                 result = [],
                 steps = [
@@ -83,7 +83,7 @@
 
             //noinspection UnnecessaryLocalVariableJS
             var service = {
-                name: n,
+                name: nome,
                 steps: steps,
                 result: result,
                 instructions: instructions,

@@ -22,7 +22,7 @@
 
             // private variables
             var vertices = [],
-                adj = [],
+                adjacencyList = [],
                 directed = true,
                 links = [],
                 id = 0,
@@ -81,15 +81,15 @@
 
             }
 
-            function getNode(id) {
+            function getNode(vertice) {
 
-                if (typeof id === 'number') {
+                if (typeof vertice === 'number') {
                     return getNodes().filter(function (element) {
-                        return element.id === id;
+                        return element.id === vertice;
                     })[0];
                 }
                 else {
-                    return id;
+                    return vertice;
                 }
             }
 
@@ -125,17 +125,20 @@
             function addNode(node) {
                 //if node isn't provided
                 node.id = id++;
-                adj[vertices.length] = [];
+                adjacencyList[vertices.length] = [];
                 vertices.push(node);
 
                 updateAdjacencyMatrix();
             }
 
             function removeNode(node) {
-                vertices.splice(getNodeIndex(node), 1);
-                adj.splice(getNodeIndex(node), 1);
 
+                var verticeIndex = getNodeIndex(node);
                 spliceLinksForNode(node);
+                adjacencyList.splice(verticeIndex, 1);
+                vertices.splice(verticeIndex, 1);
+
+                console.log(adjacencyList);
             }
 
             function getNodeIndex(node) {
@@ -164,11 +167,11 @@
                     targetIndex = getNodeIndex(target.id);
 
                 // remove from adj list
-                adj[sourceIndex].splice(targetIndex, 1);
+                adjacencyList[sourceIndex].splice(targetIndex, 1);
                 removeLink(source, target);
 
                 if (!directed) {
-                    adj[targetIndex].splice(sourceIndex, 1);
+                    adjacencyList[targetIndex].splice(sourceIndex, 1);
                     removeLink(target, source);
                 }
 
@@ -193,7 +196,7 @@
                 var sourceIndex = getNodeIndex(v),
                     targetIndex = getNodeIndex(w);
 
-                adj[sourceIndex].push(w);
+                adjacencyList[sourceIndex].push(w);
 
                 links.push({
                     source: getNode(v),
@@ -205,7 +208,7 @@
                 console.log(v.label + '>' + w.label);
 
                 if (!directed) {
-                    adj[targetIndex].push(v);
+                    adjacencyList[targetIndex].push(v);
                     links.push({
                         source: getNode(w),
                         target: getNode(v),
@@ -300,12 +303,12 @@
             function getAdjacencyList(node) {
 
                 if(angular.isDefined(node)){
-                    return adj[getNodeIndex(node)];
+                    return adjacencyList[getNodeIndex(node)];
                 }
 
                 else{
                     //retorna lista completa
-                    return adj;
+                    return adjacencyList;
                 }
             }
 

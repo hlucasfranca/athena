@@ -18,6 +18,10 @@
 
         function broadcast(m,o){
 
+            console.log('emitindo');
+            console.log(m);
+            console.log(o);
+
 
             service.message = m || '';
             service.object = o;
