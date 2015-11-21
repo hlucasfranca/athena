@@ -7,7 +7,7 @@
                 $scope.appName = "[ Nome do projeto ]";
 
                 $scope.menuOptions = [
-                    {label: 'P·gina inicial', link: '/'},
+                    {label: 'P√°gina inicial', link: '/'},
                     {label: 'Novo grafo', link: '/graph'},
                     {label: 'Sobre', link: '/about'}
                 ];
@@ -54,7 +54,7 @@
                 }
 
                 /**
-                 * Executa a mudanÁa de p·gina
+                 * Executa a mudan√ßa de p√°gina
                  * @param url
                  * @param hideNavigationBar
                  */

@@ -1,3 +1,12 @@
+<md-button class="md-fab md-icon-button md-primary" aria-label="Play" ng-click="runAlg()">
+    <md-icon>play_arrow</md-icon>
+</md-button>
+
+<md-button ng-click="hideSteps = !hideSteps" class="{{hideSteps ? 'md-primary':'md-warn'}}">
+    {{hideSteps ? 'exibir' : 'ocultar'}} passos
+</md-button>
+
+
 <div ng-show="!hideSteps">
     <h4>Passos</h4>
 
@@ -7,10 +16,7 @@
     </div>
 </div>
 
-<md-button ng-click="hideSteps = !hideSteps"
-           class="md-raised {{hideSteps ? 'md-primary':'md-warn'}}">
-    {{hideSteps ? 'exibir' : 'ocultar'}} passos
-</md-button>
+
 
 <div>
     <!--<md-button class="md-icon-button">-->
@@ -21,9 +27,7 @@
         <!--<md-icon>fast_rewind</md-icon>-->
     <!--</md-button>-->
 
-    <md-button class="md-fab md-icon-button md-primary" aria-label="Play" ng-click="runAlg()">
-        <md-icon>play_arrow</md-icon>
-    </md-button>
+
 
     <!--<md-button class="md-icon-button" ng-click="nextStep()">-->
         <!--<md-icon>fast_forward</md-icon>-->

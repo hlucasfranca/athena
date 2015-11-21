@@ -19,7 +19,7 @@
             <md-tab id="tab2">
                 <md-tab-label>Lista de adjacência</md-tab-label>
                 <md-tab-body>
-                    <md-content flex>
+                    <md-content flex class="md-padding">
                         <gp-adjascent-list></gp-adjascent-list>
                     </md-content>
                 </md-tab-body>
@@ -39,12 +39,15 @@
                 <md-tab-label>Algoritmos</md-tab-label>
                 <md-tab-body>
                     <md-content flex class="md-padding">
+
                         <h3>Algorithm:</h3>
 
                         <md-select ng-model="selectedAlgorithm">
                             <md-option ng-value="">Selecione um algoritmo</md-option>
                             <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
                         </md-select>
+
+
 
                         <gp-algorithm-player>
                             <gp-step-list></gp-step-list>
