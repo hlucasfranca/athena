@@ -17,15 +17,31 @@ describe('Service: coloracaoClasse', function () {
     }));
 
     it('deve retornar o conjunto C de cores', function () {
-        grafo.addNode({id: 0});
-        grafo.addNode({id: 1});
-        grafo.addNode({id: 2});
-        grafo.addEdge(0, 1);
-        grafo.addEdge(1, 2);
+
+        var a = {},
+            b = {},
+            c = {},
+            d = {},
+            e = {};
+
+        grafo.addNode(a);
+        grafo.addNode(b);
+        grafo.addNode(c);
+        grafo.addNode(d);
+        grafo.addNode(e);
+
+        grafo.addEdge(a, b);
+        grafo.addEdge(b, c);
+        grafo.addEdge(c, d);
+        grafo.addEdge(d, e);
 
         var resultadoEsperado = [
+            [a,c,e],
+            [b,d],
+            [],
             [],
             []
+
         ];
 
         expect(coloracaoClasse.run(grafo)).toEqual(resultadoEsperado);

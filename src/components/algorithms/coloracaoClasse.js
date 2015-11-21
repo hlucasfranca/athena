@@ -55,7 +55,7 @@
                 }
 
                 var Y = nos.slice();
-                var k = 1;
+                var k = 0;
 
                 while(Y.length > 0){
 
@@ -64,8 +64,7 @@
                         //TODO APENAS VIZINHOS QUE JÁ NÃO FORAM EXCLUIDOS
                         var vizinhos = G.getVizinhos(Y[i]);
                         var contem = false;
-                        // verifica se algum dos vizinhos já esta no conjunto
-                        // de cores
+                        // verifica se algum dos vizinhos já esta no conjunto de cores
                         C[k].forEach(function (cor) {
                             vizinhos.forEach(function (vizinho) {
                                 if (vizinho === cor) {
@@ -76,7 +75,8 @@
 
                         if(!contem){
                             C[k].push(Y[i]);
-                            Y.splice(i,1);
+                            //sempre usar -- ao se fazer o splice, necessário porque o comprimento de Y será reduzido
+                            Y.splice(i--,1);
                         }
                     }
                     k++;
