@@ -16,7 +16,7 @@ describe('Service: bfs', function () {
         graph = model.getGraph();
     }));
 
-    it('should return a array with the bfs path', function () {
+    it('deve retornar um array com o percurso em largura', function () {
         graph.addNode({id: 0});
         graph.addNode({id: 1});
         graph.addNode({id: 2});
@@ -26,7 +26,7 @@ describe('Service: bfs', function () {
         expect(breadthFirstSearch.run(graph, 0)).toEqual([{id: 0}, {id: 1}, {id: 2}]);
     });
 
-    it('should return a array with at least one node (the starting node)', function () {
+    it('deve retornar um array com pelo menos um nó(o nó inicial)', function () {
         graph.addNode({id: 0});
 
         expect(breadthFirstSearch.run(graph, 0)).toEqual([{id: 0}]);

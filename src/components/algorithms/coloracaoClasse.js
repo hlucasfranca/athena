@@ -11,15 +11,13 @@
 
                 ];
 
-            function run(graph, visited) {
+            function run(graph) {
                 console.log('iniciando coloração por classe');
 
-                var vertice = graph.getNode(visited);
+                result = coloracaoClasse(graph);
 
-                coloracaoClasse(graph, vertice);
                 console.log('fim: coloração por classe');
 
-                console.log(result);
                 return result;
             }
 
@@ -46,7 +44,7 @@
 
              fim-enquanto
              */
-            function coloracaoClasse(G, v) {
+            function coloracaoClasse(G) {
 
                 var nos = G.getNodes();
                 var C = [];
@@ -64,7 +62,7 @@
                     for(i = 0; i < Y.length; i++ ){
 
                         //TODO APENAS VIZINHOS QUE JÁ NÃO FORAM EXCLUIDOS
-                        var vizinhos = G.getNeighboors(Y[i]);
+                        var vizinhos = G.getVizinhos(Y[i]);
                         var contem = false;
                         // verifica se algum dos vizinhos já esta no conjunto
                         // de cores
@@ -83,7 +81,7 @@
                     }
                     k++;
                 }
-                console.log(C);
+                return C;
             }
 
             //noinspection UnnecessaryLocalVariableJS

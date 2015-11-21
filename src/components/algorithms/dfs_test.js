@@ -29,7 +29,7 @@ describe('Service: dfs', function () {
         expect(depthFirstSearch.run(graph, 0)).toEqual([{id: 0}, {id: 1}, {id: 2}]);
     });
 
-    it('deve retornar um array com pelo menos um nó (o nó inicial)', function () {
+    it('deve retornar um array com pelo menos um nÃ³ (o nÃ³ inicial)', function () {
         graph.addNode({id: 0});
         expect(depthFirstSearch.run(graph, 0)).toEqual([{id: 0}]);
     });

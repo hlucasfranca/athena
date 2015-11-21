@@ -47,7 +47,9 @@
                 setDirected: setDirected,
                 isDirected: isDirected,
 
-                getNeighboors : getNeighboors
+                getVizinhos : getVizinhos,
+                getSucessores: getSucessores,
+                getAntecessores: getAntecessores
 
             };
 
@@ -225,9 +227,33 @@
              * @param vertice vertice ou indice do vertice
              * @returns {Array} lista dos vizinhos do vértice
              */
-            function getNeighboors(vertice){
+            function getVizinhos(vertice){
+
+                var n = [];
+
+                var sucessores = getSucessores(vertice);
+                var antecessores = getAntecessores(vertice);
+
+                // ao se concatenar os sucessores e antecessores, podem ocorrer duplicatas
+                n = n.concat(sucessores).concat(antecessores);
 
                 var vizinhos = [];
+
+                // remove ocorrencias duplicadas
+
+                n.forEach(function(vizinho,index){
+                    if(vizinhos.indexOf(vizinho) === -1){
+                        vizinhos.push(vizinho);
+                    }
+                });
+
+                return vizinhos;
+            }
+
+            function getSucessores(vertice){
+
+                var sucessores = [];
+
                 var indice = vertice;
 
                 if (typeof vertice !== 'number') {
@@ -237,20 +263,32 @@
                 for(var i = 0; i < vertices.length; i++){
                     //pega todos da linha que possuam valor != 0, tenham ligação, exceto a si mesmo
                     if(adjMatrix[indice][i] !== 0 && i !== indice ) {
-                        vizinhos.push(vertices[i]);
+                        sucessores.push(vertices[i]);
                     }
+                }
+
+                return sucessores;
+
+            }
+
+            function getAntecessores(vertice){
+
+                var antecessores = [];
+
+                var indice = vertice;
+
+                if (typeof vertice !== 'number') {
+                    indice = vertices.indexOf(vertice);
                 }
 
                 for(var i = 0; i < vertices.length; i++){
-                    //pega todos da coluna que possuam valor != 0, tenham ligação, exceto a si mesmo e exceto duplicados
-                    var jaExiste = vizinhos.indexOf(vertices[i]) > -1;
-
-                    if(adjMatrix[i][indice] !== 0 && i !== indice &&  !jaExiste) {
-                        vizinhos.push(vertices[i]);
+                    //pega todos da linha que possuam valor != 0, tenham ligação, exceto a si mesmo
+                    if(adjMatrix[i][indice] !== 0 && i !== indice ) {
+                        antecessores.push(vertices[i]);
                     }
                 }
 
-                return vizinhos;
+                return antecessores;
 
             }
 

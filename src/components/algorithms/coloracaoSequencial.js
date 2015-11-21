@@ -72,7 +72,7 @@
 
                 for(i = 0, k = 0; i < nos.length; i++ ){
 
-                    var vizinhos = G.getNeighboors(nos[i]);
+                    var vizinhos = G.getVizinhos(nos[i]);
 
                     console.log('vizinhos de ');
                     console.log(nos[i]);

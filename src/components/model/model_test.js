@@ -64,7 +64,7 @@ describe('Service: model', function () {
 
         /**
          * TODO : verificar
-         * model pode ter dois v�rtices(para calculo da lista/matrix de adjacencia), mas s� deve aparecer um
+         * model pode ter dois vértices(para calculo da lista/matrix de adjacencia), mas só deve aparecer um
          * quando exibir via d3js
          */
         xit("should allow connect two nodes with one edge", function () {
@@ -163,6 +163,58 @@ describe('Service: model', function () {
 
         });
 
+        it("deve permitir obter os sucessores de um vértice", function(){
+
+            var a = {};
+            var b = {};
+            var c = {};
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+
+            graph.addEdge(0, 1);
+            graph.addEdge(1, 2);
+
+            expect(graph.getSucessores(a)).toEqual([b]);
+
+        });
+
+        it("deve permitir obter os antecessores de um vértice", function(){
+
+            var a = {};
+            var b = {};
+            var c = {};
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+
+            graph.addEdge(0, 2);
+            graph.addEdge(1, 2);
+
+            expect(graph.getAntecessores(c)).toEqual([a,b]);
+
+        });
+
+
+        it("deve permitir obter os vizinhos de um vértice", function(){
+
+            var a = {};
+            var b = {};
+            var c = {};
+            var d = {};
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+            graph.addNode(d);
+
+            graph.addEdge(a, b);
+            graph.addEdge(b, c);
+            graph.addEdge(d, b);
+
+            expect(graph.getVizinhos(b)).toEqual([c,a,d]);
+
+        });
+
         it("should allow remove a edge by reference", function () {
 
             var a = {id: 0};
@@ -208,7 +260,7 @@ describe('Service: model', function () {
 
         });
 
-        it("can be a graph or digraph", function () {
+        it("pode ser direcionado ou não", function () {
 
             expect(graph.isDirected() === true);
 
