@@ -3,10 +3,10 @@
 
     angular
         .module('graphe.directives')
-        .directive('gpStage', ['fab', 'toast', 'broadcastService', gpStageDirective])
+        .directive('gpStage', ['fab', 'toast', 'broadcastService', 'labels', gpStageDirective])
         .controller('gpStageCtrl', gpStageCtrl);
 
-    function gpStageDirective(fab, toast, broadcastService) {
+    function gpStageDirective(fab, toast, broadcastService, labels) {
 
         var directive = {
             templateUrl: 'components/directives/stage/gpStage.tpl.html',
@@ -467,7 +467,15 @@
                 if (fab.currentOption === fab.fabOptions.add) {
                     var coordinates = d3.mouse(d3.event.target);
 
-                    scope.graph.addNode({x: coordinates[0], y: coordinates[1], fixed: true, radius:15, color:d3.rgb(255,255,255)});
+                    scope.graph.addNode({
+                        x: coordinates[0],
+                        y: coordinates[1],
+                        fixed: true,
+                        radius:15,
+                        color:d3.rgb(255,255,255),
+                        label: labels.getLetter()
+
+                    });
                     gpContainerCtrl.updateNodeCount();
 
                     scope.$apply();

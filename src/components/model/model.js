@@ -98,6 +98,7 @@
             }
 
             function updateAdjacencyMatrix() {
+
                 adjMatrix = [];
 
                 if (vertices.length > 0) {
@@ -112,18 +113,19 @@
 
                     links.forEach(function (link) {
 
-                        if(link.source.id === undefined || link.target.id === undefined){
-                            console.log('undefined link');
-                            return;
-                        }
+                        var sourceIndex = vertices.indexOf(link.source);
+                        var targetIndex = vertices.indexOf(link.target);
 
-                        adjMatrix[link.source.id][link.target.id] = 1;
+                        adjMatrix[sourceIndex][targetIndex] = 1;
 
                         if (!directed) {
-                            adjMatrix[link.target.id][link.source.id] = 1;
+                            adjMatrix[targetIndex][sourceIndex] = 1;
                         }
                     });
                 }
+
+
+                console.log(adjMatrix);
             }
 
             function addNode(node) {
@@ -139,8 +141,17 @@
 
                 var verticeIndex = getNodeIndex(node);
                 spliceLinksForNode(node);
+
+                // remove referencias ao vertice
+                adjacencyList.forEach(function(itemLista){
+                    itemLista.splice(itemLista.indexOf(node),1);
+                });
+
+
                 adjacencyList.splice(verticeIndex, 1);
                 vertices.splice(verticeIndex, 1);
+
+                updateAdjacencyMatrix();
 
                 console.log(adjacencyList);
             }

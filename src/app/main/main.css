@@ -99,3 +99,7 @@ display: flex;
 .passos-algoritmo .passo{
     white-space: pre;
 }
+
+.bold{
+    font-weight: bold;
+}

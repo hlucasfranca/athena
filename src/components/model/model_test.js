@@ -314,7 +314,7 @@ describe('Service: model', function () {
         });
 
 
-        it("deve atualizar a lista de adjacencia corretamente", function () {
+        it("deve atualizar a lista de adjacencia corretamente ao remover uma aresta", function () {
 
             var a = {},
                 b = {},
@@ -353,6 +353,55 @@ describe('Service: model', function () {
                 [],
                 [],
                 [c,a,b]
+            ]);
+        });
+
+
+
+
+        it("deve atualizar a lista de adjacencia corretamente ao remover um vertice", function () {
+
+            var a = {},
+                b = {},
+                c = {},
+                d = {};
+
+
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+            graph.addNode(d);
+
+            expect(graph.getNodes().length).toBe(4);
+
+            graph.addEdge(a,b);
+            graph.addEdge(b,c);
+            graph.addEdge(d,c);
+            graph.addEdge(d,a);
+            graph.addEdge(d,b);
+
+            expect(graph.getEdges().length).toBe(5);
+
+            expect(graph.getAdjacencyList()).toEqual([
+                [b],
+                [c],
+                [],
+                [c,a,b]
+            ]);
+
+            graph.removeNode(b);
+
+            expect(graph.getAdjacencyList()).toEqual([
+                [],
+                [],
+                [c,a]
+            ]);
+
+            graph.removeNode(a);
+
+            expect(graph.getAdjacencyList()).toEqual([
+                [],
+                [c]
             ]);
         });
 

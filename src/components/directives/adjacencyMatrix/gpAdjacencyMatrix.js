@@ -27,7 +27,9 @@
 
             function mouseEnterCell(d, i) {
                 d3.selectAll('.adjcol' + i).classed('highlight-cell', true);
-                broadcastService.broadcast('select_node',i);
+                scope.$apply(function(){
+                    broadcastService.broadcast('select_node',i);
+                });
 
                 console.log('mouseover: ' + i);
             }
@@ -35,17 +37,23 @@
             function mouseLeaveCell(d, i) {
                 d3.selectAll('.adjcol' + i).classed('highlight-cell', false);
                 console.log('mouseleave: ' + i);
-                broadcastService.broadcast('deselect_node',i);
+                scope.$apply(function(){
+                    broadcastService.broadcast('deselect_node',i);
+                });
             }
 
             function mouseEnterRow(d, i) {
                 d3.selectAll('.adjrow' + i).classed('highlight-cell', true);
-                broadcastService.broadcast('select_node',i);
+                scope.$apply(function(){
+                    broadcastService.broadcast('select_node',i);
+                });
             }
 
             function mouseLeaveRow(d, i) {
                 d3.selectAll('.adjrow' + i).classed('highlight-cell', false);
-                broadcastService.broadcast('deselect_node',i);
+                scope.$apply(function(){
+                    broadcastService.broadcast('deselect_node',i);
+                });
             }
 
             thead.append('tr')
@@ -58,9 +66,13 @@
                 })
                 .attr('class', function (d, i) {
                     return 'adjcol' + i;
-                })
-                .on('mouseenter', mouseEnterCell)
-                .on('mouseleave', mouseLeaveCell);
+                });
+
+            thead
+                .select('tr')
+                .insert("th", "th");
+//                .on('mouseenter', mouseEnterCell)
+  //             .on('mouseleave', mouseLeaveCell);
 
             tbody
                 .selectAll('tr')
@@ -70,8 +82,8 @@
                 .attr('class', function (d, i) {
                     return 'adjrow' + i;
                 })
-               // .on('mouseenter', mouseEnterRow)
-               // .on('mouseleave', mouseLeaveRow)
+                //.on('mouseenter', mouseEnterRow)
+                //.on('mouseleave', mouseLeaveRow)
                 .selectAll('td')
                 .data(function (d) {
                     return d;
@@ -83,15 +95,24 @@
                 })
                 .attr('class', function (d, i) {
                     return 'adjcol' + i;
+                });
+
+            tbody
+                .selectAll('tr')
+                .data(scope.graph.getNodes())
+                .insert('td', "td")
+                .text(function(d){
+                    return d.label;
                 })
-               // .on('mouseenter', mouseEnterCell)
-               // .on('mouseleave', mouseLeaveCell);
+                .classed('bold', true);
+              // .on('mouseenter', mouseEnterCell)
+              // .on('mouseleave', mouseLeaveCell);
         }
 
         function postLink(scope, element) {
 
             draw(scope, element);
-            scope.$watch(scope.graph.getAdjacencyMatrix(), function () {
+            scope.$watch('graph.getAdjacencyMatrix()', function () {
                 draw(scope, element);
             },true);
         }
