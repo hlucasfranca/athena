@@ -756,18 +756,23 @@
                 });
 
                 selection.select('circle')
+                    .attr('r', function(d){
+                        return d.radius;
+                    })
+                    //.style('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
-                    //.ease('linear')
+                    .ease('linear')
                     .style('fill', '#000000')
                     .attr('r', function(d){
                         return d.radius * 2;
                     });
 
                 selection.select('text')
+                    //.style('fill', '#000000')
                     .transition()
                     .duration(250)
-                    //.ease('linear')
+                    .ease('linear')
                     .style('fill', '#ffffff');
             }
 
