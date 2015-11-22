@@ -5,53 +5,53 @@
 
             var fabOptions = {
                 add: {
-                    name: 'Add',
+                    name: 'Adicionar',
                     icon: 'add',
-                    message: 'Click anywhere on the stage to add a node.',
+                    //message: 'Click anywhere on the stage to add a node.',
                     enabled: true,
                     color: '#4CAF50',
                     contextOptions: [
                         {
-                            name: 'Add Node',
+                            name: 'Adicionar vértice',
                             icon: 'add_circle',
                             enabled: true,
                             color: '#4CAF50',
-                            message: 'Click anywhere to add a node.'
+                            message: 'Clique no palco para adicionar um vértice.'
                         },
                         {
-                            name: 'Add Link',
+                            name: 'Adicionar aresta',
                             icon: 'border_color',
-                            message: 'Select a node to connect to another.',
+                            message: 'Selecione um vértice para conectá-lo a outro.',
                             enabled: true,
                             color: '#4CAF50'
                         }
                     ]
                 },
                 remove: {
-                    name: 'Remove',
+                    name: 'Excluir',
                     icon: 'clear',
-                    message: 'Click on a node or link to remove.',
+                    message: 'Clique em um vértice ou aresta para excluí-lo.',
                     enabled: true,
                     color: '#F44336'
                 },
-                select: {
-                    name: 'Select',
-                    icon: 'check',
-                    message: 'Click on a node or link to select.',
-                    enabled: true,
-                    color: '#FF9800',
-                    contextOptions: [
-                        {
-                            name: 'Select',
-                            icon: 'select_all',
-                            message: 'Select all.'
-                        }
-                    ]
-                },
+                //select: {
+                //    name: 'Select',
+                //    icon: 'check',
+                //    message: 'Click on a node or link to select.',
+                //    enabled: true,
+                //    color: '#FF9800',
+                //    contextOptions: [
+                //        {
+                //            name: 'Select',
+                //            icon: 'select_all',
+                //            message: 'Select all.'
+                //        }
+                //    ]
+                //},
                 info: {
-                    name: 'Information',
+                    name: 'Informações',
                     icon: 'info',
-                    message: 'Click on a node or link for information, click on stage to global information.',
+                    message: 'Clique em um vértice para obter informações detalhadas.',
                     enabled: true,
                     color: '#2196F3'
                 }

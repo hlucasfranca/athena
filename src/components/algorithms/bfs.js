@@ -39,7 +39,6 @@
             }
 
             /**
-             *
              0"Visita-se um nó n previamente selecionado;",
              1"Marca o nó n",
              2"Inserir n em uma fila F",
@@ -49,10 +48,7 @@
              6"                O nó m é visitado",
              7"                O nó m é colocado na fila F",
              8"                O nó m é marcado"
-             ];
-             *
-             *
-             *
+             9 - fim do algoritmo
              */
             function bfs(G, verticeInicial) {
                 //temporary flag

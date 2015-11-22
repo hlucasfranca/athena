@@ -612,6 +612,8 @@
 
             scope.$on('marcar_no', markNode);
 
+            scope.$on('colorir_no', colorizeNode);
+
             scope.$on('select_link', selectLink);
 
             scope.$on('deselect_node', deselectNode);
@@ -819,6 +821,24 @@
                     .duration(250)
                     .ease('linear')
                     .style('fill', '#ffffff');
+            }
+
+            function colorizeNode() {
+
+                var node = scope.graph.getNode(broadcastService.object.vertice);
+
+                var cor = broadcastService.object.cor;
+
+                var selection = d3.selectAll('.node').filter(function (d, i) {
+                    return d.index === node.index;
+                });
+
+                selection.select('circle')
+                    .style('fill', '#FFFFFF')
+                    .transition()
+                    .duration(250)
+                    //.ease('linear')
+                    .style('fill', cor);
             }
 
             function markNode() {

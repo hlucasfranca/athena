@@ -31,7 +31,6 @@
             coloracaoClasse
         ];
 
-
         $scope.pilha = [];
         $scope.fila = [];
         $scope.passoAtual = -1;
@@ -40,38 +39,11 @@
         $scope.emExecucao = false;
 
         $scope.algoritmoSelecionado = $scope.algorithms[0];
-
-
-
         var operacaoAtual = 0;
         var resultado = [];
 
         $scope.runAlg = run;
-        //$scope.selectStep = selectStep;
 
-        /*
-         * TODO add previous step, add current node display, highlight current visited link
-         *
-         * */
-
-        //function nextStep() {
-        //    if (currentStep < $scope.steps.length) {
-        //        if (currentStep > 0) {
-        //            // $scope.deselectNode($scope.steps[currentStep - 1].visited.index);
-        //            var sourceNode = $scope.steps[currentStep - 1].visited;
-        //            var targetNode = $scope.steps[currentStep].visited;
-        //            if (sourceNode !== targetNode) {
-        //                broadcastService.broadcast('select_link', {source:sourceNode, target: targetNode});
-        //            }
-        //        }
-        //        var step = $scope.steps[currentStep];
-        //
-        //        broadcastService.broadcast('select_node', step.visited);
-        //
-        //        $scope.selectedStep = step.instruction;
-        //        currentStep++;
-        //    }
-        //}
 
         function proximoPasso(){
 
