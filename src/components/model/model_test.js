@@ -57,6 +57,8 @@ describe('Service: model', function () {
             expect(graph.getNodes().length).toBe(0);
         });
 
+
+
         it("should allow get a vertice by id", function () {
             graph.addNode({});
             expect(graph.getNode(0)).toBeDefined();
@@ -251,7 +253,7 @@ describe('Service: model', function () {
 
             graph.removeEdge(b, d);
 
-            expect(graph.getEdges()).toBe(resultadoEsperado);
+            expect(graph.getEdges()).toEqual(resultadoEsperado);
         });
 
 
@@ -310,5 +312,49 @@ describe('Service: model', function () {
             expect(graph.isDirected() === false);
 
         });
+
+
+        it("deve atualizar a lista de adjacencia corretamente", function () {
+
+            var a = {},
+                b = {},
+                c = {},
+                d = {};
+
+
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+            graph.addNode(d);
+
+            expect(graph.getNodes().length).toBe(4);
+
+
+            graph.addEdge(a,b);
+            graph.addEdge(b,c);
+            graph.addEdge(d,c);
+            graph.addEdge(d,a);
+            graph.addEdge(d,b);
+
+
+            expect(graph.getEdges().length).toBe(5);
+
+            expect(graph.getAdjacencyList()).toEqual([
+                [b],
+                [c],
+                [],
+                [c,a,b]
+            ]);
+
+            graph.removeEdge(b,c);
+
+            expect(graph.getAdjacencyList()).toEqual([
+                [b],
+                [],
+                [],
+                [c,a,b]
+            ]);
+        });
+
     });
 });

@@ -171,15 +171,15 @@
                     targetIndex = getNodeIndex(target.id);
 
                 // remove from adj list
-                adjacencyList[sourceIndex].splice(targetIndex, 1);
+                adjacencyList[sourceIndex].splice(adjacencyList[sourceIndex].indexOf(target), 1);
                 removeLink(source, target);
 
 
                 //if (!directed) {
 
                 //REMOVE EM AMBOS OS SENTIDOS
-                    adjacencyList[targetIndex].splice(sourceIndex, 1);
-                    removeLink(target, source);
+                adjacencyList[targetIndex].splice(adjacencyList[targetIndex].indexOf(source), 1);
+                removeLink(target, source);
 
 
                 //}
