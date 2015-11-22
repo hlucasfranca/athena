@@ -7,12 +7,12 @@
 </md-button>
 
 
-<div ng-show="!hideSteps">
+<div ng-show="!hideSteps" class="passos-algoritmo">
     <h4>Passos</h4>
 
     <!-- realça o passo selecionado de acrodo com a execução do algoritmo -->
     <div ng-repeat="step in algoritmoSelecionado.steps" ng-class="{'line-hover': selectedStep === $index}">
-        {{$index + 1}}: {{step}}
+        <span class="passo">{{$index + 1}}: {{step}}</span>
     </div>
 </div>
 

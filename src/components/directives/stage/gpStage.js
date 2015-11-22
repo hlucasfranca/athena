@@ -33,6 +33,7 @@
             var selectedNode = null,
                 selectedLink = null,
                 nodeGroup,
+                linkGroup,
                 gridSize = 20,
                 gridWidth = 2000,
                 gridHeight = 2000,
@@ -110,9 +111,12 @@
                     .attr('width', scope.width)
                     .attr('height', scope.height);
 
-                allLinksGroup = allLinksGroup.data(scope.graph.getEdges());
+                allLinksGroup = allLinksGroup.data(scope.graph.getEdges(),
+                function(d){
+                    return d.id;
+                });
 
-                allLinksGroup.enter()
+                linkGroup = allLinksGroup.enter()
                     .append('g')
                     // TODO remove unnecessary code
                     .attr('class', 'linkgroup')
@@ -128,15 +132,15 @@
                             // TODO NÃO DEVE SER CHAMADA AQUI
                             //redraw();
                         });
-                    })
+                    });
+
+                linkGroup
                     .append('line')
                     .classed('link', true);
 
 
 
-                var path_text = allLinksGroup.selectAll(".linkgroup")
-                    .data(force.links())
-                    .enter().append("text")
+                linkGroup.append("text")
                     .attr("font-family", "Arial, Helvetica, sans-serif")
                     .attr("x", function(d) {
                         if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
@@ -187,6 +191,7 @@
                     .style('opacity', 0 )
                     .remove();
 
+
                 allNodesGroup
                     .exit()
                     .transition()
@@ -195,6 +200,9 @@
                     .duration(500)
                     .style('opacity', 0 )
                     .remove();
+
+                // necessário para fazer a remoção completa do vértice
+                allNodesGroup.exit().remove();
 
                 var nodeDrag = d3.behavior.drag()
                     .on('drag', dragMove)

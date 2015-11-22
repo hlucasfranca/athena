@@ -95,3 +95,7 @@ md-tabs {
 display: flex;
     flex-direction: column;
 }
+
+.passos-algoritmo .passo{
+    white-space: pre;
+}

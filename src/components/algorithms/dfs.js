@@ -6,10 +6,12 @@
      *  seção 2.1.2
      */
 
+    // TODO trocar por versão não recursiva
+
     angular.module('graphe.algorithms')
         .service('dfs', function () {
 
-            var n = 'Busca em profundidade',
+            var n = 'Percurso em profundidade',
                 instructions = [],
                 result = [],
                 steps = [

@@ -10,18 +10,18 @@
              */
 
             var nome = 'Percurso em largura',
-                instructions = [],
-                result = [],
-                steps = [
-                    "Visita-se um nó n previamente selecionado;",
-                    "Marca o nó n",
+                instrucoes = [],
+                resultado = [],
+                passos = [
+                    "Visita-se um nÃ³ n previamente selecionado;",
+                    "Marca o nÃ³ n",
                     "Inserir n em uma fila F",
-                    "Enquanto a fila F não estiver vazia",
-                    "Retira um elemento da fila F e atribui ao nó n",
-                    "Para cada nó m não marcado e adjacente a n faça",
-                    "O nó m é visitado",
-                    "O nó m é colocado na fila F",
-                    "O nó m é marcado"
+                    "Enquanto a fila F nÃ£o estiver vazia",
+                    "        Retira um elemento da fila F e atribui ao nÃ³ n",
+                    "        Para cada nÃ³ m nÃ£o marcado e adjacente a n faÃ§a",
+                    "                O nÃ³ m Ã© visitado",
+                    "                O nÃ³ m Ã© colocado na fila F",
+                    "                O nÃ³ m Ã© marcado"
                 ];
 
             /**
@@ -38,8 +38,8 @@
                 bfs(graph, node);
                 console.log('end of algorithm');
 
-                console.log(result);
-                return result;
+                console.log(resultado);
+                return resultado;
             }
 
             /**
@@ -51,9 +51,9 @@
                 //temporary flag
 
                 var fila = [];
-                verticeInicial.marked = true;
+                verticeInicial.marcado = true;
 
-                // Adiciona à fila
+                // Adiciona Ã  fila
                 fila.push(verticeInicial);
 
                 while (fila.length > 0) {
@@ -62,12 +62,12 @@
                     if (n) {
                         console.log("Visited vertex: ");
                         console.log(n);
-                        result.push(n);
+                        resultado.push(n);
                     }
 
                     G.getAdjacencyList(n).forEach(function(m){
-                        if (!m.marked) {
-                            m.marked = true;
+                        if (!m.marcado) {
+                            m.marcado = true;
                             fila.push(m);
                             console.log(fila);
                         }
@@ -75,8 +75,8 @@
                 }
 
                 G.getNodes().forEach(function(vertice){
-                    if(angular.isDefined(vertice.marked)) {
-                        delete vertice.marked;
+                    if(angular.isDefined(vertice.marcado)) {
+                        delete vertice.marcado;
                     }
                 });
             }
@@ -84,9 +84,9 @@
             //noinspection UnnecessaryLocalVariableJS
             var service = {
                 name: nome,
-                steps: steps,
-                result: result,
-                instructions: instructions,
+                steps: passos,
+                result: resultado,
+                instructions: instrucoes,
                 run: run
             };
 
