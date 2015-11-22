@@ -116,10 +116,10 @@
                         var sourceIndex = vertices.indexOf(link.source);
                         var targetIndex = vertices.indexOf(link.target);
 
-                        adjMatrix[sourceIndex][targetIndex] = 1;
+                        adjMatrix[sourceIndex][targetIndex] = link.peso;
 
                         if (!directed) {
-                            adjMatrix[targetIndex][sourceIndex] = 1;
+                            adjMatrix[targetIndex][sourceIndex] = link.peso;
                         }
                     });
                 }
@@ -131,7 +131,7 @@
             function addNode(node) {
                 //if node isn't provided
                 node.id = id++;
-                adjacencyList[vertices.length] = [];
+                adjacencyList.push([]);
                 vertices.push(node);
 
                 updateAdjacencyMatrix();
@@ -149,7 +149,7 @@
 
 
                 adjacencyList.splice(verticeIndex, 1);
-                vertices.splice(verticeIndex, 1);
+                vertices.splice(vertices.indexOf(node), 1);
 
                 updateAdjacencyMatrix();
 
@@ -200,27 +200,17 @@
 
             function addEdge(v, w) {
 
-                if(typeof v === 'number'){
-                    v = getNode(v);
-                }
-
-                if(typeof w === 'number'){
-                    w = getNode(w);
-                }
+                if(typeof v === 'number'){ v = getNode(v); }
+                if(typeof w === 'number'){ w = getNode(w); }
 
                 // se já existir uma aresta associada
-                if (getEdge(v, w) !== undefined) {
-                    return;
-                }
+                if (getEdge(v, w) !== undefined) { return; }
 
-                var sourceIndex = getNodeIndex(v),
-                    targetIndex = getNodeIndex(w);
-
-                adjacencyList[sourceIndex].push(w);
+                adjacencyList[vertices.indexOf(v)].push(w);
 
                 links.push({
-                    source: getNode(v),
-                    target: getNode(w),
+                    source: v,
+                    target: w,
                     id: id++,
                     peso: 1
                 });
@@ -228,10 +218,10 @@
                 console.log(v.label + '>' + w.label);
 
                 if (!directed) {
-                    adjacencyList[targetIndex].push(v);
+                    adjacencyList[vertices.indexOf(w)].push(v);
                     links.push({
-                        source: getNode(w),
-                        target: getNode(v),
+                        source: w,
+                        target: v,
                         id: id++
                     });
 

@@ -40,11 +40,44 @@
                 <md-tab-body>
                     <md-content flex class="md-padding">
 
-                        <h3>Algoritmo:</h3>
+                        <md-list>
 
-                        <md-select ng-model="algoritmoSelecionado">
-                            <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
-                        </md-select>
+                            <md-subheader class="md-no-sticky">Algoritmo</md-subheader>
+                            <md-list-item>
+                                <div class="md-list-item-text" flex layout="row">
+
+                                    <div flex="75" layout="row" layout-align="center center">
+
+                                        <div flex="90">
+                                    <md-select ng-model="algoritmoSelecionado">
+                                        <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
+                                    </md-select>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div flex="25" layout="row" layout-align="center center">
+
+
+                                    <md-button class="md-fab md-icon-button {{emExecucao ? 'md-warn':'md-primary'}}" aria-label="Play" ng-click="runAlg()">
+                                        <md-icon ng-if="!emExecucao">play_arrow</md-icon>
+                                        <md-icon ng-if="emExecucao">pause</md-icon>
+                                    </md-button>
+
+
+                                    </div>
+
+
+                                </div>
+                            </md-list-item>
+                            <md-divider ></md-divider>
+                        </md-list>
+
+
+
+
 
                         <gp-algorithm-player>
                             <gp-step-list></gp-step-list>

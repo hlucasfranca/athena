@@ -22,6 +22,9 @@
 
         // Sets the default menu option
         $scope.currentOption = $scope.fab.fabOptions.add;
+
+
+
         $scope.isFabOpen = false;
         $scope.selectedColumn = null;
         // The stage dimensions
@@ -58,11 +61,9 @@
             $scope.selectedNode = node;
         }
 
-        function setSelectedOption(currentAction) {
-            //console.log('selected option');
-            //console.log(currentAction);
-            $scope.fab.currentOption = currentAction;
-            //$scope.toggleFab();
+        function setSelectedOption(option) {
+            $scope.fab.currentOption = option;
+            $scope.showFab = false;
             $scope.showContextToolbar();
         }
 

@@ -14,6 +14,7 @@
 
                 $scope.isShowContextToolbar = false;
                 $scope.fab = fab;
+                $scope.showFab = true;
 
                 // Functions
                 $scope.showHelp = showHelp;
@@ -71,6 +72,7 @@
                     $scope.hideContextToolbar();
                     $scope.message = '';
                     $scope.fab.currentOption = {};
+                    $scope.showFab = true;
                 }
             }]);
 })();

@@ -14,6 +14,8 @@
                         {
                             name: 'Add Node',
                             icon: 'add_circle',
+                            enabled: true,
+                            color: '#4CAF50',
                             message: 'Click anywhere to add a node.'
                         },
                         {
@@ -57,7 +59,7 @@
 
             var service = {
                 fabOptions : fabOptions,
-                currentOption : fabOptions[0]
+                currentOption : undefined
             };
 
             return service;

@@ -387,7 +387,7 @@
                                 delete scope.firstNode;
 
                                 //limpa as mensagens do contexto
-                                broadcastService.broadcast('new_message', '');
+                                broadcastService.broadcast('new_message', 'Selecione nó origem.');
 
                             });
                         }
@@ -610,6 +610,8 @@
 
             scope.$on('select_node', selectNode);
 
+            scope.$on('marcar_no', markNode);
+
             scope.$on('select_link', selectLink);
 
             scope.$on('deselect_node', deselectNode);
@@ -787,7 +789,7 @@
              */
             function selectNode() {
 
-                console.log('ouvido');
+                console.log('select node');
 
                 var node = scope.graph.getNode(broadcastService.object);
 
@@ -799,13 +801,16 @@
                     .attr('r', function(d){
                         return d.radius;
                     })
-                    .style('fill', '#FFFFFF')
+                    //.style('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     .ease('linear')
-                    .style('fill', '#000000')
+                    .style({
+                        'stroke': 'red',
+                        'stroke-width': 2
+                    })
                     .attr('r', function(d){
-                        return d.radius * 2;
+                        return d.radius * 1.5;
                     });
 
                 selection.select('text')
@@ -814,6 +819,26 @@
                     .duration(250)
                     .ease('linear')
                     .style('fill', '#ffffff');
+            }
+
+            function markNode() {
+
+                console.log('select node');
+
+                var node = scope.graph.getNode(broadcastService.object);
+
+                var selection = d3.selectAll('.node').filter(function (d, i) {
+                    return d.index === node.index;
+                });
+
+                selection.select('circle')
+                    .style('fill', '#FFFFFF')
+                    .transition()
+                    .duration(250)
+                    //.ease('linear')
+                    .style('fill', '#CCC');
+
+
             }
 
             /**

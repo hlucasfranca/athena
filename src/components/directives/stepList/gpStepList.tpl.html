@@ -1,49 +1,50 @@
-<md-button class="md-fab md-icon-button md-primary" aria-label="Play" ng-click="runAlg()">
-    <md-icon>play_arrow</md-icon>
-</md-button>
+<md-list>
 
-<md-button ng-click="hideSteps = !hideSteps" class="{{hideSteps ? 'md-primary':'md-warn'}}">
-    {{hideSteps ? 'exibir' : 'ocultar'}} passos
-</md-button>
+    <md-subheader>
+    Passos
+    <md-button ng-click="hideSteps = !hideSteps" class="{{hideSteps ? 'md-primary':'md-warn'}}">
+        {{hideSteps ? 'exibir' : 'ocultar'}}</md-button>
+    </md-subheader>
+
+    <md-list-item  ng-show="!hideSteps">
+
+        <div class="passos-algoritmo">
+            <!-- real√ßa o passo selecionado de acrodo com a execu√ß√£o do algoritmo -->
+            <div ng-repeat="step in algoritmoSelecionado.steps" ng-class="{'line-hover': passoAtual === $index}">
+                <span class="passo">{{$index + 1}}: {{step}}</span>
+            </div>
+        </div>
+
+    </md-list-item>
+
+    <md-divider ></md-divider>
+
+    <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaPilha">Pilha</md-subheader>
+    <md-list-item ng-if="algoritmoSelecionado.usaPilha">
+        <div class="md-list-item-text" flex layout="row">
+            {{pilha}}
+        </div>
+    </md-list-item>
+    <md-divider ng-if="algoritmoSelecionado.usaPilha"></md-divider>
+
+    <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaFila">Fila</md-subheader>
+    <md-list-item ng-if="algoritmoSelecionado.usaFila">
+        <div class="md-list-item-text" flex layout="row">
+            {{fila}}
+        </div>
+    </md-list-item >
+    <md-divider ng-if="algoritmoSelecionado.usaFila"></md-divider>
+
+    <md-subheader class="md-no-sticky">Solu√ß√£o</md-subheader>
+    <md-list-item>
+        <div class="md-list-item-text" flex layout="row">
+            {{resultado}}
+        </div>
+    </md-list-item>
+    <md-divider ></md-divider>
+</md-list>
 
 
-<div ng-show="!hideSteps" class="passos-algoritmo">
-    <h4>Passos</h4>
-
-    <!-- realÁa o passo selecionado de acrodo com a execuÁ„o do algoritmo -->
-    <div ng-repeat="step in algoritmoSelecionado.steps" ng-class="{'line-hover': selectedStep === $index}">
-        <span class="passo">{{$index + 1}}: {{step}}</span>
-    </div>
-</div>
-
-
-
-<div>
-    <!--<md-button class="md-icon-button">-->
-        <!--<md-icon>skip_previous</md-icon>-->
-    <!--</md-button>-->
-
-    <!--<md-button class="md-icon-button">-->
-        <!--<md-icon>fast_rewind</md-icon>-->
-    <!--</md-button>-->
-
-
-
-    <!--<md-button class="md-icon-button" ng-click="nextStep()">-->
-        <!--<md-icon>fast_forward</md-icon>-->
-    <!--</md-button>-->
-
-    <!--<md-button class="md-icon-button">-->
-        <!--<md-icon>skip_next</md-icon>-->
-    <!--</md-button>-->
-
-    <div ng-show="result.length ">
-        <h1>Result</h1>
-
-        <p>{{algoritmoSelecionado.result}}</p>
-    </div>
-
-</div>
 
 
 
