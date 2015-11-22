@@ -4,7 +4,16 @@
     <md-list-item>
         <div class="md-list-item-text" layout="column">
 
-            <p>{{graph.isDirected()}}</p>
+            <div>{{graph.isDirected()}}</div>
+        </div>
+    </md-list-item>
+    <md-divider ></md-divider>
+
+    <md-subheader class="md-no-sticky">Conexidade</md-subheader>
+    <md-list-item>
+        <div class="md-list-item-text" layout="column">
+
+            <p>Conexo / desconexo</p>
         </div>
     </md-list-item>
     <md-divider ></md-divider>
@@ -39,11 +48,15 @@
     <md-list-item>
 
         <div class="md-list-item-text" layout="row">
+            <p>
+
             <b>E</b> = {
-        <span ng-repeat="edge in graph.getEdges()">
+        <span ng-repeat="edge in graph.getEdges()" >
             <span ng-show="!$first">,</span>
-                <span>{ {{edge.source.label}}, {{edge.target.label}} }</span>
+                <span style="white-space: nowrap">{ {{edge.source.label}}, {{edge.target.label}} }</span>
         </span> }
+
+            </p>
 
         </div>
 

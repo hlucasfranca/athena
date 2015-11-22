@@ -138,10 +138,8 @@
                     .append('line')
                     .classed('link', true);
 
-
-
                 linkGroup.append("text")
-                    .attr("font-family", "Arial, Helvetica, sans-serif")
+
                     .attr("x", function(d) {
                         if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
                         else { return (d.target.x + (d.source.x - d.target.x)/2); }
@@ -150,9 +148,8 @@
                         if (d.target.y > d.source.y) { return (d.source.y + (d.target.y - d.source.y)/2); }
                         else { return (d.target.y + (d.source.y - d.target.y)/2); }
                     })
-                    .attr("fill", "Black")
-                    .style("font", "normal 12px Arial")
-                    .attr("dy", ".35em")
+
+                    .attr("dy", "-0.35em")
                     .text(function(d) {
                         return d.peso;
                     });
