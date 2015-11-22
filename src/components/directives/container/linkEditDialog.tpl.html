@@ -2,7 +2,7 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Link edit</h2>
+                <h2>Edição de aresta</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon>close</md-icon>
@@ -13,7 +13,7 @@
 
             <div layout>
                 <div flex="10" layout layout-align="center center">
-                    <span class="md-body-1">Link Weight</span>
+                    <span class="md-body-1">Peso</span>
                 </div>
 
                 <md-slider flex min="1" max="100" ng-model="selectedLink.peso" id="radius-slider"></md-slider>
@@ -24,7 +24,7 @@
             </div>
 
             <div layout>
-
+                {{selectedLink.source.label}} > {{selectedLink.target.label}}
             </div>
 
 
@@ -32,13 +32,13 @@
         <div class="md-actions" layout="row">
 
             <md-button class="md-raised" md-autofocus ng-click="cancel()">
-                Cancel
+                Cancelar
             </md-button>
 
             <span flex></span>
 
             <md-button class="md-raised md-primary" ng-click="answer()">
-                Complete
+                Edição concluída
             </md-button>
 
         </div>

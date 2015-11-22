@@ -20,7 +20,7 @@
                 $mdToast.show(
                     $mdToast.simple()
                         .content(message)
-                        .action('Got it.')
+                       // .action('Got it.')
                         .highlightAction(false)
                         .position(getToastPosition())
                         .hideDelay(3000))

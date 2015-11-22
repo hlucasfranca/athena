@@ -35,14 +35,17 @@
             function mouseLeaveCell(d, i) {
                 d3.selectAll('.adjcol' + i).classed('highlight-cell', false);
                 console.log('mouseleave: ' + i);
+                broadcastService.broadcast('deselect_node',i);
             }
 
             function mouseEnterRow(d, i) {
                 d3.selectAll('.adjrow' + i).classed('highlight-cell', true);
+                broadcastService.broadcast('select_node',i);
             }
 
             function mouseLeaveRow(d, i) {
                 d3.selectAll('.adjrow' + i).classed('highlight-cell', false);
+                broadcastService.broadcast('deselect_node',i);
             }
 
             thead.append('tr')
@@ -67,8 +70,8 @@
                 .attr('class', function (d, i) {
                     return 'adjrow' + i;
                 })
-                .on('mouseenter', mouseEnterRow)
-                .on('mouseleave', mouseLeaveRow)
+               // .on('mouseenter', mouseEnterRow)
+               // .on('mouseleave', mouseLeaveRow)
                 .selectAll('td')
                 .data(function (d) {
                     return d;
@@ -81,8 +84,8 @@
                 .attr('class', function (d, i) {
                     return 'adjcol' + i;
                 })
-                .on('mouseenter', mouseEnterCell)
-                .on('mouseleave', mouseLeaveCell);
+               // .on('mouseenter', mouseEnterCell)
+               // .on('mouseleave', mouseLeaveCell);
         }
 
         function postLink(scope, element) {

@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('graphe.directives')
-        .directive('gpContainer', gpContainer)
+        .directive('gpContainer', ['broadcastService', gpContainer])
         .controller('gpContainerCtrl', gpContainerCtrl);
 
     function gpContainer() {
@@ -12,7 +12,7 @@
         };
     }
 
-    function gpContainerCtrl($rootScope, $scope, $window, $mdDialog, dfs, $interval, model, colors, labels) {
+    function gpContainerCtrl($rootScope, $scope, $window, $mdDialog, dfs, $interval, model, colors, labels, broadcastService) {
         var vm = this;
 
 
@@ -89,7 +89,7 @@
 
             $scope.graph.setDirected(true);
 
-            var numberOfNodes = 5 + Math.random() * 5;
+            var numberOfNodes = 3;
 
             for(var i = 0; i < numberOfNodes; i++) {
                 $scope.graph.addNode({
@@ -103,7 +103,7 @@
                 });
             }
 
-            var numArestas = Math.random() * numberOfNodes;
+            var numArestas = 3;
 
             // Connect the nodes with each other
             for(i = 0; i < numArestas; i++){
@@ -143,7 +143,11 @@
         function NodeEditDialogController($scope, $mdDialog) {
 
             $scope.color = $scope.selectedNode.color || d3.rgb(255,255,255);
-            $scope.label = $scope.selectedNode.label || 'Node Label';
+            $scope.label = $scope.selectedNode.label || 'Rótulo';
+
+            $scope.$watch($scope.selectedNode, function(){
+                broadcastService.broadcast('update_stage');
+            }, true);
 
             $scope.cancel = function () {
                 $mdDialog.cancel();
@@ -219,7 +223,12 @@
 
         function LinkEditDialogController($scope, $mdDialog) {
 
-            $scope.selectedLink.weight = $scope.selectedLink.weight || 1;
+            $scope.selectedLink.peso = $scope.selectedLink.peso || 1;
+
+
+            $scope.$watch($scope.selectedLink, function(){
+                broadcastService.broadcast('update_stage');
+            }, true);
 
             $scope.cancel = function () {
                 $mdDialog.cancel();

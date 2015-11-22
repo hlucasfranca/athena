@@ -77,7 +77,11 @@
                     return element.source.id === s.id && element.target.id === t.id;
                 });
 
-                return foundLink;
+                if(foundLink.length > 0) {
+                    return foundLink[0];
+                }
+
+                return undefined;
 
             }
 
@@ -170,10 +174,15 @@
                 adjacencyList[sourceIndex].splice(targetIndex, 1);
                 removeLink(source, target);
 
-                if (!directed) {
+
+                //if (!directed) {
+
+                //REMOVE EM AMBOS OS SENTIDOS
                     adjacencyList[targetIndex].splice(sourceIndex, 1);
                     removeLink(target, source);
-                }
+
+
+                //}
 
                 updateAdjacencyMatrix();
             }
@@ -189,7 +198,7 @@
                 }
 
                 // se já existir uma aresta associada
-                if (getEdge(v, w).length > 0) {
+                if (getEdge(v, w) !== undefined) {
                     return;
                 }
 
@@ -326,7 +335,24 @@
                     return element.source.id === source.id && element.target.id === target.id;
                 });
 
-                links.splice(links.indexOf(foundLink), 1);
+
+                foundLink.map(function(link){
+
+                    var indice = links.indexOf(link);
+
+
+                    console.log('foundLink');
+                    console.log(indice);
+
+
+                   links.splice(indice,1);
+                });
+
+
+
+
+
+
             }
 
             function spliceLinksForNode(node) {

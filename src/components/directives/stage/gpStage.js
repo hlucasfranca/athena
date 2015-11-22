@@ -111,10 +111,13 @@
                     .attr('width', scope.width)
                     .attr('height', scope.height);
 
-                allLinksGroup = allLinksGroup.data(scope.graph.getEdges(),
-                function(d){
-                    return d.id;
-                });
+
+
+                // use a custom function to get the key associated with the node an links
+                allLinksGroup = allLinksGroup.data(scope.graph.getEdges(), function(d){ return d.id;});
+                allNodesGroup = allNodesGroup.data(scope.graph.getNodes(), function(d){ return d.id;});
+
+                updateSelections();
 
                 linkGroup = allLinksGroup.enter()
                     .append('g')
@@ -139,7 +142,6 @@
                     .classed('link', true);
 
                 linkGroup.append("text")
-
                     .attr("x", function(d) {
                         if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
                         else { return (d.target.x + (d.source.x - d.target.x)/2); }
@@ -149,19 +151,11 @@
                         else { return (d.target.y + (d.source.y - d.target.y)/2); }
                     })
 
-                    .attr("dy", "-0.35em")
-                    .text(function(d) {
-                        return d.peso;
-                    });
+                    .attr("dy", "-0.35em").text(function(d) {return d.peso;});
 
                 allLinksGroup
                     .exit()
                     .remove();
-
-                // use a custom function to get the key associated with the node
-                allNodesGroup = allNodesGroup.data(scope.graph.getNodes(), function(d){return d.id;});
-
-                updateSelections();
 
                 nodeGroup = allNodesGroup.enter()
                     .append('g')
@@ -268,7 +262,7 @@
                 });
 
                 allLinksGroup
-                    .select("text")
+                    .select(".linkgroup text")
 
                     .attr("x", function(d) {
                         if (d.target.x > d.source.x) { return (d.source.x + (d.target.x - d.source.x)/2); }
@@ -279,7 +273,13 @@
                         else { return (d.target.y + (d.source.y - d.target.y)/2); }
                     })
 
-                    .text(function(d) { return 'não deveria estar aqui'; });
+                    .text(function(d) {
+
+                        console.log(d.peso);
+
+                        return d.peso;
+
+                    });
             }
 
             /**
@@ -307,6 +307,11 @@
              * @param d
              */
             function mousedownlink(d) {
+
+                console.log('removendo');
+                console.log(d);
+
+
                 if (fab.currentOption === fab.fabOptions.remove) {
                     scope.$apply(function () {
                         scope.graph.removeEdge(d.source, d.target);
@@ -544,7 +549,9 @@
                             return (d.target.y + (d.source.y - d.target.y) / 2);
                         }
                     })
-                    .text(function(d) { return d.weight || 1; });
+                    .text(function(d) {
+                        return d.peso;
+                    });
 
                 allNodesGroup.select('.node circle')
                     .attr('r', function(d){
@@ -582,6 +589,10 @@
                 //TODO: update grid size
             }
 
+            function updateStage(){
+                force.resume();
+            }
+
 
             scope.$on('window.resized', function (event,dimensions) {
                 console.log('window.resized');
@@ -593,11 +604,17 @@
 
             scope.$on('select_link', selectLink);
 
+            scope.$on('deselect_node', deselectNode);
+
+
+
+            scope.$on('update_stage', updateStage);
+
             scope.$watch('graph', redraw, true);
 
-            scope.$watch('graph.getNodes()', redraw);
+            scope.$watch('graph.getNodes()', redraw, true);
 
-            scope.$watch('graph.getLinks()', redraw);
+            scope.$watch('graph.getLinks()', redraw, true);
 
             scope.$watch('fab.currentOption', function () {
 
@@ -647,18 +664,28 @@
                     return d.index === node.index;
                 });
 
+
                 selection.select('circle')
+                    .attr('r', function(d){
+                        return d.radius * 2;
+                    })
+                    .style('fill', '#000')
                     .transition()
                     .duration(250)
-                    //.ease('linear')
+                    .ease('linear')
                     .style('fill', '#fff')
-                    .attr('r', function(d){ return d.radius;});
+                    .attr('r', function(d){
+                        return d.radius;
+                    });
 
                 selection.select('text')
+                    .style('fill', '#fff')
                     .transition()
                     .duration(250)
-                    //.ease('linear')
+                    .ease('linear')
                     .style('fill', '#000');
+
+
             }
 
             /**
@@ -764,7 +791,7 @@
                     .attr('r', function(d){
                         return d.radius;
                     })
-                    //.style('fill', '#FFFFFF')
+                    .style('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     .ease('linear')

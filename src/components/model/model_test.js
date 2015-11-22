@@ -68,17 +68,23 @@ describe('Service: model', function () {
          * quando exibir via d3js
          */
         xit("should allow connect two nodes with one edge", function () {
-            graph.addNode({});
-            graph.addNode({});
 
-            graph.addEdge(0, 1);
+            var a = {label:'a'},
+                b = {label:'b'};
+
+            graph.addNode(a);
+            graph.addNode(b);
+
+            graph.addEdge(a, b);
 
             expect(graph.getNodes().length).toBe(2);
 
             expect(graph.getEdges()).toEqual([{
-                source: { id: 0 },
-                target: { id: 1 }
+                source: a,
+                target: b
             }]);
+
+            console.log(graph.getEdges());
 
             expect(graph.getEdges().length).toBe(1);
         });
@@ -89,7 +95,7 @@ describe('Service: model', function () {
 
             graph.addEdge(0, 1);
 
-            expect(graph.getEdge(0,1).length).toBe(1);
+            expect(graph.getEdge(0,1)).toBeDefined();
 
         });
 
@@ -103,7 +109,7 @@ describe('Service: model', function () {
 
             graph.addEdge(nodeA, nodeB);
 
-            expect(graph.getEdge(nodeA,nodeB).length).toBe(1);
+            expect(graph.getEdge(nodeA,nodeB)).toBeDefined();
 
         });
 
@@ -117,7 +123,7 @@ describe('Service: model', function () {
 
             graph.addEdge(nodeA.id, nodeB.id);
 
-            expect(graph.getEdge(nodeA.id,nodeB.id).length).toBe(1);
+            expect(graph.getEdge(nodeA.id,nodeB.id)).toBeDefined();
 
         });
 
@@ -214,6 +220,41 @@ describe('Service: model', function () {
             expect(graph.getVizinhos(b)).toEqual([c,a,d]);
 
         });
+
+
+        it("deve permitir remover uma aresta", function () {
+
+            var a = {label:'a'},
+                b = {label:'b'},
+                c = {label:'c'},
+                d = {label:'d'},
+                e = {label:'e'};
+
+            graph.addNode(a);
+            graph.addNode(b);
+            graph.addNode(c);
+            graph.addNode(d);
+            graph.addNode(e);
+
+            graph.addEdge(a, b);
+            graph.addEdge(b, c);
+            graph.addEdge(c, a);
+            graph.addEdge(b, d);
+            graph.addEdge(d, e);
+
+            var resultadoEsperado = [
+                graph.getEdge(a,b),
+                graph.getEdge(b,c),
+                graph.getEdge(c,a),
+                graph.getEdge(d,e)
+            ];
+
+            graph.removeEdge(b, d);
+
+            expect(graph.getEdges()).toBe(resultadoEsperado);
+        });
+
+
 
         it("should allow remove a edge by reference", function () {
 
