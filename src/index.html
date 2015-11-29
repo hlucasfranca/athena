@@ -38,16 +38,20 @@
     <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2" md-component-id="left"
                 md-is-locked-open="{{false}}" md-swipe-left="toggleSidenav('left')">
 
-        <md-toolbar class="md-whiteframe-z1" style="background-color: #466ed6">
-            <div style="padding-left: 25px"><h3>{{appName}}</h3></div>
+        <md-toolbar class="md-whiteframe-z1 md-tall" >
+            <span flex></span>
+            <div class="md-toolbar-tools md-toolbar-tools-bottom" style="padding-left: 25px"><h3>{{appName}}</h3></div>
         </md-toolbar>
 
         <md-list>
-            <md-list-item ng-repeat="option in menuOptions" ng-click="go(option.link, true)" >
+            <div ng-repeat="option in menuOptions" ng-click="go(option.link, true)">
+            <md-list-item  >
 
-                {{option.label}}
+                <b>{{option.label}}</b>
 
             </md-list-item>
+            <md-divider ></md-divider>
+            </div>
         </md-list>
 
     </md-sidenav>
@@ -75,6 +79,9 @@
 
             <md-button ng-repeat="option in fab.currentOption.contextOptions" class="md-icon-button">
                 <md-icon ng-click="fab.currentOption = option">{{option.icon}}</md-icon>
+                <md-tooltip>
+                    {{option.name}}
+                </md-tooltip>
             </md-button>
 
             <span flex></span>

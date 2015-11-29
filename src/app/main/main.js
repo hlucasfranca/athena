@@ -1,10 +1,12 @@
 (function () {
     'use strict';
     angular.module('graphe')
-        .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab', 'broadcastService',
-            function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab, broadcastService) {
+        .controller('MainCtrl', ['$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location',
+            'fab', 'broadcastService', 'toast',
+            function ($scope, $mdSidenav, $mdToast, $mdDialog, $location, fab, broadcastService, toast) {
 
-                $scope.appName = "[ Nome do projeto ]";
+                $scope.appName = "Athena";
+
 
                 $scope.menuOptions = [
                     {label: 'Página inicial', link: '/'},
@@ -38,7 +40,7 @@
 
                 // Function definitions
                 function showHelp() {
-                    $scope.showSimpleToast($scope.currentOption.message);
+                    toast.showSimpleToast($scope.fab.currentOption.message);
                 }
 
                 function showContextToolbar() {

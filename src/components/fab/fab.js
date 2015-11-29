@@ -7,9 +7,9 @@
                 add: {
                     name: 'Adicionar',
                     icon: 'add',
-                    //message: 'Click anywhere on the stage to add a node.',
                     enabled: true,
                     color: '#4CAF50',
+                    message: 'Selecione "adicionar vértice" ou "adicionar aresta".',
                     contextOptions: [
                         {
                             name: 'Adicionar vértice',
@@ -34,20 +34,7 @@
                     enabled: true,
                     color: '#F44336'
                 },
-                //select: {
-                //    name: 'Select',
-                //    icon: 'check',
-                //    message: 'Click on a node or link to select.',
-                //    enabled: true,
-                //    color: '#FF9800',
-                //    contextOptions: [
-                //        {
-                //            name: 'Select',
-                //            icon: 'select_all',
-                //            message: 'Select all.'
-                //        }
-                //    ]
-                //},
+
                 info: {
                     name: 'Informações',
                     icon: 'info',

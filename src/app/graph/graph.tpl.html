@@ -49,9 +49,17 @@
                                     <div flex="75" layout="row" layout-align="center center">
 
                                         <div flex="90">
-                                    <md-select ng-model="algoritmoSelecionado">
-                                        <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
-                                    </md-select>
+
+                                            <md-input-container>
+
+                                                <md-select ng-model="algoritmoSelecionado" >
+                                                    <md-option ng-repeat="algorithm in algorithms" ng-value="algorithm">{{algorithm.name}}</md-option>
+                                                </md-select>
+                                            </md-input-container>
+
+
+
+
                                         </div>
 
                                     </div>

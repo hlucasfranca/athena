@@ -11,10 +11,11 @@
         </md-toolbar>
         <md-dialog-content style="margin: 16px; padding:16px; width: 500px;">
 
+            <div>
+                <h3>Peso</h3>
+            </div>
+
             <div layout>
-                <div flex="10" layout layout-align="center center">
-                    <span class="md-body-1">Peso</span>
-                </div>
 
                 <md-slider flex min="1" max="100" ng-model="selectedLink.peso" id="radius-slider"></md-slider>
 
@@ -23,9 +24,20 @@
                 </div>
             </div>
 
-            <div layout>
-                {{selectedLink.source.label}} > {{selectedLink.target.label}}
+            <div>
+                <h3>Direção</h3>
+
+                <div layout layout-align="center center">
+                {{selectedLink.source.label}}
+                <md-button class="md-raised" >
+                    <md-icon>arrow_forward</md-icon>
+                </md-button>
+
+                {{selectedLink.target.label}}
+                </div>
             </div>
+
+
 
 
         </md-dialog-content>

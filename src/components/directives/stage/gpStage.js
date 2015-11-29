@@ -608,7 +608,7 @@
                 redraw();
             });
 
-            scope.$on('select_node', selectNode);
+            scope.$on('visitar_no', selectNode);
 
             scope.$on('marcar_no', markNode);
 
@@ -800,27 +800,29 @@
                 });
 
                 selection.select('circle')
-                    .attr('r', function(d){
-                        return d.radius;
-                    })
-                    //.style('fill', '#FFFFFF')
+                    //.attr('r', function(d){
+                    //    return d.radius;
+                    //})
+                    .style('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     .ease('linear')
-                    .style({
-                        'stroke': 'red',
-                        'stroke-width': 2
-                    })
-                    .attr('r', function(d){
-                        return d.radius * 1.5;
-                    });
+                    .style('fill', '#CCC')
+                    //.style({
+                    //    'stroke': 'red',
+                    //    'stroke-width': 2
+                    //})
+                    //.attr('r', function(d){
+                    //    return d.radius * 1.5;
+                    //})
+                ;
 
-                selection.select('text')
-                    //.style('fill', '#000000')
-                    .transition()
-                    .duration(250)
-                    .ease('linear')
-                    .style('fill', '#ffffff');
+                //selection.select('text')
+                //    //.style('fill', '#000000')
+                //    .transition()
+                //    .duration(250)
+                //    .ease('linear')
+                //    .style('fill', '#ffffff');
             }
 
             function colorizeNode() {
@@ -851,12 +853,16 @@
                     return d.index === node.index;
                 });
 
+
+
                 selection.select('circle')
-                    .style('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     //.ease('linear')
-                    .style('fill', '#CCC');
+                    .style({
+                        'stroke': 'red',
+                        'stroke-width': 3
+                    });
 
 
             }

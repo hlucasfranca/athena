@@ -4,7 +4,9 @@
     <md-list-item>
         <div class="md-list-item-text" layout="column">
 
-            <div>Grafo direcionado / Grafo não direcionado</div>
+            <div ng-if="graph.isDirected()">Grafo direcionado</div>
+            <div ng-if="!graph.isDirected()">Grafo não direcionado</div>
+
         </div>
     </md-list-item>
     <md-divider ></md-divider>
