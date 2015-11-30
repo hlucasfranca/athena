@@ -350,14 +350,17 @@
 
                         toast.showSimpleToast('node removed!');
                         break;
+
                     case fab.fabOptions.info:
                         console.log(d);
                         break;
+
+
                     case fab.fabOptions.add.contextOptions[1]:
 
                         console.log('add link');
 
-                        if (!scope.firstNode) {
+                        if (scope.firstNode === undefined) {
                             scope.$apply(function () {
                                 scope.firstNode = d;
 
@@ -384,7 +387,7 @@
                             scope.$apply(function () {
 
                                 scope.graph.addEdge(scope.firstNode, d);
-                                delete scope.firstNode;
+                                scope.firstNode = undefined;
 
                                 //limpa as mensagens do contexto
                                 broadcastService.broadcast('new_message', 'Selecione nó origem.');
@@ -464,7 +467,8 @@
              */
             function clickedOnStage() {
 
-                if (fab.currentOption === fab.fabOptions.add) {
+                // se for adicionar vértice
+                if (fab.currentOption === fab.fabOptions.add.contextOptions[0]) {
                     var coordinates = d3.mouse(d3.event.target);
 
                     scope.graph.addNode({

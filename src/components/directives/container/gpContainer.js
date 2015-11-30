@@ -15,15 +15,14 @@
     function gpContainerCtrl($rootScope, $scope, $window, $mdDialog, dfs, $interval, model, colors, labels, broadcastService) {
         var vm = this;
 
-
         init();
 
         console.log('gpcontainerctrl init');
 
         // Sets the default menu option
-        $scope.currentOption = $scope.fab.fabOptions.add;
+        //$scope.currentOption = $scope.fab.fabOptions.add;
 
-
+        $scope.currentOption = undefined;
 
         $scope.isFabOpen = false;
         $scope.selectedColumn = null;
@@ -35,6 +34,8 @@
         $scope.showDialog = showDialog;
         $scope.showNodeEditDialog = showNodeEditDialog;
         $scope.showLinkEditDialog = showLinkEditDialog;
+        $scope.showNewGraphDialog = showNewGraphDialog;
+
         $scope.setSelectedNode = setSelectedNode;
         $scope.matrix = $scope.graph.getAdjacencyMatrix();
         $scope.adjacencyList = $scope.graph.getAdjacencyMatrix();
@@ -49,6 +50,7 @@
         vm.setSelectedOption = setSelectedOption;
         vm.showNodeEditDialog = $scope.showNodeEditDialog;
         vm.showLinkEditDialog = $scope.showLinkEditDialog;
+        vm.showNewGraphDialog = $scope.showNewGraphDialog;
         vm.setSelectedNode = setSelectedNode;
 
         rescalePanels();
@@ -230,6 +232,42 @@
             $scope.$watch($scope.selectedLink, function(){
                 broadcastService.broadcast('update_stage');
             }, true);
+
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+        }
+
+        /**
+         *  Diálogo de edição de arestas
+         */
+        function showNewGraphDialog(link, action) {
+
+            $scope.selectedLink = link;
+
+            $mdDialog.show({
+                controller: NewGraphDialogController,
+                // use parent scope
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: '../../components/directives/container/newGraphDialog.tpl.html',
+                parent: angular.element(document.body),
+                targetEvent: null,
+                clickOutsideToClose: true
+            }).then(
+                // on sucess
+                function () { action(); },
+                // on error
+                function () {}
+            );
+        }
+
+        function NewGraphDialogController($scope, $mdDialog) {
+
 
             $scope.cancel = function () {
                 $mdDialog.cancel();

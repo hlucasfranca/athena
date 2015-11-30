@@ -13,6 +13,11 @@
                 restrict: 'E',
                 require: '^gpContainer',
                 link: function postLink(scope, element, attrs) {
+
+                    scope.$watch('graph.getAdjacencyList()', function () {
+                        console.log(scope.graph.getAdjacencyList());
+                    },true);
+
                 }
             };
         });
