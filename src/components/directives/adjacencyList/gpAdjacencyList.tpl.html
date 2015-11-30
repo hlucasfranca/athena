@@ -7,7 +7,7 @@
         {{node.label}}
     </span>
 
-    <span ng-repeat="nodeDest in graph.getAdjacencyList($index)">
+    <span ng-repeat="nodeDest in adjacencyList[$index]">
         <md-icon>arrow_forward</md-icon>
         
         <span class="node-list" ng-mouseenter="selectNode(nodeDest)" ng-mouseleave="deselectNode(nodeDest)">

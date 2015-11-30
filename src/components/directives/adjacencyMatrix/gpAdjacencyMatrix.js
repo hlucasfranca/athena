@@ -14,7 +14,6 @@
             var columns = [];
 
             scope.graph.getNodes().forEach(function (node) {
-
                 console.log(node);
                 columns.push(node.label);
             });
@@ -115,6 +114,10 @@
             scope.$watch('graph.getAdjacencyMatrix()', function () {
                 draw(scope, element);
             },true);
+
+            scope.$on('update_matrix', function(){
+                draw(scope, element);
+            });
         }
 
         return {

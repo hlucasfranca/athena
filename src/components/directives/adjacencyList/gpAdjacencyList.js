@@ -14,8 +14,14 @@
                 require: '^gpContainer',
                 link: function postLink(scope, element, attrs) {
 
+                    scope.adjacencyList = scope.graph.getAdjacencyList();
+
                     scope.$watch('graph.getAdjacencyList()', function () {
-                        console.log(scope.graph.getAdjacencyList());
+
+                        scope.$apply(function(){
+                            scope.adjacencyList = graph.getAdjacencyList();
+                        });
+
                     },true);
 
                 }

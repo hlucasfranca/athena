@@ -226,11 +226,14 @@
 
         function LinkEditDialogController($scope, $mdDialog) {
 
+            
+
             $scope.selectedLink.peso = $scope.selectedLink.peso || 1;
 
 
             $scope.$watch($scope.selectedLink, function(){
                 broadcastService.broadcast('update_stage');
+                broadcastService.broadcast('update_matrix');
             }, true);
 
             $scope.cancel = function () {
