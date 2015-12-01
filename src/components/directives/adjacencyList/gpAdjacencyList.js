@@ -18,9 +18,9 @@
 
                     scope.$watch('graph.getAdjacencyList()', function () {
 
-                        scope.$apply(function(){
-                            scope.adjacencyList = graph.getAdjacencyList();
-                        });
+
+                            scope.adjacencyList = scope.graph.getAdjacencyList();
+                        
 
                     },true);
 

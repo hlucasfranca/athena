@@ -469,20 +469,25 @@
 
                 // se for adicionar vértice
                 if (fab.currentOption === fab.fabOptions.add.contextOptions[0]) {
+
                     var coordinates = d3.mouse(d3.event.target);
 
-                    scope.graph.addNode({
-                        x: coordinates[0],
-                        y: coordinates[1],
-                        fixed: true,
-                        radius:15,
-                        color:d3.rgb(255,255,255),
-                        label: labels.getLetter()
 
+                    scope.$apply(function(){
+                        scope.graph.addNode({
+                            x: coordinates[0],
+                            y: coordinates[1],
+                            fixed: true,
+                            radius: 15,
+                            color: d3.rgb(255, 255, 255),
+                            label: labels.getLetter()
+
+                        });
                     });
+
+
                     gpContainerCtrl.updateNodeCount();
 
-                    scope.$apply();
                     toast.showSimpleToast('node added!');
                 }
             }
@@ -609,6 +614,10 @@
             scope.$on('window.resized', function (event,dimensions) {
                 console.log('window.resized');
                 console.log(dimensions);
+
+                scope.width = dimensions.width;
+                scope.height = dimensions.height;
+
                 redraw();
             });
 

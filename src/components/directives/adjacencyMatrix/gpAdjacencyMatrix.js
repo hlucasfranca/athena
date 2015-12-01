@@ -116,6 +116,9 @@
             },true);
 
             scope.$on('update_matrix', function(){
+
+                console.log(scope.graph.getAdjacencyMatrix());
+
                 draw(scope, element);
             });
         }
