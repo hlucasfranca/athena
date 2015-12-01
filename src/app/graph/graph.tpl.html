@@ -16,7 +16,7 @@
 
             </md-tab>
 
-            <md-tab id="tab2">
+            <md-tab id="tab2" ng-if="graph.getNodes().length > 0">
                 <md-tab-label>Lista de adjacência</md-tab-label>
                 <md-tab-body>
                     <md-content flex class="md-padding">
@@ -26,7 +26,7 @@
 
             </md-tab>
 
-            <md-tab id="tab3">
+            <md-tab id="tab3" ng-if="graph.getNodes().length > 0">
                 <md-tab-label>Matriz de adjacência</md-tab-label>
                 <md-tab-body>
                     <md-content class="md-padding">
@@ -35,7 +35,7 @@
                 </md-tab-body>
             </md-tab>
 
-            <md-tab id="tab4">
+            <md-tab id="tab4" ng-if="graph.getNodes().length > 0">
                 <md-tab-label>Algoritmos</md-tab-label>
                 <md-tab-body>
                     <md-content flex class="md-padding">

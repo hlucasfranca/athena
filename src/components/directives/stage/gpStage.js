@@ -632,6 +632,8 @@
 
             scope.$on('update_stage', updateStage);
 
+            scope.$on('clean_all_nodes', cleanAllNodes);
+
             scope.$watch('graph', redraw, true);
 
             scope.$watch('graph.getNodes()', redraw, true);
@@ -881,6 +883,27 @@
                     .transition()
                     .duration(250)
                     .attr('opacity', 0.1);
+            }
+
+
+
+            function cleanAllNodes(){
+
+                d3.selectAll('.node')
+                    .select('circle')
+                    .transition()
+                    .duration(250)
+                    //.ease('linear')
+                    .style('stroke', function(d){
+                        return 'black';
+                    })
+                    .style('stroke-width', function(d){
+                        return 2;
+                    })
+                    .style('fill', function(d){
+                        return d.color;
+                    });
+
             }
         }
 

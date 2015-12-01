@@ -21,6 +21,17 @@
 
     function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, coloracaoSequencial, coloracaoClasse, broadcastService) {
 
+        $scope.$watch('algoritmoSelecionado', function(){
+
+            console.log('mudou selecionado');
+
+            $scope.pilha = [];
+            $scope.fila = [];
+            $scope.passoAtual = -1;
+            $scope.resultado = [];
+            $scope.emExecucao = false;
+        });
+
         $scope.steps = [];
         $scope.selectedStep = -1;
 
@@ -45,7 +56,7 @@
         $scope.runAlg = run;
 
 
-        var graphCopy = undefined;
+
 
 
         function proximoPasso(){
@@ -83,19 +94,12 @@
             else{
                 $scope.emExecucao = false;
 
-                console.log('revertendo');
-                console.log($scope.graph);
-                console.log(graphCopy);
-
-                $scope.graph = graphCopy;
+                broadcastService.broadcast('clean_all_nodes');
             }
 
         }
 
         function run() {
-
-
-            graphCopy = angular.copy($scope.graph);
 
 
             if($scope.emExecucao){
