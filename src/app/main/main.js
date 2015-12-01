@@ -2,8 +2,8 @@
     'use strict';
     angular.module('graphe')
         .controller('MainCtrl', [
-                      '$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab', 'broadcastService', 'toast',
-            function ( $scope,   $mdSidenav,   $mdToast,   $mdDialog,   $location,   fab,   broadcastService,   toast) {
+                      '$scope', '$mdSidenav', '$mdToast', '$mdDialog', '$location', 'fab', 'broadcastService', 'toast', 'model',
+            function ( $scope,   $mdSidenav,   $mdToast,   $mdDialog,   $location,   fab,   broadcastService,   toast,   model) {
 
                 $scope.appName = "Athena";
 
@@ -31,6 +31,9 @@
                 $scope.showNodeEditDialog = showNodeEditDialog;
                 $scope.showLinkEditDialog = showLinkEditDialog;
                 $scope.showNewGraphDialog = showNewGraphDialog;
+
+                $scope.graph = model.getGraph();
+                $scope.graph.setDirected(true);
 
                 // nova mensagem de contexto
                 $scope.$on('new_message',function(){
@@ -64,6 +67,8 @@
 
                     if($location.path() === "/graph" && url === "/graph"){
                         console.log('novo grafo');
+
+                        $scope.showNewGraphDialog();
                     }
 
                     $location.path(url);
@@ -96,7 +101,10 @@
                         clickOutsideToClose: true
                     }).then(
                         // on sucess
-                        function () { action(); },
+                        function () {
+
+
+                        },
                         // on error
                         function () {}
                     );
@@ -112,11 +120,11 @@
                         broadcastService.broadcast('update_stage');
                     }, true);
 
-                    $scope.cancel = function () {
+                    $scope.cancelarNodeEdit = function () {
                         $mdDialog.cancel();
                     };
 
-                    $scope.answer = function (answer) {
+                    $scope.answerNodeEdit = function (answer) {
                         //console.log('node edit complete');
                         $mdDialog.hide(answer);
                     };
@@ -154,9 +162,9 @@
 
                     $scope.hide = function () { $mdDialog.hide(); };
 
-                    $scope.cancel = function () { $mdDialog.cancel(); };
+                    $scope.cancelDialog = function () { $mdDialog.cancel(); };
 
-                    $scope.answer = function (answer) { $mdDialog.hide(answer);};
+                    $scope.answerDialog = function (answer) { $mdDialog.hide(answer);};
                 }
 
 
@@ -196,11 +204,11 @@
                         broadcastService.broadcast('update_matrix');
                     }, true);
 
-                    $scope.cancel = function () {
+                    $scope.cancelLinkEdit = function () {
                         $mdDialog.cancel();
                     };
 
-                    $scope.answer = function (answer) {
+                    $scope.answerLinkEdit = function (answer) {
                         $mdDialog.hide(answer);
                     };
                 }
@@ -208,9 +216,7 @@
                 /**
                  *  Diálogo de edição de arestas
                  */
-                function showNewGraphDialog(link, action) {
-
-                    $scope.selectedLink = link;
+                function showNewGraphDialog() {
 
                     $mdDialog.show({
                         controller: NewGraphDialogController,
@@ -223,7 +229,10 @@
                         clickOutsideToClose: true
                     }).then(
                         // on sucess
-                        function () { action(); },
+                        function (direcionado) {
+                            $scope.graph = model.getGraph();
+                            $scope.graph.setDirected(direcionado);
+                        },
                         // on error
                         function () {}
                     );
@@ -231,11 +240,13 @@
 
                 function NewGraphDialogController($scope, $mdDialog) {
 
-                    $scope.cancel = function () {
+                    $scope.direcionado = true;
+
+                    $scope.cancelNewGraph = function () {
                         $mdDialog.cancel();
                     };
 
-                    $scope.answer = function (answer) {
+                    $scope.answerNewGraph = function (answer) {
                         $mdDialog.hide(answer);
                     };
                 }

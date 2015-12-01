@@ -45,10 +45,12 @@
         $scope.runAlg = run;
 
 
+        var graphCopy = undefined;
+
+
         function proximoPasso(){
 
             if(operacaoAtual < resultado.length){
-                //resultado.push({ operacao: 'visitar_no', passo: '0', fila: [] });
                 var operacao = resultado[operacaoAtual];
                 if(operacao.operacao !== ''){
                     broadcastService.broadcast(operacao.operacao, operacao.item);
@@ -80,11 +82,21 @@
             }
             else{
                 $scope.emExecucao = false;
+
+                console.log('revertendo');
+                console.log($scope.graph);
+                console.log(graphCopy);
+
+                $scope.graph = graphCopy;
             }
 
         }
 
         function run() {
+
+
+            graphCopy = angular.copy($scope.graph);
+
 
             if($scope.emExecucao){
                 $scope.emExecucao = false;

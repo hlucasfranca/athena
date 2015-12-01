@@ -142,13 +142,20 @@
                 var verticeIndex = getNodeIndex(node);
                 spliceLinksForNode(node);
 
+                console.log('removendo no');
+                console.log(node);
+
                 // remove referencias ao vertice
                 adjacencyList.forEach(function(itemLista){
-                    itemLista.splice(itemLista.indexOf(node),1);
+                    var indice = itemLista.indexOf(node);
+                    console.log(indice);
+                    itemLista.splice(indice,1);
                 });
 
-
                 adjacencyList.splice(verticeIndex, 1);
+
+                console.log(adjacencyList);
+
                 vertices.splice(vertices.indexOf(node), 1);
 
                 updateAdjacencyMatrix();
@@ -338,22 +345,11 @@
 
 
                 foundLink.map(function(link){
-
                     var indice = links.indexOf(link);
-
-
                     console.log('foundLink');
                     console.log(indice);
-
-
                    links.splice(indice,1);
                 });
-
-
-
-
-
-
             }
 
             function spliceLinksForNode(node) {

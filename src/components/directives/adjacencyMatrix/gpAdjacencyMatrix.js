@@ -11,10 +11,15 @@
     function gpAdjacencyMatrix(broadcastService) {
 
         function draw(scope, element) {
+
+            if(scope.graph.getNodes().length === 0){
+                return;
+            }
+
             var columns = [];
 
             scope.graph.getNodes().forEach(function (node) {
-                console.log(node);
+                //console.log(node);
                 columns.push(node.label);
             });
 
@@ -30,12 +35,12 @@
                     broadcastService.broadcast('select_node',i);
                 });
 
-                console.log('mouseover: ' + i);
+                //console.log('mouseover: ' + i);
             }
 
             function mouseLeaveCell(d, i) {
                 d3.selectAll('.adjcol' + i).classed('highlight-cell', false);
-                console.log('mouseleave: ' + i);
+                //console.log('mouseleave: ' + i);
                 scope.$apply(function(){
                     broadcastService.broadcast('deselect_node',i);
                 });
@@ -117,7 +122,7 @@
 
             scope.$on('update_matrix', function(){
 
-                console.log(scope.graph.getAdjacencyMatrix());
+                //console.log(scope.graph.getAdjacencyMatrix());
 
                 draw(scope, element);
             });

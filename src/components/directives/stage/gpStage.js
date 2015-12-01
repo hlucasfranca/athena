@@ -610,7 +610,6 @@
                 force.resume();
             }
 
-
             scope.$on('window.resized', function (event,dimensions) {
                 console.log('window.resized');
                 console.log(dimensions);
@@ -630,8 +629,6 @@
             scope.$on('select_link', selectLink);
 
             scope.$on('deselect_node', deselectNode);
-
-
 
             scope.$on('update_stage', updateStage);
 
@@ -866,8 +863,6 @@
                     return d.index === node.index;
                 });
 
-
-
                 selection.select('circle')
                     .transition()
                     .duration(250)
@@ -876,8 +871,6 @@
                         'stroke': 'red',
                         'stroke-width': 3
                     });
-
-
             }
 
             /**
