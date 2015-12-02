@@ -150,8 +150,11 @@
                 // remove referencias ao vertice
                 adjacencyList.forEach(function(itemLista){
                     var indice = itemLista.indexOf(node);
-                    console.log(indice);
-                    itemLista.splice(indice,1);
+
+                    if(indice > -1){
+                        console.log(indice);
+                        itemLista.splice(indice,1);
+                    }
                 });
 
                 adjacencyList.splice(verticeIndex, 1);
