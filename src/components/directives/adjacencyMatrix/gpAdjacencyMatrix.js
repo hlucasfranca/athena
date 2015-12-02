@@ -117,11 +117,15 @@
 
             draw(scope, element);
             scope.$watch('graph.getAdjacencyMatrix()', function () {
+
+
+
                 draw(scope, element);
             },true);
 
             scope.$on('update_matrix', function(){
 
+                console.log('listen update matrix');
                 //console.log(scope.graph.getAdjacencyMatrix());
 
                 draw(scope, element);

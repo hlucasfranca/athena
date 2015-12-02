@@ -44,6 +44,8 @@
                 getAdjacencyList: getAdjacencyList,
                 getAdjacencyMatrix: getAdjacencyMatrix,
 
+                updateAdjacencyMatrix : updateAdjacencyMatrix,
+
                 setDirected: setDirected,
                 isDirected: isDirected,
 

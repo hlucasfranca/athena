@@ -199,7 +199,10 @@
                     $scope.selectedLink.peso = $scope.selectedLink.peso || 1;
 
 
-                    $scope.$watch($scope.selectedLink, function(){
+                    $scope.$watch('selectedLink', function(){
+
+                        $scope.graph.updateAdjacencyMatrix();
+
                         broadcastService.broadcast('update_stage');
                         broadcastService.broadcast('update_matrix');
                     }, true);
