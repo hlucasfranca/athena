@@ -815,11 +815,13 @@
                     //.attr('r', function(d){
                     //    return d.radius;
                     //})
-                    .style('fill', '#FFFFFF')
+                    //.attr('fill', function(d){
+                    //    return d.color;
+                    //})
                     .transition()
                     .duration(250)
-                    .ease('linear')
-                    .style('fill', '#CCC')
+                    //.ease('linear')
+                    .attr('fill', '#cccccc')
                     //.style({
                     //    'stroke': 'red',
                     //    'stroke-width': 2
@@ -848,11 +850,11 @@
                 });
 
                 selection.select('circle')
-                    .style('fill', '#FFFFFF')
+                    .attr('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     //.ease('linear')
-                    .style('fill', cor);
+                    .attr('fill', cor);
             }
 
             function markNode() {
@@ -866,6 +868,10 @@
                 });
 
                 selection.select('circle')
+                    .style({
+                        'stroke': 'black',
+                        'stroke-width': 2
+                    })
                     .transition()
                     .duration(250)
                     //.ease('linear')
@@ -900,7 +906,7 @@
                     .style('stroke-width', function(d){
                         return 2;
                     })
-                    .style('fill', function(d){
+                    .attr('fill', function(d){
                         return d.color;
                     });
 
