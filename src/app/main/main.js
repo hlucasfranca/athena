@@ -88,7 +88,7 @@
 
                 function showNodeEditDialog(node, action) {
 
-                    $scope.selectedNode = node;
+                    $scope.selectedNodeToEdit = node;
 
                     $mdDialog.show({
                         controller: NodeEditDialogController,
@@ -113,10 +113,10 @@
                 //TODO: atualizar apenas quando der ok?
                 function NodeEditDialogController($scope, $mdDialog) {
 
-                    $scope.color = $scope.selectedNode.color || d3.rgb(255,255,255);
-                    $scope.label = $scope.selectedNode.label || 'Rótulo';
+                    $scope.color = $scope.selectedNodeToEdit.color || d3.rgb(255,255,255);
+                    $scope.label = $scope.selectedNodeToEdit.label || 'Rótulo';
 
-                    $scope.$watch($scope.selectedNode, function(){
+                    $scope.$watch($scope.selectedNodeToEdit, function(){
                         broadcastService.broadcast('update_stage');
                     }, true);
 
@@ -137,6 +137,8 @@
                  */
                 function showDialog(action) {
 
+                    $scope.selectedNodeToRun = null;
+
                     $mdDialog.show({
                         controller: DialogController,
                         // use parent scope
@@ -150,11 +152,11 @@
                         .then(
                         // on sucess
                         function () {
-                            action($scope.selectedNode);
+                            action($scope.selectedNodeToRun);
                         },
                         // on error
                         function () {
-                            $scope.status = 'You cancelled the dialog.';
+                            $scope.status = 'Execução de algoritmo cancelada.';
                         });
                 }
 

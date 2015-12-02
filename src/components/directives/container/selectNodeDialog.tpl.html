@@ -14,7 +14,7 @@
             <p>Escolha um vértice para dar início ao algoritmo:</p>
 
 
-            <md-select ng-model="selectedNode">
+            <md-select ng-model="selectedNodeToRun">
                 <md-option ng-repeat="node in graph.getNodes()" ng-value="node">{{node.label}}</md-option>
             </md-select>
 

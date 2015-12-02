@@ -80,35 +80,7 @@
             $scope.graph.links = $scope.graph.getEdges();
         }
 
-        function init(){
-            // Creates a simple graph
-
-
-            //var numberOfNodes = 3;
-            //
-            //for(var i = 0; i < numberOfNodes; i++) {
-            //    $scope.graph.addNode({
-            //        index: i,
-            //        x: Math.random() * 500,
-            //        y: Math.random() * 500,
-            //        fixed: true,
-            //        label: labels.getLetter(),
-            //        color: d3.rgb(255,255,255),
-            //        radius: 15
-            //    });
-            //}
-            //
-            //var numArestas = 3;
-            //
-            //// Connect the nodes with each other
-            //for(i = 0; i < numArestas; i++){
-            //    for( var j = 0; j < numArestas; j++){
-            //        if(i !== j) {
-            //            $scope.graph.addEdge(i,j);
-            //        }
-            //    }
-            //}
-        }
+        function init(){}
 
         function getCurrentOption(){
             return $scope.currentOption;
@@ -124,8 +96,6 @@
 
         function rescaleGraph () {
             rescalePanels();
-
-
 
             var dimensions = {
                 width: $scope.width,
