@@ -21,6 +21,8 @@
 
     function gpAlgorithmPlayerCtrl($scope, $interval, dfs,bfs, coloracaoSequencial, coloracaoClasse, broadcastService) {
 
+        var timerAlgoritmo;
+
         $scope.$watch('algoritmoSelecionado', function(){
 
             console.log('mudou selecionado');
@@ -54,10 +56,6 @@
         var resultado = [];
 
         $scope.runAlg = run;
-
-
-
-
 
         function proximoPasso(){
 
@@ -111,7 +109,22 @@
                 $scope.emExecucao = true;
 
                 resultado = $scope.algoritmoSelecionado.run($scope.graph, startNode);
-                $scope.timerAlgoritmo = $interval(proximoPasso, 1000, resultado.length + 1);
+
+                operacaoAtual = 0;
+
+
+
+
+                if( angular.isDefined(timerAlgoritmo)){
+                    $interval.cancel(timerAlgoritmo);
+                    timerAlgoritmo = undefined;
+                }
+
+                // fixme executando multiplas vezes
+                    timerAlgoritmo = $interval(proximoPasso, 1000, resultado.length + 1);
+                
+
+
                 console.log(resultado);
             });
             }
