@@ -49,6 +49,7 @@
         vm.showNodeEditDialog = $scope.showNodeEditDialog;
         vm.showLinkEditDialog = $scope.showLinkEditDialog;
         vm.showNewGraphDialog = $scope.showNewGraphDialog;
+        vm.showNodeInfoDialog = $scope.showNodeInfoDialog;
         vm.setSelectedNode = setSelectedNode;
 
         rescalePanels();

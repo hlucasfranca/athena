@@ -31,6 +31,7 @@
              */
             function run(graph, visited) {
                 console.log('starting algorithm');
+                resultado = [];
                 var node = graph.getNode(visited);
                 bfs(graph, node);
                 console.log('end of algorithm');

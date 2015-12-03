@@ -352,6 +352,8 @@
                         break;
 
                     case fab.fabOptions.info:
+
+                        gpContainerCtrl.showNodeInfoDialog(d);
                         console.log(d);
                         break;
 

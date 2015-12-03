@@ -32,6 +32,8 @@
                 $scope.showLinkEditDialog = showLinkEditDialog;
                 $scope.showNewGraphDialog = showNewGraphDialog;
 
+                $scope.showNodeInfoDialog = showNodeInfoDialog;
+
                 $scope.graph = model.getGraph();
                 $scope.graph.setDirected(true);
 
@@ -215,6 +217,17 @@
                         broadcastService.broadcast('update_matrix');
                     }, true);
 
+                    $scope.invertLink = function(){
+                        var temp = $scope.selectedLink.source;
+                        $scope.selectedLink.source = $scope.selectedLink.target;
+                        $scope.selectedLink.target = temp;
+
+                        $scope.graph.updateAdjacencyMatrix();
+
+                        broadcastService.broadcast('update_stage');
+                        broadcastService.broadcast('update_matrix');
+                    };
+
                     $scope.cancelLinkEdit = function () {
                         $mdDialog.cancel();
                     };
@@ -261,5 +274,47 @@
                         $mdDialog.hide(answer);
                     };
                 }
+
+
+
+                function showNodeInfoDialog(node) {
+
+                    $scope.selectedNodeToInfo = node;
+
+                    $mdDialog.show({
+                        controller: InfoDialogController,
+                        // use parent scope
+                        scope: $scope,
+                        preserveScope: true,
+                        templateUrl: '../../components/directives/container/infoDialog.tpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: null,
+                        clickOutsideToClose: true
+                    }).then(
+                        // on sucess
+                        function () {},
+                        // on error
+                        function () {}
+                    );
+                }
+
+                function InfoDialogController($scope, $mdDialog) {
+
+                    $scope.cancelNodeInfo = function () {
+                        $mdDialog.cancel();
+                    };
+
+                    $scope.answerNodeInfo = function (answer) {
+                        $mdDialog.hide(answer);
+                    };
+                }
+
+
+
+
+
             }]);
+
+
+
 })();
