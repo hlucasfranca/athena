@@ -196,12 +196,18 @@
 
                 function LinkEditDialogController($scope, $mdDialog) {
 
-
-
                     $scope.selectedLink.peso = $scope.selectedLink.peso || 1;
+
+                    $scope.linkDirecaoContraria = undefined;
 
 
                     $scope.$watch('selectedLink', function(){
+
+                        $scope.linkDirecaoContraria = $scope.graph.getEdge($scope.selectedLink.target, $scope.selectedLink.source);
+
+                        if($scope.linkDirecaoContraria !== undefined){
+                            $scope.linkDirecaoContraria.peso = $scope.selectedLink.peso;
+                        }
 
                         $scope.graph.updateAdjacencyMatrix();
 
