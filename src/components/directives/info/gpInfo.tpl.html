@@ -15,7 +15,12 @@
     <md-list-item>
         <div class="md-list-item-text" layout="column">
 
-            <p>Conexo / desconexo</p>
+            <p ng-if="graph.getConexidade() === 'c3'">Fortemente conexo</p>
+            <p ng-if="graph.getConexidade() === 'c2'">Semi-fortemente conexo</p>
+            <p ng-if="graph.getConexidade() === 'c1'">Conexo</p>
+            <p ng-if="graph.getConexidade() === 'c0'">Desconexo</p>
+
+
         </div>
     </md-list-item>
     <md-divider ></md-divider>

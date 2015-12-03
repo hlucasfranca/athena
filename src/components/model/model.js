@@ -51,10 +51,153 @@
 
                 getVizinhos : getVizinhos,
                 getSucessores: getSucessores,
-                getAntecessores: getAntecessores
+                getAntecessores: getAntecessores,
+                getConexidade: getConexidade
 
 
             };
+
+            function getConexidade(){
+
+                if(fConexo()){
+                    return 'c3';
+                }
+                else if(sfConexo()){
+                    return 'c2';
+                }
+                else if(conexo()){
+                    return 'c1';
+                }
+
+                else{
+                    return 'c0';
+                }
+
+            }
+
+            function sfConexo(){
+
+                vertices.forEach(function(v){
+                    v.marcado = false;
+                });
+
+                for(var v = 0; v < vertices.length; v++){
+                    for( var w = 0; w< vertices.length; w++){
+                        dfs(vertices[v]);
+
+                        if(!vertices[w].marcado){
+                            vertices.forEach(function(vertice){
+                                if(angular.isDefined(vertice.marcado)) {
+                                    delete vertice.marcado;
+                                }
+                            });
+
+                            dfs(vertices[w]);
+
+                            if(!vertices[v].marcado){
+
+                                vertices.forEach(function(vertice){
+                                    if(angular.isDefined(vertice.marcado)) {
+                                        delete vertice.marcado;
+                                    }
+                                });
+
+                                return false;
+                            }
+                        }
+
+                        vertices.forEach(function(vertice){
+                            if(angular.isDefined(vertice.marcado)) {
+                                delete vertice.marcado;
+                            }
+                        });
+
+                    }
+                }
+
+                vertices.forEach(function(vertice){
+                    if(angular.isDefined(vertice.marcado)) {
+                        delete vertice.marcado;
+                    }
+                });
+
+                return true;
+
+
+            }
+
+            function conexo(){
+
+                var cloneVertices = angular.copy(vertices);
+                var cloneArestas = angular.copy(links);
+
+                var sentidoContrario = cloneArestas.map(function(link){
+                    return {
+                        source: link.target,
+                        target: link.source
+                    };
+                });
+
+
+
+
+
+
+                var cloneAdjacencyList = [];
+
+                cloneVertices.forEach(function(){
+                    cloneAdjacencyList.push([]);
+                });
+
+
+                
+
+            }
+
+            function fConexo(){
+
+                for(var i = 0; i < vertices.length; i++){
+
+                    var marcados = 0;
+
+                    dfs(vertices[i]);
+
+                    for(var j = 0; j < vertices.length; j++ ){
+                        if(vertices[j].marcado){
+                            marcados++;
+                        }
+                    }
+
+                    vertices.forEach(function(vertice){
+                        if(angular.isDefined(vertice.marcado)) {
+                            delete vertice.marcado;
+                        }
+                    });
+
+                    if( marcados !== vertices.length){
+                        return false;
+                    }
+
+                }
+
+                return true;
+
+
+            }
+
+
+            function dfs(v) {
+                v.marcado = true;
+                getAdjacencyList(v).forEach(function(w){
+                    if (!w.marcado) {
+                        dfs(w);
+                    }
+                });
+            }
+
+
+
+
 
 
             function isDirected() {
