@@ -32,25 +32,22 @@
              * @param visited
              * @returns {Array}
              */
-            function run(graph, visited) {
+            function run(graph) {
                 console.log('iniciando coloração sequencial');
-
-                var vertice = graph.getNode(visited);
-
-                coloracaoSequencial(graph, vertice);
+                coloracaoSequencial(graph);
                 console.log('fim: coloração sequencial');
-
                 console.log(resultado);
                 return resultado;
             }
 
 
-            function coloracaoSequencial(G, v) {
+            function coloracaoSequencial(G) {
 
                 var nos = G.getNodes();
                 var C = [];
                 var i;
                 var k;
+                resultado = [];
 
                 for(i = 0; i < nos.length; i++ ){
                     resultado.push({ operacao: '', passo: 0, resultado: angular.copy(C)});

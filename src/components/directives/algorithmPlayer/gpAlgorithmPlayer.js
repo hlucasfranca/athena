@@ -72,7 +72,7 @@
         };
 
         $scope.startTimer = function(){
-            var intervalo = 100;
+            var intervalo = 250;
             $scope.cancelTimer();
             timerAlgoritmo = $interval(proximoPasso, intervalo);
             $scope.emExecucao = true;
