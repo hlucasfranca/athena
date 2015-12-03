@@ -242,7 +242,7 @@
                         // on sucess
                         function (direcionado) {
                             $scope.graph = model.getGraph();
-                            $scope.graph.setDirected(direcionado);
+                            $scope.graph.setDirected(direcionado === 'digraph');
                         },
                         // on error
                         function () {}

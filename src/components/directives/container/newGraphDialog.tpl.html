@@ -13,6 +13,11 @@
 
             <p>Selecione o tipo do grafo:</p>
 
+            <md-radio-group ng-model="tipo">
+                <md-radio-button value="digraph">Direcionado</md-radio-button>
+                <md-radio-button value="graph">Não direcionado</md-radio-button>
+            </md-radio-group>
+
 
 
 
@@ -25,7 +30,7 @@
 
             <span flex></span>
 
-            <md-button class="md-raised" ng-click="answerNewGraph(direcionado)">
+            <md-button class="md-raised md-primary" ng-click="answerNewGraph(tipo)">
                 Criar Grafo
             </md-button>
 
