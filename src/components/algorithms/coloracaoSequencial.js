@@ -62,7 +62,7 @@
                 resultado.push({ operacao: '', passo: 3, resultado: angular.copy(C)});
 
                 for(i = 0, k = 0; i < nos.length; i++ ){
-                    resultado.push({ operacao: '', passo: 4, resultado: angular.copy(C)});
+                    resultado.push({ operacao: 'marcar_no', passo: 4, item: nos[i], resultado: angular.copy(C)});
 
                     var vizinhos = G.getVizinhos(nos[i]);
 
@@ -90,7 +90,11 @@
                         else{
                             resultado.push({ operacao: '', passo: 6, resultado: angular.copy(C)});
                             C[k].push(nos[i]);
-                            resultado.push({ operacao: '', passo: 7, resultado: angular.copy(C)});
+                            resultado.push({ operacao: 'colorir_no', passo: 7, item: {
+                                vertice: nos[i],
+                                cor : k
+                            }, resultado: angular.copy(C)});
+
                             atribuido = true;
                         }
                         resultado.push({ operacao: '', passo: 10, resultado: angular.copy(C)});

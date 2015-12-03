@@ -3,10 +3,10 @@
 
     angular
         .module('graphe.directives')
-        .directive('gpStage', ['fab', 'toast', 'broadcastService', 'labels', gpStageDirective])
+        .directive('gpStage', ['fab', 'toast', 'broadcastService', 'labels', 'colors', gpStageDirective])
         .controller('gpStageCtrl', gpStageCtrl);
 
-    function gpStageDirective(fab, toast, broadcastService, labels) {
+    function gpStageDirective(fab, toast, broadcastService, labels, colors) {
 
         var directive = {
             templateUrl: 'components/directives/stage/gpStage.tpl.html',
@@ -854,14 +854,24 @@
                     .transition()
                     .duration(250)
                     //.ease('linear')
-                    .attr('fill', cor);
+                    .attr('fill', colors.getColor(cor))
+                    .style({
+                        'stroke': colors.getColor(cor),
+                        'stroke-width': 3
+                    });
             }
 
             function markNode() {
 
                 console.log('select node');
 
+
+
                 var node = scope.graph.getNode(broadcastService.object);
+
+                console.log('marcando nó');
+
+                console.log(node);
 
                 var selection = d3.selectAll('.node').filter(function (d, i) {
                     return d.index === node.index;

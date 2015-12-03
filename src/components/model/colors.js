@@ -13,8 +13,11 @@
 
         var materialColor = d3.scale.ordinal().range(materialColors);
 
-        function getColor() {
-            var index = Math.floor(Math.random() * materialColors.length);
+        function getColor(i) {
+            var index = i || Math.floor(Math.random() * materialColors.length);
+
+            console.log(index);
+
             return materialColor(index);
 
         }
