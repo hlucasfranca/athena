@@ -16,11 +16,8 @@
 
                     scope.adjacencyList = scope.graph.getAdjacencyList();
 
-                    scope.$watch('graph.getAdjacencyList()', function () {
-
-
+                    scope.$watch('graph', function () {
                             scope.adjacencyList = scope.graph.getAdjacencyList();
-                        
 
                     },true);
 

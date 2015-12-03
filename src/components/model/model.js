@@ -129,7 +129,7 @@
                 }
 
 
-                console.log(adjMatrix);
+                //console.log(adjMatrix);
             }
 
             function addNode(node) {
@@ -146,28 +146,28 @@
                 var verticeIndex = getNodeIndex(node);
                 spliceLinksForNode(node);
 
-                console.log('removendo no');
-                console.log(node);
+                //console.log('removendo no');
+                //console.log(node);
 
                 // remove referencias ao vertice
                 adjacencyList.forEach(function(itemLista){
                     var indice = itemLista.indexOf(node);
 
                     if(indice > -1){
-                        console.log(indice);
+                        //console.log(indice);
                         itemLista.splice(indice,1);
                     }
                 });
 
                 adjacencyList.splice(verticeIndex, 1);
 
-                console.log(adjacencyList);
+                //console.log(adjacencyList);
 
                 vertices.splice(vertices.indexOf(node), 1);
 
                 updateAdjacencyMatrix();
 
-                console.log(adjacencyList);
+                //console.log(adjacencyList);
             }
 
             function getNodeIndex(node) {
@@ -236,7 +236,7 @@
                     peso: 1
                 });
 
-                console.log(v.label + '>' + w.label);
+                //console.log(v.label + '>' + w.label);
 
                 if (!directed) {
                     adjacencyList[vertices.indexOf(w)].push(v);
@@ -246,7 +246,7 @@
                     //    id: id++
                     //});
 
-                    console.log(w.label + '>' + v.label);
+                  //  console.log(w.label + '>' + v.label);
                 }
 
                 updateAdjacencyMatrix();
@@ -364,8 +364,8 @@
 
                 foundLink.map(function(link){
                     var indice = links.indexOf(link);
-                    console.log('foundLink');
-                    console.log(indice);
+                    //console.log('foundLink');
+                    //console.log(indice);
 
                     if(indice > -1){
 

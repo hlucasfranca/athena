@@ -21,11 +21,18 @@
 
     <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaPilha">Pilha</md-subheader>
     <md-list-item ng-if="algoritmoSelecionado.usaPilha">
-        <div class="md-list-item-text" flex layout="row">
-            {{pilha}}
+        <div class="md-list-item-text" flex layout="row">[
+            <span ng-repeat="valor in pilha track by $index">
+                {{valor}}
+                <i ng-if="!$last">,</i>
+            </span>
+            ]
+
         </div>
-    </md-list-item>
+    </md-list-item >
     <md-divider ng-if="algoritmoSelecionado.usaPilha"></md-divider>
+
+
 
     <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaFila">Fila</md-subheader>
     <md-list-item ng-if="algoritmoSelecionado.usaFila">

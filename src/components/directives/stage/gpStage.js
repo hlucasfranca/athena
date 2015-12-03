@@ -105,7 +105,7 @@
              */
             function redraw() {
 
-                console.log('redraw');
+                //console.log('redraw');
 
                 outer
                     .attr('width', scope.width)
@@ -275,7 +275,7 @@
 
                     .text(function(d) {
 
-                        console.log(d.peso);
+                        //console.log(d.peso);
 
                         return d.peso;
 
@@ -288,8 +288,8 @@
              * @param i
              */
             function dragMove(d, i) {
-                console.log('dragMove');
-                console.log(d);
+                //console.log('dragMove');
+                //console.log(d);
                 d.px += d3.event.dx;
                 d.py += d3.event.dy;
                 d.x += d3.event.dx;
@@ -308,8 +308,8 @@
              */
             function mousedownlink(d) {
 
-                console.log('removendo');
-                console.log(d);
+                //console.log('removendo');
+                //console.log(d);
 
 
                 if (fab.currentOption === fab.fabOptions.remove) {
@@ -330,7 +330,7 @@
                     gpContainerCtrl.setSelectedNode(d);
                 });
 
-                console.log('mouseDownNode');
+               // console.log('mouseDownNode');
 
                 var self = this;
 
@@ -340,8 +340,8 @@
                     case fab.fabOptions.remove:
                         scope.$apply(function () {
 
-                            console.log('removing');
-                            console.log(d);
+                      //      console.log('removing');
+                        //    console.log(d);
 
                             scope.graph.removeNode(d);
                             gpContainerCtrl.updateNodeCount();
@@ -354,13 +354,13 @@
                     case fab.fabOptions.info:
 
                         gpContainerCtrl.showNodeInfoDialog(d);
-                        console.log(d);
+                        //console.log(d);
                         break;
 
 
                     case fab.fabOptions.add.contextOptions[1]:
 
-                        console.log('add link');
+                        //console.log('add link');
 
                         if (scope.firstNode === undefined) {
                             scope.$apply(function () {
@@ -371,7 +371,7 @@
                                     .selectAll('circle')
                                     .style({
                                         'stroke': 'black',
-                                        'stroke-width': 0
+                                        'stroke-width': 1
                                     })
                                     .transition()
                                     .duration(100)
@@ -410,7 +410,7 @@
             function dragStart(d, i) {
                 // silence other listeners
                 d3.event.sourceEvent.stopPropagation();
-                console.log('dragStart');
+                //console.log('dragStart');
 
                 // inicia o force layout para a atualização da posição dos elementos do grafo
                 force.start();
@@ -423,7 +423,7 @@
              */
             function dragEnd(d, i) {
                 scope.$apply();
-                console.log('dragEnd');
+                //console.log('dragEnd');
 
                 //previne de o force layout ficar rodando após os nós já terem sido movidos
                 //force.stop();
@@ -613,8 +613,8 @@
             }
 
             scope.$on('window.resized', function (event,dimensions) {
-                console.log('window.resized');
-                console.log(dimensions);
+                //console.log('window.resized');
+                //console.log(dimensions);
 
                 scope.width = dimensions.width;
                 scope.height = dimensions.height;
@@ -659,8 +659,8 @@
                         broadcastService.broadcast('new_message', 'Selecione nó origem.');
                         break;
                 }
-                console.log('currentOption: ');
-                console.log(fab.currentOption);
+                //console.log('currentOption: ');
+                //console.log(fab.currentOption);
             });
 
             /**
@@ -678,7 +678,7 @@
                     //.ease('linear')
                     .style('stroke', 'black');
                 //.style('stroke-width',5);
-                console.log('exiting link :' + link);
+                //console.log('exiting link :' + link);
             }
 
             /**
@@ -731,7 +731,7 @@
                 }).data()[0];
 
                 if (selectedLink === undefined) {
-                    console.log('link doesnt exists! ' + source.label + ' ' + target.label);
+                    //console.log('link doesnt exists! ' + source.label + ' ' + target.label);
                     return;
                 }
 
@@ -804,93 +804,68 @@
              * @param node
              */
             function selectNode() {
-
-                console.log('select node');
-
+                //console.log('select node');
                 var node = scope.graph.getNode(broadcastService.object);
-
                 var selection = d3.selectAll('.node').filter(function (d, i) {
-                    return d.index === node.index;
+
+
+                    return d.id === node.id;
                 });
 
+                //console.log(selection);
+
                 selection.select('circle')
-                    //.attr('r', function(d){
-                    //    return d.radius;
-                    //})
-                    //.attr('fill', function(d){
-                    //    return d.color;
-                    //})
                     .transition()
                     .duration(250)
-                    //.ease('linear')
                     .attr('fill', '#cccccc')
-                    //.style({
-                    //    'stroke': 'red',
-                    //    'stroke-width': 2
-                    //})
-                    //.attr('r', function(d){
-                    //    return d.radius * 1.5;
-                    //})
                 ;
 
-                //selection.select('text')
-                //    //.style('fill', '#000000')
-                //    .transition()
-                //    .duration(250)
-                //    .ease('linear')
-                //    .style('fill', '#ffffff');
+
             }
 
             function colorizeNode() {
 
                 var node = scope.graph.getNode(broadcastService.object.vertice);
 
-                var cor = broadcastService.object.cor;
+                var cor = colors.getColor(broadcastService.object.cor);
 
                 var selection = d3.selectAll('.node').filter(function (d, i) {
-                    return d.index === node.index;
+                    return d.id === node.id;
                 });
+
+                console.log('colorindo com ');
+                console.log(cor);
+
+
 
                 selection.select('circle')
                     //.attr('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     //.ease('linear')
-                    .attr('fill', colors.getColor(cor))
-                    .style({
-                        'stroke': colors.getColor(cor),
-                        'stroke-width': 3
-                    });
+                    .attr('fill', cor)
+                    .style('stroke', cor)
+                    .style('stroke-width', 3);
             }
 
             function markNode() {
 
-                console.log('select node');
-
-
-
+                //console.log('select node');
                 var node = scope.graph.getNode(broadcastService.object);
 
-                console.log('marcando nó');
-
-                console.log(node);
-
                 var selection = d3.selectAll('.node').filter(function (d, i) {
-                    return d.index === node.index;
+                    return d.id === node.id;
                 });
 
+                //console.log('marcando');
+                //console.log(selection);
+
                 selection.select('circle')
-                    //.style({
-                    //    'stroke': 'black',
-                    //    'stroke-width': 2
-                    //})
                     .transition()
                     .duration(250)
-                    //.ease('linear')
-                    .style({
-                        'stroke': 'red',
-                        'stroke-width': 3
-                    });
+                    .style('stroke', 'red')
+                    .style('stroke-width',3);
+
             }
 
             /**
