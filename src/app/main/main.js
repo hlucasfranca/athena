@@ -218,11 +218,20 @@
                     }, true);
 
                     $scope.invertLink = function(){
-                        var temp = $scope.selectedLink.source;
-                        $scope.selectedLink.source = $scope.selectedLink.target;
-                        $scope.selectedLink.target = temp;
 
-                        $scope.graph.updateAdjacencyMatrix();
+                        var source = $scope.selectedLink.source;
+                        var target = $scope.selectedLink.target;
+                        var peso = $scope.selectedLink.peso;
+
+                        $scope.graph.removeEdge(source,target);
+                        $scope.graph.addEdge(target,source);
+
+                        $scope.selectedLink = $scope.graph.getEdge(target,source);
+                        $scope.selectedLink.peso = peso;
+
+                        console.log('invertendo link');
+
+                        console.log($scope.graph.getAdjacencyList());
 
                         broadcastService.broadcast('update_stage');
                         broadcastService.broadcast('update_matrix');

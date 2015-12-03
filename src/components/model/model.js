@@ -52,6 +52,8 @@
                 getVizinhos : getVizinhos,
                 getSucessores: getSucessores,
                 getAntecessores: getAntecessores
+
+
             };
 
 
@@ -194,14 +196,19 @@
                     targetIndex = getNodeIndex(target.id);
 
                 // remove from adj list
-                adjacencyList[sourceIndex].splice(adjacencyList[sourceIndex].indexOf(target), 1);
+
+                if(adjacencyList[sourceIndex].indexOf(target) > -1){
+                    adjacencyList[sourceIndex].splice(adjacencyList[sourceIndex].indexOf(target), 1);
+                }
                 removeLink(source, target);
 
 
                 //if (!directed) {
 
                 //REMOVE EM AMBOS OS SENTIDOS
-                adjacencyList[targetIndex].splice(adjacencyList[targetIndex].indexOf(source), 1);
+                if(adjacencyList[targetIndex].indexOf(source) > -1){
+                    adjacencyList[targetIndex].splice(adjacencyList[targetIndex].indexOf(source), 1);
+                }
                 removeLink(target, source);
 
 
@@ -326,6 +333,8 @@
 
             }
 
+
+
             function getAdjacencyList(node) {
 
                 if(angular.isDefined(node)){
@@ -357,7 +366,11 @@
                     var indice = links.indexOf(link);
                     console.log('foundLink');
                     console.log(indice);
-                   links.splice(indice,1);
+
+                    if(indice > -1){
+
+                        links.splice(indice,1);
+                    }
                 });
             }
 
