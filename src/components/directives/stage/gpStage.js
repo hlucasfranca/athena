@@ -317,7 +317,7 @@
                         scope.graph.removeEdge(d.source, d.target);
                         redraw();
                     });
-                    toast.showSimpleToast('link removed!');
+                    toast.showSimpleToast('Aresta removida!');
                 }
             }
 
@@ -348,7 +348,7 @@
                             redraw();
                         });
 
-                        toast.showSimpleToast('node removed!');
+                        toast.showSimpleToast('Vértice removido!');
                         break;
 
                     case fab.fabOptions.info:
@@ -488,7 +488,7 @@
 
                     gpContainerCtrl.updateNodeCount();
 
-                    toast.showSimpleToast('node added!');
+                    toast.showSimpleToast('Vértice adicionado!');
                 }
             }
 
