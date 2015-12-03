@@ -151,7 +151,7 @@
                         else { return (d.target.y + (d.source.y - d.target.y)/2); }
                     })
 
-                    .attr("dy", "-0.35em").text(function(d) {return d.peso;});
+                    .attr("dy", "-1em").text(function(d) {return d.peso;});
 
                 allLinksGroup
                     .exit()
