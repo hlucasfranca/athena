@@ -52,15 +52,36 @@
         $scope.emExecucao = false;
 
         $scope.algoritmoSelecionado = $scope.algorithms[0];
-        var operacaoAtual = 0;
+        var counter = 0;
         var resultado = [];
 
         $scope.runAlg = run;
 
+        $scope.$on('$destroy', function() {
+            // Make sure that the interval is destroyed too
+            $scope.cancelTimer();
+        });
+
+        $scope.cancelTimer = function(){
+            if (angular.isDefined(timerAlgoritmo)) {
+                $scope.emExecucao = false;
+                console.log('cancelando timer');
+                console.log($interval.cancel(timerAlgoritmo));
+                timerAlgoritmo = undefined;
+            }
+        };
+
+        $scope.startTimer = function(){
+            var intervalo = 100;
+            $scope.cancelTimer();
+            timerAlgoritmo = $interval(proximoPasso, intervalo);
+            $scope.emExecucao = true;
+        };
+
         function proximoPasso(){
 
-            if(operacaoAtual < resultado.length){
-                var operacao = resultado[operacaoAtual];
+            if(counter < resultado.length){
+                var operacao = resultado[counter];
                 if(operacao.operacao !== ''){
                     broadcastService.broadcast(operacao.operacao, operacao.item);
                 }
@@ -85,68 +106,53 @@
 
                     if(operacao.resultado !== undefined) {
                         $scope.resultado = operacao.resultado.map(function (element) {
-
                             return element.map(function(el){
                                 return el.label;
                             });
-
                         });
-
-                        console.log('cores');
-
-                        console.log($scope.resultado);
                     }
-
                 }
                 else if(operacao.resultado !== undefined) {
                     $scope.resultado = operacao.resultado.map(function (element) {
                         return element.label;
                     });
                 }
-
-
-                operacaoAtual++;
+                counter++;
             }
-            else{
-                $scope.emExecucao = false;
-
+            else {
+                $scope.cancelTimer();
                 broadcastService.broadcast('clean_all_nodes');
             }
-
         }
 
         function run() {
 
+            console.log('executando algoritmo');
 
             if($scope.emExecucao){
-                $scope.emExecucao = false;
+                $scope.cancelTimer();
             }
 
             else {
-            $scope.showDialog(function (startNode) {
-                $scope.emExecucao = true;
-
-                resultado = $scope.algoritmoSelecionado.run($scope.graph, startNode);
-
-                console.log(resultado);
-
-                operacaoAtual = 0;
-
-
-
-
-                if( angular.isDefined(timerAlgoritmo)){
-                    $interval.cancel(timerAlgoritmo);
-                    timerAlgoritmo = undefined;
+                if(counter < resultado.length){
+                    $scope.startTimer();
                 }
 
-                // fixme executando multiplas vezes
-                    timerAlgoritmo = $interval(proximoPasso, 1000, resultado.length + 1);
-                
-
-
-                console.log(resultado);
-            });
+                else{
+                    counter = 0;
+                    if($scope.algoritmoSelecionado.usaCores){
+                        broadcastService.broadcast('clean_all_nodes');
+                        resultado = $scope.algoritmoSelecionado.run($scope.graph);
+                        $scope.startTimer();
+                    }
+                    else{
+                        $scope.showDialog(function (startNode) {
+                            broadcastService.broadcast('clean_all_nodes');
+                            resultado = $scope.algoritmoSelecionado.run($scope.graph, startNode);
+                            $scope.startTimer();
+                        });
+                    }
+                }
             }
         }
     }

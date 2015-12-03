@@ -850,7 +850,7 @@
                 });
 
                 selection.select('circle')
-                    .attr('fill', '#FFFFFF')
+                    //.attr('fill', '#FFFFFF')
                     .transition()
                     .duration(250)
                     //.ease('linear')
@@ -878,10 +878,10 @@
                 });
 
                 selection.select('circle')
-                    .style({
-                        'stroke': 'black',
-                        'stroke-width': 2
-                    })
+                    //.style({
+                    //    'stroke': 'black',
+                    //    'stroke-width': 2
+                    //})
                     .transition()
                     .duration(250)
                     //.ease('linear')
