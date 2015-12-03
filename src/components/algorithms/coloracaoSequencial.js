@@ -6,19 +6,24 @@
 
             var n = 'Coloração sequencial',
                 instructions = [],
-                result = [],
+                //result = [],
+                resultado = [],
                 steps = [
-                    'algoritmo coloracaoSequencial(G,v):',
-                    'C[i] = [], i = 1...n, k = 1',
-                    'para i <= n',
-                    '    LOOP: para i <= n',
-                    '    se N(i) não pertencer a C[k] ' ,
-                    '        Adicionar i a C[k]',
-                    '    senão',
-                    '        k++, goto LOOP',
-                    '    fim-se',
-                    '    k = 1',
-                    'fim-para'
+                    "para i ← 1 até n faça",                        //0
+                    "       Ci ← Ø",                                //1
+                    "fim-para",                                     //2
+                    "k ← 1",                                        //3
+                    "para i ← 1 até n faça",                        //4
+                    "     enquanto não atribuir i a Ck faça",       //5
+                    "         se N(i) ∩ Ck = Ø",                    //6
+                    "            Ck = Ck ∪ {i}",                    //7
+                    "         senão",                               //8
+                    "            k ← k + 1;",                       //9
+                    "         fim-se",                              //10
+                    "       fim-enquanto",                          //11
+                    "   k ← 1",                                     //12
+                    "fim-para",                                     //13
+                    "fim do algoritmo"                              //14
                 ];
 
             /**
@@ -35,30 +40,11 @@
                 coloracaoSequencial(graph, vertice);
                 console.log('fim: coloração sequencial');
 
-                console.log(result);
-                return result;
+                console.log(resultado);
+                return resultado;
             }
 
-            /**
 
-             * 1  para i= 1 até n faça
-             2      Ci = []
-             3  fim-para
-             4  k ← 1
-             5  para i= 1 até n faça
-                     enquanto não atribuir xi a Ck faça
-                         se vizinhos(xi) interseccao Ck = 0
-                            Ck = Ck U {xi}
-                         senão
-                            k += 1;
-                         fim-se
-                       fim-enquanto
-                   k ← 1
-             14  fim-para
-             *
-             * @param G
-             * @param v
-             */
             function coloracaoSequencial(G, v) {
 
                 var nos = G.getNodes();
@@ -67,18 +53,21 @@
                 var k;
 
                 for(i = 0; i < nos.length; i++ ){
+                    resultado.push({ operacao: '', passo: 0, resultado: angular.copy(C)});
                     C[i] = [];
+                    resultado.push({ operacao: '', passo: 1, resultado: angular.copy(C)});
                 }
+                resultado.push({ operacao: '', passo: 2, resultado: angular.copy(C)});
+
+                resultado.push({ operacao: '', passo: 3, resultado: angular.copy(C)});
 
                 for(i = 0, k = 0; i < nos.length; i++ ){
+                    resultado.push({ operacao: '', passo: 4, resultado: angular.copy(C)});
 
                     var vizinhos = G.getVizinhos(nos[i]);
 
-                    console.log('vizinhos de ');
-                    console.log(nos[i]);
-                    console.log(vizinhos);
-
                     for(var atribuido = false; atribuido !== true;){
+                        resultado.push({ operacao: '', passo: 5, resultado: angular.copy(C)});
 
                         var contem = false;
 
@@ -94,24 +83,34 @@
 
 
                         if(contem){
+                            resultado.push({ operacao: '', passo: 8, resultado: angular.copy(C)});
                             k++;
+                            resultado.push({ operacao: '', passo: 9, resultado: angular.copy(C)});
                         }
                         else{
+                            resultado.push({ operacao: '', passo: 6, resultado: angular.copy(C)});
                             C[k].push(nos[i]);
+                            resultado.push({ operacao: '', passo: 7, resultado: angular.copy(C)});
                             atribuido = true;
                         }
+                        resultado.push({ operacao: '', passo: 10, resultado: angular.copy(C)});
                     }
+                    resultado.push({ operacao: '', passo: 11, resultado: angular.copy(C)});
+                    resultado.push({ operacao: '', passo: 12, resultado: angular.copy(C)});
                 }
-                console.log(C);
+                resultado.push({ operacao: '', passo: 13, resultado: angular.copy(C)});
+                resultado.push({ operacao: '', passo: 14, resultado: angular.copy(C)});
+
             }
 
             //noinspection UnnecessaryLocalVariableJS
             var service = {
                 name: n,
                 steps: steps,
-                result: result,
+                result: resultado,
                 instructions: instructions,
-                run: run
+                run: run,
+                usaCores: true
             };
 
             return service;

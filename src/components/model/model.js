@@ -218,6 +218,8 @@
                 // se já existir uma aresta associada
                 if (getEdge(v, w) !== undefined) { return; }
 
+                if (!directed && getEdge(w, v) !== undefined) { return; }
+
                 adjacencyList[vertices.indexOf(v)].push(w);
 
                 links.push({
@@ -231,11 +233,11 @@
 
                 if (!directed) {
                     adjacencyList[vertices.indexOf(w)].push(v);
-                    links.push({
-                        source: w,
-                        target: v,
-                        id: id++
-                    });
+                    //links.push({
+                    //    source: w,
+                    //    target: v,
+                    //    id: id++
+                    //});
 
                     console.log(w.label + '>' + v.label);
                 }
@@ -247,6 +249,8 @@
             function getEdges() {
                 return links;
             }
+
+
 
             function getNodes() {
                 return vertices;

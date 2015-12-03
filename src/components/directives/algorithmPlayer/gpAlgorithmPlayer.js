@@ -80,7 +80,25 @@
 
                 $scope.passoAtual = operacao.passo;
 
-                if(operacao.resultado !== undefined) {
+                //mapeia a array bidimensional de rotulos de cores
+                if($scope.algoritmoSelecionado.usaCores !== undefined){
+
+                    if(operacao.resultado !== undefined) {
+                        $scope.resultado = operacao.resultado.map(function (element) {
+
+                            return element.map(function(el){
+                                return el.label;
+                            });
+
+                        });
+
+                        console.log('cores');
+
+                        console.log($scope.resultado);
+                    }
+
+                }
+                else if(operacao.resultado !== undefined) {
                     $scope.resultado = operacao.resultado.map(function (element) {
                         return element.label;
                     });
@@ -109,6 +127,8 @@
                 $scope.emExecucao = true;
 
                 resultado = $scope.algoritmoSelecionado.run($scope.graph, startNode);
+
+                console.log(resultado);
 
                 operacaoAtual = 0;
 

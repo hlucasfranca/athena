@@ -13,16 +13,16 @@
                 instrucoes = [],
                 resultado = [],
                 passos = [
-                    "Visita-se um nó n previamente selecionado;",
-                    "Marca o nó n",
-                    "Inserir n em uma fila F",
-                    "Enquanto a fila F não estiver vazia",
-                    "        Retira um elemento da fila F e atribui ao nó n",
-                    "        Para cada nó m não marcado e adjacente a n faça",
-                    "                O nó m é visitado",
-                    "                O nó m é colocado na fila F",
-                    "                O nó m é marcado",
-                    "Fim do algoritmo"
+                    "Visita-se um nó n previamente selecionado;",                     //0
+                    "Marca o nó n",                                                   //1
+                    "Inserir n em uma fila F",                                        //2
+                    "Enquanto a fila F não estiver vazia",                            //3
+                    "        Retira um elemento da fila F e atribui ao nó n",         //4
+                    "        Para cada nó m não marcado e adjacente a n faça",        //5
+                    "                O nó m é visitado",                              //6
+                    "                O nó m é colocado na fila F",                    //7
+                    "                O nó m é marcado",                               //8
+                    "Fim do algoritmo"                                                //9
                 ];
 
             /**
@@ -38,20 +38,7 @@
                 return resultado;
             }
 
-            /**
-             0"Visita-se um nó n previamente selecionado;",
-             1"Marca o nó n",
-             2"Inserir n em uma fila F",
-             3"Enquanto a fila F não estiver vazia",
-             4"        Retira um elemento da fila F e atribui ao nó n",
-             5"        Para cada nó m não marcado e adjacente a n faça",
-             6"                O nó m é visitado",
-             7"                O nó m é colocado na fila F",
-             8"                O nó m é marcado"
-             9 - fim do algoritmo
-             */
             function bfs(G, verticeInicial) {
-                //temporary flag
 
                 var fila = [];
                 var resultadoFinal = [];

@@ -13,11 +13,8 @@
 
             function run(graph) {
                 console.log('iniciando coloração por classe');
-
                 result = coloracaoClasse(graph);
-
                 console.log('fim: coloração por classe');
-
                 return result;
             }
 

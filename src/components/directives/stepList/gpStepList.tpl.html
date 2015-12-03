@@ -10,7 +10,7 @@
 
         <div class="passos-algoritmo">
             <!-- realça o passo selecionado de acrodo com a execução do algoritmo -->
-            <div ng-repeat="step in algoritmoSelecionado.steps" ng-class="{'line-hover': passoAtual === $index}">
+            <div ng-repeat="step in algoritmoSelecionado.steps track by $index" ng-class="{'line-hover': passoAtual === $index}">
                 <span class="passo">{{$index + 1}}: {{step}}</span>
             </div>
         </div>
@@ -29,19 +29,51 @@
 
     <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaFila">Fila</md-subheader>
     <md-list-item ng-if="algoritmoSelecionado.usaFila">
-        <div class="md-list-item-text" flex layout="row">
-            {{fila}}
+        <div class="md-list-item-text" flex layout="row">[
+            <span ng-repeat="valor in fila track by $index">
+                {{valor}}
+                <i ng-if="!$last">,</i>
+            </span>
+            ]
+
         </div>
     </md-list-item >
     <md-divider ng-if="algoritmoSelecionado.usaFila"></md-divider>
 
+    <md-subheader class="md-no-sticky" ng-if="algoritmoSelecionado.usaCores">Solução</md-subheader>
+    <md-list-item ng-if="algoritmoSelecionado.usaCores">
+        <div class="md-list-item-text" flex layout="column">
+            <div ng-repeat="cor in resultado track by $index">
+                C{{$index+1}}: {
+
+                <span ng-repeat="vertice in cor track by $index">
+                {{vertice}}
+                <i ng-if="!$last">,</i>
+                </span>
+
+                }
+
+            </div>
+        </div>
+    </md-list-item >
+    <md-divider ng-if="algoritmoSelecionado.usaCores"></md-divider>
+
+
+    <div ng-if="!algoritmoSelecionado.usaCores">
+
     <md-subheader class="md-no-sticky">Solução</md-subheader>
     <md-list-item>
-        <div class="md-list-item-text" flex layout="row">
-            {{resultado}}
+        <div class="md-list-item-text" flex layout="row">{
+            <span ng-repeat="valor in resultado track by $index">
+                {{valor}}
+                <i ng-if="!$last">,</i>
+            </span>
+            }
+
         </div>
     </md-list-item>
     <md-divider ></md-divider>
+    </div>
 </md-list>
 
 
